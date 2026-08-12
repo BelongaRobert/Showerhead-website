@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="site-header__left">
     <nav class="site-nav" aria-label="Primary">
-      <a href="/#buy">FLOW 01</a>
+      <a href="/#buy">FLOW</a>
       <a href="/#reviews">Reviews</a>
       <a href="/#faq">FAQ</a>
     </nav>
@@ -9,11 +9,11 @@
 
   <a class="brand" href="{{ routes.root_url }}">
     {{ 'mr-droppy-avatar.png' | asset_url | img_tag: 'Mr. Droppy', 'brand__mascot' }}
-    <span>{{ shop.name | default: 'drop lab' | downcase }}</span>
+    <span>{{ shop.name | default: 'dr. droppy' | downcase }}</span>
   </a>
 
   <div class="site-header__right">
-    <a class="header-cart" href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+    <a class="header-cart" href="{{ routes.cart_url }}" aria-label="Cart ({{ cart.item_count }})">Cart ({{ cart.item_count }})</a>
     <a class="btn btn--small" href="/#buy">Shop now</a>
   </div>
 </header>

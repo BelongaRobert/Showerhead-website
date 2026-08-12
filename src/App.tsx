@@ -4,23 +4,23 @@ import './App.css'
 const GALLERY = [
   {
     src: '/images/gallery-1.jpg',
-    alt: 'Drop Lab Ultimate Showerhead in polished chrome',
+    alt: 'The Drop Company Ultimate Showerhead in polished chrome',
   },
   {
     src: '/images/gallery-2.jpg',
-    alt: 'Drop Lab Ultimate Showerhead in matte black',
+    alt: 'The Drop Company Ultimate Showerhead in matte black',
   },
   {
     src: '/images/gallery-3.jpg',
-    alt: 'Drop Lab showerhead with replacement filter cartridge',
+    alt: 'The Drop Company showerhead with replacement filter cartridge',
   },
   {
     src: '/images/product-detail.jpg',
-    alt: 'Drop Lab showerhead spray face with fine mist',
+    alt: 'The Drop Company showerhead spray face with fine mist',
   },
   {
     src: '/images/hero-showerhead.jpg',
-    alt: 'Drop Lab showerhead installed in a bathroom',
+    alt: 'The Drop Company showerhead installed in a bathroom',
   },
 ]
 
@@ -34,19 +34,19 @@ const REVIEWS = [
     name: 'Sophia R.',
     date: 'Aug 2, 2026',
     title: 'Noticeably softer water',
-    body: 'My skin stopped feeling tight after every shower within the first week. Pressure is still strong — better than my old head.',
+    body: 'My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and yes, Mr. Droppy on the box made my kids smile.',
   },
   {
     name: 'Marcus T.',
     date: 'Jul 28, 2026',
     title: 'Easy install, real difference',
-    body: 'Twisted on in under five minutes. Hair feels less brittle and the chrome finish looks premium in our bathroom.',
+    body: 'Twisted on in under five minutes. Hair feels less brittle and the finish looks premium. The Drop Company nailed the unboxing.',
   },
   {
     name: 'Elena K.',
     date: 'Jul 19, 2026',
     title: 'Worth the switch',
-    body: 'I was skeptical about filtered showerheads. This one actually keeps flow high while cutting the chlorine smell.',
+    body: 'I was skeptical about filtered showerheads. This one keeps flow high while cutting the chlorine smell. Mr. Droppy approved, apparently.',
   },
   {
     name: 'Jordan P.',
@@ -59,15 +59,19 @@ const REVIEWS = [
 const FAQS = [
   {
     q: 'How often do I need to replace the filter?',
-    a: 'Replace the cartridge every 90 days for optimal chlorine reduction and flow. Autoship can deliver filters on that cadence automatically.',
+    a: 'Mr. Droppy’s rule: swap the cartridge every 90 days for optimal chlorine reduction and flow. Autoship can deliver filters on that cadence automatically.',
   },
   {
     q: 'Will the pressure be worse than my current showerhead?',
-    a: 'No. The wide-face design is engineered for high flow while filtration runs in parallel — most customers report equal or better pressure.',
+    a: 'No. The Drop Company engineered the wide-face design for high flow while filtration runs in parallel — most customers report equal or better pressure.',
   },
   {
     q: 'Does the filter actually work?',
-    a: 'Yes. The multi-stage media is tested for chlorine reduction across a 3-month lifespan, including extended high-volume water throughput.',
+    a: 'Yes. Our multi-stage media is tested for chlorine reduction across a 3-month lifespan, including extended high-volume water throughput.',
+  },
+  {
+    q: 'Who is Mr. Droppy?',
+    a: 'Mr. Droppy is The Drop Company’s official mascot — your cheerful reminder that cleaner shower water should feel simple, friendly, and worth sticking with.',
   },
   {
     q: 'Will it fit my shower?',
@@ -101,12 +105,10 @@ function App() {
     return qtyOption === 'multi' || qty >= 2 ? 99 : 129
   }, [plan, qtyOption, qty])
 
-  const compareAt = plan === 'one' ? 199 : qtyOption === 'multi' || qty >= 2 ? 199 : 199
+  const compareAt = 199
   const lineTotal = unitPrice * (plan === 'one' ? 1 : Math.max(1, qty))
   const savings =
-    plan === 'one'
-      ? 0
-      : compareAt * Math.max(1, qty) - lineTotal
+    plan === 'one' ? 0 : compareAt * Math.max(1, qty) - lineTotal
 
   function selectColor(id: (typeof COLORS)[number]['id']) {
     setColor(id)
@@ -127,11 +129,20 @@ function App() {
 
   return (
     <div className="site">
-      <div className="announce">Up to 50% off filtered showerheads</div>
+      <div className="announce">
+        Up to 50% off filtered showerheads — Mr. Droppy says stock is moving
+      </div>
 
       <header className="nav">
-        <a className="nav-brand" href="#top">
-          drop lab
+        <a className="nav-brand" href="#top" aria-label="The Drop Company home">
+          <img
+            src="/images/mr-droppy-avatar.png"
+            alt=""
+            className="nav-mascot"
+          />
+          <span>
+            the drop <em>company</em>
+          </span>
         </a>
         <nav className="nav-links" aria-label="Primary">
           <a href="#buy">Filtered Showerhead</a>
@@ -149,6 +160,10 @@ function App() {
           <div className="pdp-grid">
             <div className="gallery">
               <div className="gallery-main">
+                <div className="gallery-badge">
+                  <img src="/images/mr-droppy-avatar.png" alt="" />
+                  <span>Mr. Droppy’s pick</span>
+                </div>
                 <button
                   type="button"
                   className="gallery-arrow prev"
@@ -171,7 +186,11 @@ function App() {
                   ›
                 </button>
               </div>
-              <div className="gallery-thumbs" role="tablist" aria-label="Product images">
+              <div
+                className="gallery-thumbs"
+                role="tablist"
+                aria-label="Product images"
+              >
                 {GALLERY.map((image, index) => (
                   <button
                     key={image.src}
@@ -188,10 +207,12 @@ function App() {
             </div>
 
             <div className="buybox">
+              <p className="brand-kicker">The Drop Company</p>
               <h1>Ultimate Showerhead</h1>
               <p className="buybox-lede">
                 A premium multi-stage shower filter that removes chlorine and
-                harmful toxins from your tap water — for healthier hair and skin.
+                harmful toxins from your tap water — for healthier hair and
+                skin. Guided by Mr. Droppy, our official clean-water mascot.
               </p>
 
               <div className="rating-row">
@@ -271,7 +292,7 @@ function App() {
                     className={`plan-card ${plan === 'bundle' ? 'is-selected' : ''}`}
                     onClick={() => setPlan('bundle')}
                   >
-                    <div className="popular-tag">MOST POPULAR OPTION</div>
+                    <div className="popular-tag">MR. DROPPY’S FAVORITE</div>
                     <div className="plan-top">
                       <strong>Autoship</strong>
                       <span>
@@ -342,7 +363,7 @@ function App() {
               </p>
 
               <button type="button" className="btn btn-cart" onClick={addToCart}>
-                {added ? 'Added to cart' : `Add to cart — $${lineTotal}`}
+                {added ? 'Added — Mr. Droppy cheers!' : `Add to cart — $${lineTotal}`}
               </button>
 
               <div className="trust-stack">
@@ -363,6 +384,17 @@ function App() {
                   <li>HSA/FSA eligible</li>
                 </ul>
               </div>
+
+              <aside className="droppy-tip">
+                <img src="/images/mr-droppy-wave.jpg" alt="Mr. Droppy waving" />
+                <div>
+                  <strong>Tip from Mr. Droppy</strong>
+                  <p>
+                    Grab Autoship once and forget filter day — I’ll nudge the
+                    refill every 90 days.
+                  </p>
+                </div>
+              </aside>
 
               <div className="info-accordions">
                 {(
@@ -396,10 +428,11 @@ function App() {
                       title: "What's Included",
                       body: (
                         <ul>
-                          <li>Drop Lab Ultimate Showerhead</li>
+                          <li>The Drop Company Ultimate Showerhead</li>
                           <li>Pre-installed filter cartridge</li>
                           <li>Plumber’s tape + fit wrench</li>
                           <li>Optional flow restrictor + owner’s manual</li>
+                          <li>A hello from Mr. Droppy in every box</li>
                         </ul>
                       ),
                     },
@@ -429,13 +462,22 @@ function App() {
         </section>
 
         <section className="band endorsement">
-          <div className="band-inner">
-            <p className="pill">Lab tested</p>
-            <h2>Built for people who treat the shower like recovery.</h2>
-            <p>
-              Drop Lab filters chlorine and common shower contaminants so skin
-              and hair take less daily damage — without sacrificing pressure.
-            </p>
+          <div className="endorsement-grid">
+            <img
+              src="/images/mr-droppy.jpg"
+              alt="Mr. Droppy, official mascot of The Drop Company"
+              className="endorsement-mascot"
+            />
+            <div>
+              <p className="pill">Meet Mr. Droppy</p>
+              <h2>The Drop Company’s #1 cheerleader for clean showers.</h2>
+              <p>
+                Mr. Droppy is our official mascot — a friendly reminder that
+                filtered water should feel simple. He stands for fewer harsh
+                chemicals in the rinse, stronger hair days, and showers that
+                leave skin calmer.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -514,8 +556,8 @@ function App() {
             {Array.from({ length: 2 }).map((_, loop) => (
               <p key={loop}>
                 Smooth Skin · Less Acne · Fewer Flare-Ups · Less Tangled Hair ·
-                Softer Hair · Smooth Skin · Less Acne · Fewer Flare-Ups · Less
-                Tangled Hair · Softer Hair ·
+                Softer Hair · Mr. Droppy Approves · Smooth Skin · Less Acne ·
+                Fewer Flare-Ups · Less Tangled Hair · Softer Hair ·
               </p>
             ))}
           </div>
@@ -536,7 +578,8 @@ function App() {
             <div>
               <p className="lede">
                 Millions of homes rely on decades-old plumbing lined with rust,
-                scale, and bacteria buildup.
+                scale, and bacteria buildup — which is exactly why Mr. Droppy
+                started campaigning for cleaner showers.
               </p>
               <ul className="stat-list">
                 <li>
@@ -649,8 +692,16 @@ function App() {
         </section>
 
         <section className="section close-cta">
+          <img
+            src="/images/mr-droppy-thumb.jpg"
+            alt="Mr. Droppy giving a thumbs up"
+            className="close-mascot"
+          />
           <h2>Start with cleaner water</h2>
-          <p>Filtered shower water for clearer skin and stronger hair.</p>
+          <p>
+            The Drop Company — filtered shower water for clearer skin and
+            stronger hair, with Mr. Droppy along for the rinse.
+          </p>
           <button type="button" className="btn btn-cart" onClick={addToCart}>
             Add to cart
           </button>
@@ -660,8 +711,15 @@ function App() {
       <footer className="footer">
         <div className="footer-grid">
           <div>
-            <p className="footer-brand">drop lab</p>
-            <p>For people who do wellness differently.</p>
+            <p className="footer-brand">
+              <img
+                src="/images/mr-droppy-avatar.png"
+                alt=""
+                className="footer-mascot"
+              />
+              the drop company
+            </p>
+            <p>For people who do wellness differently — and for Mr. Droppy.</p>
           </div>
           <div>
             <h3>Shop</h3>
@@ -675,7 +733,9 @@ function App() {
           </div>
           <div>
             <h3>Contact</h3>
-            <a href="mailto:hello@droplab.example">hello@droplab.example</a>
+            <a href="mailto:hello@thedropcompany.example">
+              hello@thedropcompany.example
+            </a>
           </div>
         </div>
       </footer>

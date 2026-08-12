@@ -1,0 +1,23 @@
+<section class="cta-band">
+  {{ 'mr-droppy-thumb.jpg' | asset_url | img_tag: 'Mr. Droppy', 'cta-band__mascot' }}
+  <h2>{{ section.settings.heading }}</h2>
+  {% if section.settings.text != blank %}
+    <p>{{ section.settings.text }}</p>
+  {% endif %}
+  {% if section.settings.button_label != blank %}
+    <a class="btn btn--light" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "CTA band",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hey there — ready for better water?" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "CTA band" }]
+}
+{% endschema %}

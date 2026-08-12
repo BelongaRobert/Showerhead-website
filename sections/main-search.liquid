@@ -1,0 +1,31 @@
+<section class="collection">
+  <div class="section-head">
+    <h1>Search</h1>
+  </div>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="password" style="max-width:28rem;margin:0 auto 2rem;">
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products...">
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <div class="product-grid">
+    {% for item in search.results %}
+      {% if item.object_type == 'product' %}
+        <a class="product-card" href="{{ item.url }}">
+          {% if item.featured_media %}
+            {{ item.featured_media | image_url: width: 800 | image_tag: loading: 'lazy' }}
+          {% endif %}
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.price | money }}</p>
+        </a>
+      {% endif %}
+    {% else %}
+      <p>No results{% if search.terms != blank %} for “{{ search.terms }}”{% endif %}.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,18 @@
+<header class="site-header">
+  <a class="brand" href="{{ routes.root_url }}">
+    {{ 'mr-droppy-avatar.png' | asset_url | img_tag: 'Mr. Droppy', 'brand__mascot' }}
+    <span>{{ shop.name | default: 'drop lab' | downcase }}</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="{{ routes.all_products_collection_url }}">Shop</a>
+    <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+  </nav>
+  <a class="btn btn--small" href="{{ routes.all_products_collection_url }}">Shop now</a>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}

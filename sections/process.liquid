@@ -1,0 +1,51 @@
+<section class="process">
+  <div class="section-head">
+    {% if section.settings.pill != blank %}
+      <p class="pill">{{ section.settings.pill }}</p>
+    {% endif %}
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+  <div class="process__track">
+    <article class="process__card">
+      <span>01</span>
+      {{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}
+      <h3>15-Stage Filtration</h3>
+      <p>A packed cartridge that takes on chlorine and the gunk you don’t want in the rinse.</p>
+    </article>
+    <article class="process__card">
+      <span>02</span>
+      {{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}
+      <h3>Goodbye to Bad</h3>
+      <p>Harsh stuff gets filtered out before it hits your skin and hair.</p>
+    </article>
+    <article class="process__card">
+      <span>03</span>
+      {{ 'mr-droppy.jpg' | asset_url | img_tag: '', '' }}
+      <h3>Hello to Good</h3>
+      <p>Mr. Droppy brings the clean flow — softer water, happier showers.</p>
+    </article>
+    <article class="process__card">
+      <span>04</span>
+      {{ 'benefit-pressure.jpg' | asset_url | img_tag: '', '' }}
+      <h3>New Filtered Flow</h3>
+      <p>Wide-face spray that still feels powerful after filtration.</p>
+    </article>
+    <article class="process__card">
+      <span>05</span>
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}
+      <h3>Easy Install</h3>
+      <p>A few twists, some tape, and you’re done. No plumber required.</p>
+    </article>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Process",
+  "settings": [
+    { "type": "text", "id": "pill", "label": "Pill", "default": "How FLOW 01 works" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From bad water to better you" }
+  ],
+  "presets": [{ "name": "Process" }]
+}
+{% endschema %}

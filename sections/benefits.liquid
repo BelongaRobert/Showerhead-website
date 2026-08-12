@@ -1,0 +1,42 @@
+<section class="benefits">
+  <div class="section-head">
+    {% if section.settings.pill != blank %}
+      <p class="pill">{{ section.settings.pill }}</p>
+    {% endif %}
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+  <div class="benefits__grid">
+    <article>
+      {{ 'benefit-skin.jpg' | asset_url | img_tag: 'Clearer skin', '' }}
+      <h3>Clearer skin</h3>
+      <p>Smoother, more hydrated skin with fewer breakouts and flare-ups.</p>
+      <strong>93%</strong>
+      <span>felt less dryness in 30 days</span>
+    </article>
+    <article>
+      {{ 'benefit-hair.jpg' | asset_url | img_tag: 'Stronger hair', '' }}
+      <h3>Stronger hair</h3>
+      <p>Protects moisture and color with less shedding and breakage.</p>
+      <strong>94%</strong>
+      <span>saw less shedding in 30 days</span>
+    </article>
+    <article>
+      {{ 'benefit-pressure.jpg' | asset_url | img_tag: 'High-flow pressure', '' }}
+      <h3>High-flow pressure</h3>
+      <p>Powerful water pressure without sacrificing filtration.</p>
+      <strong>100%</strong>
+      <span>reported a better shower every day</span>
+    </article>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits",
+  "settings": [
+    { "type": "text", "id": "pill", "label": "Pill", "default": "A healthier you" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You’ll experience" }
+  ],
+  "presets": [{ "name": "Benefits" }]
+}
+{% endschema %}

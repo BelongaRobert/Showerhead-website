@@ -1,28 +1,21 @@
-# Drop Lab
+# Drop Lab Shopify Theme
 
-Product page for **Drop Lab FLOW 01** — the filtered shower head — featuring mascot **Mr. Droppy**.
+Working Online Store 2.0 theme for **Drop Lab / FLOW 01** with **Mr. Droppy**.
 
-Playful mood-board branding with a Cold Life–style PDP structure.
+Includes a real homepage template (`templates/index.json`) so the store no longer 404s.
 
-## Live site
+## Reconnect in Shopify
 
-After GitHub Pages is enabled on the `gh-pages` branch:
+1. Shopify Admin → **Online Store → Themes**
+2. Tap **Add theme** → **Connect from GitHub** (or replace the old connection)
+3. Choose repo: **`BelongaRobert/Showerhead-website`**
+4. Choose branch: **`cursor/shopify-theme-36e5`**
+5. Tap **Connect**
+6. When it finishes syncing, tap **Publish**
+7. Tap **View store**
 
-**https://belongarobert.github.io/Showerhead-website/**
-
-Enable here: https://github.com/BelongaRobert/Showerhead-website/settings/pages  
-Source → Deploy from a branch → `gh-pages` / root → Save.
-
-## Develop
-
-```bash
-npm install
-npm run dev
-```
-
-## Build
+## Local theme check (optional)
 
 ```bash
-npm run build
-npm run preview
+shopify theme check
 ```

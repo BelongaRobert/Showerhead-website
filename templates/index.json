@@ -1,0 +1,48 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Drop Lab · Filtered Shower Head",
+        "heading": "FLOW 01",
+        "tagline": "The shower upgrade your skin will love.",
+        "text": "A playful, powerful multi-stage shower filter for better water, better skin, better hair, better you — with Mr. Droppy along for the rinse.",
+        "button_label": "Shop FLOW 01",
+        "button_link": "/collections/all"
+      }
+    },
+    "hey": {
+      "type": "hey-there",
+      "settings": {
+        "pill": "Unboxing vibes",
+        "heading": "Hey there!",
+        "lead": "You just made a really good choice.",
+        "text": "Every drop has a story. FLOW 01 is Drop Lab’s filtered shower head — friendly on the outside, serious about cleaner water on the inside."
+      }
+    },
+    "process": {
+      "type": "process",
+      "settings": {
+        "pill": "How FLOW 01 works",
+        "heading": "From bad water to better you"
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": {
+        "pill": "A healthier you",
+        "heading": "You’ll experience"
+      }
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {
+        "heading": "Hey there — ready for better water?",
+        "text": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair.",
+        "button_label": "Shop now",
+        "button_link": "/collections/all"
+      }
+    }
+  },
+  "order": ["hero", "hey", "process", "benefits", "cta"]
+}

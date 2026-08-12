@@ -99,7 +99,7 @@ function App() {
           <div className="product-grid">
             <figure className="product-figure">
               <img
-                src="/images/product-detail.png"
+                src="/images/product-detail.jpg"
                 alt="Drop Lab filtered showerhead with fine mist spray"
               />
             </figure>

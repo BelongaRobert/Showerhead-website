@@ -1,8 +1,8 @@
-# The Drop Company
+# Drop Lab
 
-Product page for **The Drop Company** Ultimate Showerhead, featuring mascot **Mr. Droppy**.
+Product page for **Drop Lab FLOW 01** — the filtered shower head — featuring mascot **Mr. Droppy**.
 
-Cold Life–style PDP structure: gallery + buy box, benefits, problem, filtration proof, FAQ.
+Playful mood-board branding with a Cold Life–style PDP structure.
 
 ## Develop
 

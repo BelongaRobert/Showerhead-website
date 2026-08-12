@@ -7,47 +7,45 @@
     {% assign product = collections.all.products.first %}
   {% endif %}
 
-  <div class="pdp__grid">
-    <div class="pdp__gallery">
-      <div class="pdp__main-media" id="PdpMain-{{ section.id }}">
-        <div class="pdp__badge">
-          {{ 'mr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
-          <span>Mr. Droppy’s pick</span>
-        </div>
-        {% if product != blank and product.media.size > 0 %}
-          {% for media in product.media limit: 5 %}
-            <img
-              class="pdp__slide{% if forloop.first %} is-active{% endif %}"
-              src="{{ media | image_url: width: 1200 }}"
-              alt="{{ media.alt | escape | default: product.title }}"
-              data-index="{{ forloop.index0 }}"
-              {% unless forloop.first %}hidden{% endunless %}
-            >
-          {% endfor %}
-        {% else %}
-          {{ 'gallery-1.jpg' | asset_url | img_tag: 'FLOW 01', 'pdp__slide is-active' }}
-          {{ 'gallery-2.jpg' | asset_url | img_tag: 'FLOW 01 matte', 'pdp__slide' }}
-          {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'FLOW 01 installed', 'pdp__slide' }}
-        {% endif %}
-        <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
-        <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
-      </div>
-      <div class="pdp__thumbs" data-pdp-thumbs>
-        {% if product != blank and product.media.size > 0 %}
-          {% for media in product.media limit: 5 %}
-            <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
-              {{ media | image_url: width: 200 | image_tag: alt: '' }}
-            </button>
-          {% endfor %}
-        {% else %}
-          <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
-          <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
-          <button type="button" class="pdp__thumb" data-index="2">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
-        {% endif %}
-      </div>
+  <div class="pdp__banner" id="PdpMain-{{ section.id }}">
+    <div class="pdp__badge">
+      {{ 'mr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
+      <span>Mr. Droppy’s pick</span>
     </div>
+    {% if product != blank and product.media.size > 0 %}
+      {% for media in product.media limit: 5 %}
+        <img
+          class="pdp__slide{% if forloop.first %} is-active{% endif %}"
+          src="{{ media | image_url: width: 2000 }}"
+          alt="{{ media.alt | escape | default: product.title }}"
+          data-index="{{ forloop.index0 }}"
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+      {% endfor %}
+    {% else %}
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'FLOW 01', 'pdp__slide is-active' }}
+      {{ 'gallery-1.jpg' | asset_url | img_tag: 'FLOW 01 chrome', 'pdp__slide' }}
+      {{ 'gallery-2.jpg' | asset_url | img_tag: 'FLOW 01 matte', 'pdp__slide' }}
+    {% endif %}
+    <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
+    <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
+  </div>
 
-    <div class="pdp__buybox">
+  <div class="pdp__thumbs" data-pdp-thumbs>
+    {% if product != blank and product.media.size > 0 %}
+      {% for media in product.media limit: 5 %}
+        <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+          {{ media | image_url: width: 200 | image_tag: alt: '' }}
+        </button>
+      {% endfor %}
+    {% else %}
+      <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
+      <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
+      <button type="button" class="pdp__thumb" data-index="2">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
+    {% endif %}
+  </div>
+
+  <div class="pdp__buybox">
       <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       <h1>
         {% if section.settings.heading != blank %}
@@ -186,7 +184,6 @@
           </ul>
         </details>
       </div>
-    </div>
   </div>
 </section>
 

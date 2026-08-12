@@ -49,23 +49,40 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 1.25rem;
-  background: rgba(255, 253, 248, 0.94);
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 253, 248, 0.96);
   border-bottom: 2px solid var(--line);
   backdrop-filter: blur(8px);
+}
+
+.site-header__left {
+  display: flex;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  min-width: 0;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.45rem;
   font-family: var(--display);
-  font-size: 1.2rem;
+  font-size: clamp(1.05rem, 3.5vw, 1.35rem);
   font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
 }
 .brand__mascot,
 .footer-mascot,
@@ -79,9 +96,31 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   border-radius: 999px;
   border: 2px solid var(--yellow);
   background: white;
+  flex: 0 0 auto;
 }
 
-.site-nav { display: flex; gap: 1rem; font-weight: 800; }
+.site-nav {
+  display: none;
+  flex-wrap: wrap;
+  gap: 0.85rem 1rem;
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+
+.header-cart {
+  font-weight: 800;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 860px) {
+  .site-header {
+    padding: 0.85rem 1.5rem;
+  }
+  .site-nav {
+    display: flex;
+  }
+}
 .btn {
   display: inline-flex;
   align-items: center;
@@ -364,41 +403,32 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 
 /* Cold Life–style PDP layout, Drop Lab colors */
 .pdp {
-  width: min(100%, var(--max));
-  margin: 0 auto;
-  padding: 1.25rem 1.25rem 2.5rem;
+  padding: 0 0 2.5rem;
 }
-.pdp__grid {
-  display: grid;
-  gap: 1.75rem;
-}
-@media (min-width: 960px) {
-  .pdp__grid {
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 2.25rem;
-    align-items: start;
-  }
-  .pdp__gallery { position: sticky; top: 5rem; }
-}
-.pdp__main-media {
+.pdp__banner {
   position: relative;
-  aspect-ratio: 1;
+  width: 100%;
+  min-height: clamp(220px, 52vw, 520px);
   overflow: hidden;
-  border: 3px solid var(--ink);
-  border-radius: var(--radius);
   background: linear-gradient(180deg, #dff2fb, #f4fbff);
-  box-shadow: 8px 8px 0 rgba(27, 42, 74, 0.12);
+  border-bottom: 3px solid var(--ink);
 }
 .pdp__slide {
   width: 100%;
   height: 100%;
+  min-height: clamp(220px, 52vw, 520px);
   object-fit: cover;
+  object-position: center;
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
 }
-.pdp__slide.is-active { opacity: 1; position: relative; pointer-events: auto; }
+.pdp__slide.is-active {
+  opacity: 1;
+  position: relative;
+  pointer-events: auto;
+}
 .pdp__badge {
   position: absolute;
   top: 0.85rem;
@@ -434,14 +464,18 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
+  z-index: 2;
 }
 .pdp__arrow.prev { left: 0.75rem; }
 .pdp__arrow.next { right: 0.75rem; }
 .pdp__thumbs {
+  width: min(100%, var(--max));
+  margin: 0.85rem auto 0;
+  padding: 0 1.25rem;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 4.5rem));
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  justify-content: start;
 }
 .pdp__thumb {
   border: 2px solid transparent;
@@ -455,6 +489,11 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 .pdp__thumb.is-active { border-color: var(--ink); }
 .pdp__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
+.pdp__buybox {
+  width: min(100%, 40rem);
+  margin: 1.25rem auto 0;
+  padding: 0 1.25rem;
+}
 .pdp__buybox h1 {
   font-size: clamp(2.4rem, 7vw, 3.6rem);
 }

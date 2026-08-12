@@ -1,15 +1,21 @@
 <header class="site-header">
+  <div class="site-header__left">
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/#buy">FLOW 01</a>
+      <a href="/#reviews">Reviews</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+  </div>
+
   <a class="brand" href="{{ routes.root_url }}">
     {{ 'mr-droppy-avatar.png' | asset_url | img_tag: 'Mr. Droppy', 'brand__mascot' }}
     <span>{{ shop.name | default: 'drop lab' | downcase }}</span>
   </a>
-  <nav class="site-nav" aria-label="Primary">
-    <a href="/#buy">FLOW 01</a>
-    <a href="/#reviews">Reviews</a>
-    <a href="/#faq">FAQ</a>
-    <a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
-  </nav>
-  <a class="btn btn--small" href="/#buy">Shop now</a>
+
+  <div class="site-header__right">
+    <a class="header-cart" href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
+    <a class="btn btn--small" href="/#buy">Shop now</a>
+  </div>
 </header>
 
 {% schema %}

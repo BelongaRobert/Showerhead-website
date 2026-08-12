@@ -1,6 +1,6 @@
 # Drop Lab
 
-Premium filtered-showerhead brand site for **Drop Lab**.
+Product page for the **Drop Lab Ultimate Showerhead**, structured like a high-converting filtered-showerhead PDP (gallery + buy box, benefits, problem, filtration proof, FAQ).
 
 ## Develop
 
@@ -15,10 +15,3 @@ npm run dev
 npm run build
 npm run preview
 ```
-
-## Theme
-
-- Display: Fraunces
-- UI: Sora
-- Palette: ink teal, aqua mist, foam backgrounds
-- Hero: full-bleed shower imagery with brand-first hierarchy

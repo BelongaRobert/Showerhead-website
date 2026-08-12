@@ -10,7 +10,7 @@
   <div class="pdp__banner" id="PdpMain-{{ section.id }}">
     <div class="pdp__badge">
       {{ 'mr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
-      <span>Mr. Droppy’s pick</span>
+      <span>Dr. Droppy’s pick</span>
     </div>
     {% if product != blank and product.media.size > 0 %}
       {% for media in product.media limit: 5 %}
@@ -100,7 +100,7 @@
           {% endif %}
 
           <div class="plan-card is-selected">
-            <div class="popular-tag">MR. DROPPY’S FAVORITE</div>
+            <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
             <div class="plan-top">
               <strong>{{ product.title }}</strong>
               <span><em>{{ product.selected_or_first_available_variant.price | money }}</em></span>
@@ -122,7 +122,7 @@
         {% endform %}
       {% else %}
         <div class="plan-card is-selected">
-          <div class="popular-tag">MR. DROPPY’S FAVORITE</div>
+          <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
           <div class="plan-top">
             <strong>FLOW 01</strong>
             <span><em>$129</em></span>
@@ -141,7 +141,7 @@
           <span>Ships fast</span>
         </div>
         <div class="urgency"><div class="urgency-bar" style="width:84%"></div></div>
-        <p class="urgency-copy">84% of the current batch reserved · Mr. Droppy says don’t wait</p>
+        <p class="urgency-copy">84% of the current batch reserved · Dr. Droppy says don’t wait</p>
         <ul class="perk-list">
           <li>Chlorine-tested filter</li>
           <li>60-day money-back guarantee</li>
@@ -150,9 +150,9 @@
       </div>
 
       <aside class="droppy-tip">
-        {{ 'mr-droppy-wave.jpg' | asset_url | img_tag: 'Mr. Droppy waving', '' }}
+        {{ 'mr-droppy-wave.jpg' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
         <div>
-          <strong>Tip from Mr. Droppy</strong>
+          <strong>Tip from Dr. Droppy</strong>
           <p>Replace the filter every 90 days to keep FLOW 01 feeling fresh.</p>
         </div>
       </aside>
@@ -172,7 +172,7 @@
             <li>Drop Lab FLOW 01 Filtered Shower Head</li>
             <li>Pre-installed filter cartridge</li>
             <li>Plumber’s tape + fit wrench</li>
-            <li>A hello from Mr. Droppy</li>
+            <li>A hello from Dr. Droppy</li>
           </ul>
         </details>
         <details class="accordion">
@@ -218,7 +218,7 @@
       "type": "textarea",
       "id": "text",
       "label": "Description",
-      "default": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Mr. Droppy."
+      "default": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Dr. Droppy."
     }
   ],
   "presets": [{ "name": "Product buy box" }]

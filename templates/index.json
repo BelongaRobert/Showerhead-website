@@ -6,13 +6,13 @@
         "eyebrow": "Drop Lab · Filtered Shower Head",
         "heading": "FLOW 01",
         "tagline": "The shower upgrade your skin will love.",
-        "text": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Mr. Droppy."
+        "text": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Dr. Droppy."
       }
     },
     "hey": {
       "type": "hey-there",
       "settings": {
-        "pill": "Meet Mr. Droppy",
+        "pill": "Meet Dr. Droppy",
         "heading": "Hey there!",
         "lead": "You just made a really good choice.",
         "text": "Every drop has a story. FLOW 01 is Drop Lab’s filtered shower head — friendly on the outside, serious about cleaner water on the inside."
@@ -25,7 +25,7 @@
           "type": "review",
           "settings": {
             "title": "Noticeably softer water",
-            "body": "My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Mr. Droppy on the box made my kids smile.",
+            "body": "My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Dr. Droppy on the box made my kids smile.",
             "name": "Sophia R.",
             "date": "Aug 2, 2026"
           }
@@ -43,7 +43,7 @@
           "type": "review",
           "settings": {
             "title": "Worth the switch",
-            "body": "FLOW 01 keeps flow high while cutting the chlorine smell. Mr. Droppy approved.",
+            "body": "FLOW 01 keeps flow high while cutting the chlorine smell. Dr. Droppy approved.",
             "name": "Elena K.",
             "date": "Jul 19, 2026"
           }
@@ -74,7 +74,7 @@
     "marquee": {
       "type": "marquee",
       "settings": {
-        "text": "Better Water · Better Skin · Better Hair · Better You · Mr. Droppy Approves · FLOW 01 · Better Water · Better Skin · Better Hair · Better You ·"
+        "text": "Better Water · Better Skin · Better Hair · Better You · Dr. Droppy Approves · FLOW 01 · Better Water · Better Skin · Better Hair · Better You ·"
       }
     },
     "problem": {
@@ -82,7 +82,7 @@
       "settings": {
         "pill": "The problem",
         "heading": "Your water isn’t safe",
-        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Mr. Droppy started campaigning for cleaner showers."
+        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Dr. Droppy started campaigning for cleaner showers."
       }
     },
     "process": {
@@ -115,7 +115,7 @@
           "type": "item",
           "settings": {
             "question": "How often do I need to replace the filter?",
-            "answer": "Mr. Droppy’s rule: swap the cartridge every 90 days for the best FLOW 01 performance."
+            "answer": "Dr. Droppy’s rule: swap the cartridge every 90 days for the best FLOW 01 performance."
           }
         },
         "f2": {
@@ -135,8 +135,8 @@
         "f4": {
           "type": "item",
           "settings": {
-            "question": "Who is Mr. Droppy?",
-            "answer": "Mr. Droppy is Drop Lab’s official mascot — your cheerful reminder that cleaner shower water should feel simple, friendly, and fun."
+            "question": "Who is Dr. Droppy?",
+            "answer": "Dr. Droppy is Drop Lab’s official mascot — your cheerful reminder that cleaner shower water should feel simple, friendly, and fun."
           }
         }
       },
@@ -150,7 +150,7 @@
       "type": "cta-band",
       "settings": {
         "heading": "Hey there — ready for better water?",
-        "text": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair, with Mr. Droppy along for the rinse.",
+        "text": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair, with Dr. Droppy along for the rinse.",
         "button_label": "Shop FLOW 01",
         "button_link": "/#buy"
       }

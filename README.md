@@ -1,6 +1,6 @@
 # Drop Lab Shopify Theme
 
-Working Online Store 2.0 theme for **Drop Lab / FLOW 01** with **Mr. Droppy**.
+Working Online Store 2.0 theme for **Drop Lab / FLOW 01** with **Dr. Droppy**.
 
 Homepage follows a Cold Life–style product landing layout (gallery + buy box, reviews, benefits, problem, science, FAQ) while keeping Drop Lab colors and personality.
 

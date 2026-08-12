@@ -2,20 +2,14 @@
 
 Working Online Store 2.0 theme for **Drop Lab / FLOW 01** with **Mr. Droppy**.
 
-Includes a real homepage template (`templates/index.json`) so the store no longer 404s.
+Homepage follows a Cold Life–style product landing layout (gallery + buy box, reviews, benefits, problem, science, FAQ) while keeping Drop Lab colors and personality.
 
-## Reconnect in Shopify
+## Connect / sync
 
-1. Shopify Admin → **Online Store → Themes**
-2. Tap **Add theme** → **Connect from GitHub** (or replace the old connection)
-3. Choose repo: **`BelongaRobert/Showerhead-website`**
-4. Choose branch: **`cursor/shopify-theme-36e5`**
-5. Tap **Connect**
-6. When it finishes syncing, tap **Publish**
-7. Tap **View store**
+Branch: **`cursor/shopify-theme-36e5`**
 
-## Local theme check (optional)
+After pushing, Shopify should auto-sync if already connected. Then:
 
-```bash
-shopify theme check
-```
+1. Online Store → Themes → Publish this theme
+2. Edit theme → open the **Product buy box** section → choose your FLOW 01 product
+3. View store

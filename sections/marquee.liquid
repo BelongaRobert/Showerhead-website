@@ -1,0 +1,24 @@
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {% for i in (1..2) %}
+      <p>
+        {{ section.settings.text }}
+      </p>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Better Water · Better Skin · Better Hair · Better You · Mr. Droppy Approves · FLOW 01 · Better Water · Better Skin · Better Hair · Better You ·"
+    }
+  ],
+  "presets": [{ "name": "Marquee" }]
+}
+{% endschema %}

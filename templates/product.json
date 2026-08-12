@@ -1,9 +1,54 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
-      "settings": {}
+      "type": "product-buybox",
+      "settings": {
+        "eyebrow": "Drop Lab · Filtered Shower Head",
+        "heading": "",
+        "tagline": "The shower upgrade your skin will love.",
+        "text": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin."
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "settings": {
+        "pill": "A healthier you",
+        "heading": "You’ll experience"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "f1": {
+          "type": "item",
+          "settings": {
+            "question": "How often do I need to replace the filter?",
+            "answer": "Mr. Droppy’s rule: swap the cartridge every 90 days."
+          }
+        },
+        "f2": {
+          "type": "item",
+          "settings": {
+            "question": "Will pressure drop?",
+            "answer": "FLOW 01 is engineered for high flow with filtration."
+          }
+        }
+      },
+      "block_order": ["f1", "f2"],
+      "settings": {
+        "pill": "Support",
+        "heading": "Frequently asked"
+      }
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {
+        "heading": "Ready for better water?",
+        "text": "Add FLOW 01 to cart and let Mr. Droppy handle the vibe.",
+        "button_label": "Back to shop",
+        "button_link": "/collections/all"
+      }
     }
   },
-  "order": ["main"]
+  "order": ["main", "benefits", "faq", "cta"]
 }

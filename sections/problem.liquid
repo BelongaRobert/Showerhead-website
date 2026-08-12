@@ -1,0 +1,51 @@
+<section class="problem" id="problem">
+  <div class="section-head">
+    <p class="pill">{{ section.settings.pill }}</p>
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+  <div class="problem__grid">
+    <figure>
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Clean shower water', '' }}
+    </figure>
+    <div>
+      <p class="lede">{{ section.settings.text }}</p>
+      <ul class="stat-list">
+        <li>
+          <strong>{{ section.settings.stat_1_value }}</strong>
+          <span>{{ section.settings.stat_1_text }}</span>
+        </li>
+        <li>
+          <strong>{{ section.settings.stat_2_value }}</strong>
+          <span>{{ section.settings.stat_2_text }}</span>
+        </li>
+        <li>
+          <strong>{{ section.settings.stat_3_value }}</strong>
+          <span>{{ section.settings.stat_3_text }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Problem",
+  "settings": [
+    { "type": "text", "id": "pill", "label": "Pill", "default": "The problem" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your water isn’t safe" },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Mr. Droppy started campaigning for cleaner showers."
+    },
+    { "type": "text", "id": "stat_1_value", "label": "Stat 1 value", "default": "95%" },
+    { "type": "text", "id": "stat_1_text", "label": "Stat 1 text", "default": "of U.S. tested water sources surpassed safe thresholds for at least one carcinogen" },
+    { "type": "text", "id": "stat_2_value", "label": "Stat 2 value", "default": "80%" },
+    { "type": "text", "id": "stat_2_text", "label": "Stat 2 text", "default": "of U.S. homes have detectable chlorine and heavy metals in tap water" },
+    { "type": "text", "id": "stat_3_value", "label": "Stat 3 value", "default": "45%" },
+    { "type": "text", "id": "stat_3_text", "label": "Stat 3 text", "default": "of U.S. tap systems contain PFAS “forever chemicals”" }
+  ],
+  "presets": [{ "name": "Problem" }]
+}
+{% endschema %}

@@ -1,30 +1,67 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
+    "buybox": {
+      "type": "product-buybox",
       "settings": {
         "eyebrow": "Drop Lab · Filtered Shower Head",
         "heading": "FLOW 01",
         "tagline": "The shower upgrade your skin will love.",
-        "text": "A playful, powerful multi-stage shower filter for better water, better skin, better hair, better you — with Mr. Droppy along for the rinse.",
-        "button_label": "Shop FLOW 01",
-        "button_link": "/collections/all"
+        "text": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Mr. Droppy."
       }
     },
     "hey": {
       "type": "hey-there",
       "settings": {
-        "pill": "Unboxing vibes",
+        "pill": "Meet Mr. Droppy",
         "heading": "Hey there!",
         "lead": "You just made a really good choice.",
         "text": "Every drop has a story. FLOW 01 is Drop Lab’s filtered shower head — friendly on the outside, serious about cleaner water on the inside."
       }
     },
-    "process": {
-      "type": "process",
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "title": "Noticeably softer water",
+            "body": "My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Mr. Droppy on the box made my kids smile.",
+            "name": "Sophia R.",
+            "date": "Aug 2, 2026"
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "title": "Easy install, real difference",
+            "body": "Twisted on in under five minutes. Hair feels less brittle. Drop Lab nailed the unboxing.",
+            "name": "Marcus T.",
+            "date": "Jul 28, 2026"
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "title": "Worth the switch",
+            "body": "FLOW 01 keeps flow high while cutting the chlorine smell. Mr. Droppy approved.",
+            "name": "Elena K.",
+            "date": "Jul 19, 2026"
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "title": "Great for hard water",
+            "body": "After a month my scalp irritation calmed down and soap rinses cleaner.",
+            "name": "Jordan P.",
+            "date": "Jul 11, 2026"
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"],
       "settings": {
-        "pill": "How FLOW 01 works",
-        "heading": "From bad water to better you"
+        "pill": "Testimonials",
+        "heading": "Real lives changed"
       }
     },
     "benefits": {
@@ -34,15 +71,101 @@
         "heading": "You’ll experience"
       }
     },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "text": "Better Water · Better Skin · Better Hair · Better You · Mr. Droppy Approves · FLOW 01 · Better Water · Better Skin · Better Hair · Better You ·"
+      }
+    },
+    "problem": {
+      "type": "problem",
+      "settings": {
+        "pill": "The problem",
+        "heading": "Your water isn’t safe",
+        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Mr. Droppy started campaigning for cleaner showers."
+      }
+    },
+    "process": {
+      "type": "process",
+      "settings": {
+        "pill": "How FLOW 01 works",
+        "heading": "From bad water to better you"
+      }
+    },
+    "science": {
+      "type": "science",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "value": "85%", "text": "avg chlorine reduction across the filter’s 3-month lifespan" } },
+        "s2": { "type": "stat", "settings": { "value": "75%", "text": "avg chlorine reduction after 10,000 gallons of water" } },
+        "s3": { "type": "stat", "settings": { "value": "15", "text": "filtration stages packed into every FLOW 01 cartridge" } },
+        "s4": { "type": "stat", "settings": { "value": "250g+", "text": "calcium sulfite & KDF-55 filtration media" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"],
+      "settings": {
+        "pill": "Tested & proven",
+        "heading": "Best-in-class filtration",
+        "button_label": "Shop FLOW 01",
+        "button_link": "/#buy"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "f1": {
+          "type": "item",
+          "settings": {
+            "question": "How often do I need to replace the filter?",
+            "answer": "Mr. Droppy’s rule: swap the cartridge every 90 days for the best FLOW 01 performance."
+          }
+        },
+        "f2": {
+          "type": "item",
+          "settings": {
+            "question": "Will the pressure be worse than my current showerhead?",
+            "answer": "Nope. FLOW 01 is built for high flow while filtration runs in parallel — most people say pressure feels the same or better."
+          }
+        },
+        "f3": {
+          "type": "item",
+          "settings": {
+            "question": "Does the filter actually work?",
+            "answer": "Yes. Our multi-stage media is tested for chlorine reduction across a 3-month lifespan."
+          }
+        },
+        "f4": {
+          "type": "item",
+          "settings": {
+            "question": "Who is Mr. Droppy?",
+            "answer": "Mr. Droppy is Drop Lab’s official mascot — your cheerful reminder that cleaner shower water should feel simple, friendly, and fun."
+          }
+        }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": {
+        "pill": "Support",
+        "heading": "Frequently asked"
+      }
+    },
     "cta": {
       "type": "cta-band",
       "settings": {
         "heading": "Hey there — ready for better water?",
-        "text": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair.",
-        "button_label": "Shop now",
-        "button_link": "/collections/all"
+        "text": "Drop Lab FLOW 01 — filtered shower water for clearer skin and stronger hair, with Mr. Droppy along for the rinse.",
+        "button_label": "Shop FLOW 01",
+        "button_link": "/#buy"
       }
     }
   },
-  "order": ["hero", "hey", "process", "benefits", "cta"]
+  "order": [
+    "buybox",
+    "hey",
+    "reviews",
+    "benefits",
+    "marquee",
+    "problem",
+    "process",
+    "science",
+    "faq",
+    "cta"
+  ]
 }

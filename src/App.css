@@ -319,7 +319,9 @@ button {
 .qty-card.is-selected,
 .plan-card.is-selected {
   border-color: var(--blue);
-  background: color-mix(in srgb, var(--blue-soft) 55%, white);
+  border-width: 2px;
+  background: color-mix(in srgb, var(--blue-soft) 70%, white);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blue) 25%, transparent);
 }
 
 .qty-card,

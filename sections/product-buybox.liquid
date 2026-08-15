@@ -31,7 +31,7 @@
       endif
     endif
 
-    assign main_product = nil
+    assign main_product = blank
     if viewing_filter_addon
       if featured != blank
         assign main_product = featured
@@ -204,7 +204,10 @@
           {%- liquid
             assign filter_title = section.settings.filter_title | default: 'Carbon Showerhead Filters'
             assign filter_price_label = section.settings.filter_price_label | default: '$29.99'
-            assign filter_variant_id = section.settings.filter_variant_id | strip
+            assign filter_variant_id = ''
+            if section.settings.filter_variant_id != blank
+              assign filter_variant_id = section.settings.filter_variant_id | strip
+            endif
 
             if filter_product == blank
               for candidate in collections.all.products
@@ -301,6 +304,7 @@
             data-discount-pct="{{ plan_discount_pct }}"
           >
             <legend class="sub-box__label">Choose your option</legend>
+            <p class="sub-box__sync">Subscription + One-time · Loop ready</p>
 
             <label class="sub-card sub-card--autoship is-selected">
               <input type="radio" name="purchase_mode" value="subscribe" checked>

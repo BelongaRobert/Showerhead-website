@@ -7,7 +7,7 @@
   4) first catalog product
 {%- endcomment -%}
 {%- liquid
-  assign resolved_product = nil
+  assign resolved_product = blank
   if product != blank
     assign resolved_product = product
   elsif settings.featured_product != blank

@@ -426,14 +426,51 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 .product__description { color: var(--ink-soft); line-height: 1.55; margin-bottom: 1rem; }
 
 .cart-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 0.85rem;
+  align-items: start;
   padding: 1rem 0;
   border-bottom: 2px solid var(--line);
   text-align: left;
 }
+.cart-row__media img {
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: 2px solid var(--ink);
+  background: white;
+}
+.cart-row__info strong { display: block; font-size: 1rem; }
+.cart-row__variant,
+.cart-row__plan,
+.cart-row__unit {
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+.cart-row__plan { color: var(--blue); font-weight: 700; }
+.cart-row__qty {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: end;
+}
+.cart-row__qty input {
+  width: 3.5rem;
+  padding: 0.45rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.55rem;
+  text-align: center;
+  font-weight: 800;
+}
+.cart-row__line { margin: 0; font-weight: 800; }
 .cart-total { font-size: 1.2rem; font-weight: 800; margin: 1rem 0; }
+.cart__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
 
 /* Cold Life–style PDP layout, Dr. Droppy colors */
 .pdp {

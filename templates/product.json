@@ -1,8 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "product-buybox",
+      "blocks": {
+        "loop_subscriptions_loop_widget_NXmAkt": {
+          "type": "shopify://apps/loop-subscriptions/blocks/loop_widget/267a7c64-5cb3-4552-b817-5485165f0a0b",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "loop_subscriptions_loop_widget_NXmAkt"
+      ],
       "settings": {
+        "product": "",
         "eyebrow": "Dr. Droppy · Clean Water",
         "heading": "",
         "tagline": "Science. Nature. Better Showers.",
@@ -35,7 +54,10 @@
           }
         }
       },
-      "block_order": ["f1", "f2"],
+      "block_order": [
+        "f1",
+        "f2"
+      ],
       "settings": {
         "pill": "Support",
         "heading": "Frequently asked"
@@ -47,9 +69,15 @@
         "heading": "Ready for cleaner showers?",
         "text": "Add to cart and let Dr. Droppy guide the rinse.",
         "button_label": "Back to home",
-        "button_link": "/"
+        "button_link": "",
+        "product": ""
       }
     }
   },
-  "order": ["main", "highlights", "faq", "cta"]
+  "order": [
+    "main",
+    "highlights",
+    "faq",
+    "cta"
+  ]
 }

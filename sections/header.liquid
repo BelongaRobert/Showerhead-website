@@ -1,7 +1,19 @@
 <header class="site-header">
+  {% if section.settings.product != blank %}
+    {% assign shop_now_product = section.settings.product %}
+  {% else %}
+    {% assign shop_now_product = collections.all.products.first %}
+  {% endif %}
+
+  {% if shop_now_product != blank %}
+    {% assign shop_now_url = shop_now_product.url %}
+  {% else %}
+    {% assign shop_now_url = routes.all_products_collection_url %}
+  {% endif %}
+
   <div class="site-header__left">
     <nav class="site-nav" aria-label="Primary">
-      <a href="/#buy">Shop</a>
+      <a href="{{ shop_now_url }}">Shop</a>
       <a href="/#reviews">Reviews</a>
       <a href="/#faq">FAQ</a>
     </nav>
@@ -14,13 +26,20 @@
 
   <div class="site-header__right">
     <a class="header-cart" href="{{ routes.cart_url }}" aria-label="Cart ({{ cart.item_count }})">Cart ({{ cart.item_count }})</a>
-    <a class="btn btn--small" href="/#buy">Shop now</a>
+    <a class="btn btn--small" href="{{ shop_now_url }}">Shop now</a>
   </div>
 </header>
 
 {% schema %}
 {
   "name": "Header",
-  "settings": []
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Shop now product",
+      "info": "Used by the Shop / Shop now links. Defaults to your first product if empty."
+    }
+  ]
 }
 {% endschema %}

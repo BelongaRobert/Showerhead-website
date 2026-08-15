@@ -23,9 +23,10 @@
         >
       {% endfor %}
     {% else %}
-      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Filtered shower head', 'pdp__slide is-active' }}
-      {{ 'gallery-1.jpg' | asset_url | img_tag: 'Bathroom shower', 'pdp__slide' }}
-      {{ 'gallery-2.jpg' | asset_url | img_tag: 'Clean bathroom', 'pdp__slide' }}
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'pdp__slide is-active' }}
+      {{ 'gallery-1.jpg' | asset_url | img_tag: 'Filtered shower head spray', 'pdp__slide' }}
+      {{ 'gallery-2.jpg' | asset_url | img_tag: 'Filtered shower head product', 'pdp__slide' }}
+      {{ 'product-detail.jpg' | asset_url | img_tag: 'Shower head face detail', 'pdp__slide' }}
     {% endif %}
     <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
     <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
@@ -42,6 +43,7 @@
       <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
       <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
       <button type="button" class="pdp__thumb" data-index="2">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
+      <button type="button" class="pdp__thumb" data-index="3">{{ 'product-detail.jpg' | asset_url | img_tag: '', '' }}</button>
     {% endif %}
   </div>
 
@@ -67,9 +69,9 @@
 
       <ul class="chips">
         <li>Removes chlorine</li>
-        <li>Reduces metals</li>
-        <li>Vitamin C infusion</li>
-        <li>Improves hair & skin</li>
+        <li>Hydro-Shield filtration</li>
+        <li>Soothes skin & hair</li>
+        <li>Sustainable design</li>
       </ul>
 
       {% if product != blank %}

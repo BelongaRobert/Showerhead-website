@@ -1,17 +1,17 @@
 :root {
   --ink: #0f2c59;
   --ink-soft: #4a5f7a;
-  --blue: #4a90e2;
-  --sky: #6bb6e8;
-  --blue-soft: #e8f4fc;
-  --cream: #f8f6f0;
-  --beige: #ebe3d4;
-  --foam: #fffcf7;
-  --sand: #f8f6f0;
-  --yellow: #6bb6e8; /* legacy alias → sky */
-  --pink: #e8f4fc;
-  --mint: #d7eefb;
-  --line: rgba(15, 44, 89, 0.12);
+  --blue: #4aaed8;
+  --sky: #89d6f2;
+  --blue-soft: #e9f7fc;
+  --cream: #ffffff;
+  --beige: #f3f1ea;
+  --foam: #ffffff;
+  --sand: #f7f5ef;
+  --yellow: #89d6f2; /* legacy alias → sky */
+  --pink: #e9f7fc;
+  --mint: #dff3fb;
+  --line: rgba(15, 44, 89, 0.10);
   --max: 1120px;
   --radius: 1.15rem;
   --font: "Figtree", "Helvetica Neue", sans-serif;
@@ -29,9 +29,9 @@ body {
   color: var(--ink);
   font-family: var(--font);
   background:
-    radial-gradient(circle at 8% 0%, rgba(107, 182, 232, 0.18), transparent 34%),
-    radial-gradient(circle at 100% 8%, rgba(232, 244, 252, 0.9), transparent 32%),
-    var(--cream);
+    radial-gradient(circle at 10% 0%, rgba(137, 214, 242, 0.22), transparent 36%),
+    radial-gradient(circle at 100% 0%, rgba(233, 247, 252, 0.95), transparent 34%),
+    #ffffff;
 }
 
 img { max-width: 100%; display: block; }
@@ -40,7 +40,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 
 .announcement {
   background: var(--ink);
-  color: var(--sky);
+  color: #ffffff;
   text-align: center;
   padding: 0.7rem 1rem;
   font-family: var(--display);
@@ -444,7 +444,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   aspect-ratio: 16 / 10;
   min-height: clamp(240px, 48vw, 560px);
   overflow: hidden;
-  background: linear-gradient(180deg, #d9eefb, var(--cream));
+  background: linear-gradient(180deg, #e9f7fc, #ffffff);
   border: 0;
   border-radius: 0;
   box-shadow: none;

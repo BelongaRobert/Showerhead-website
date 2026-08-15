@@ -1,9 +1,9 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Drop Lab",
+    "theme_name": "Dr. Droppy",
     "theme_version": "1.0.0",
-    "theme_author": "Drop Lab",
+    "theme_author": "Dr. Droppy",
     "theme_documentation_url": "https://github.com/BelongaRobert/Showerhead-website",
     "theme_support_url": "https://github.com/BelongaRobert/Showerhead-website"
   },
@@ -19,8 +19,8 @@
       {
         "type": "color",
         "id": "color_yellow",
-        "label": "Yellow",
-        "default": "#FFE14A"
+        "label": "Sky accent",
+        "default": "#6BB6E8"
       }
     ]
   }

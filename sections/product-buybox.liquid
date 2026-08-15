@@ -9,7 +9,7 @@
 
   <div class="pdp__banner" id="PdpMain-{{ section.id }}">
     <div class="pdp__badge">
-      {{ 'mr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
+      {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
       <span>Dr. Droppy’s pick</span>
     </div>
     {% if product != blank and product.media.size > 0 %}
@@ -23,9 +23,9 @@
         >
       {% endfor %}
     {% else %}
-      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'FLOW 01', 'pdp__slide is-active' }}
-      {{ 'gallery-1.jpg' | asset_url | img_tag: 'FLOW 01 chrome', 'pdp__slide' }}
-      {{ 'gallery-2.jpg' | asset_url | img_tag: 'FLOW 01 matte', 'pdp__slide' }}
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Filtered shower head', 'pdp__slide is-active' }}
+      {{ 'gallery-1.jpg' | asset_url | img_tag: 'Bathroom shower', 'pdp__slide' }}
+      {{ 'gallery-2.jpg' | asset_url | img_tag: 'Clean bathroom', 'pdp__slide' }}
     {% endif %}
     <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
     <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
@@ -53,7 +53,7 @@
         {% elsif product != blank %}
           {{ product.title }}
         {% else %}
-          FLOW 01
+          Filtered Shower Head
         {% endif %}
       </h1>
       <p class="tagline">{{ section.settings.tagline }}</p>
@@ -66,10 +66,10 @@
       </div>
 
       <ul class="chips">
-        <li>Better water</li>
-        <li>Better skin</li>
-        <li>Better hair</li>
-        <li>Better you</li>
+        <li>Removes chlorine</li>
+        <li>Reduces metals</li>
+        <li>Vitamin C infusion</li>
+        <li>Improves hair & skin</li>
       </ul>
 
       {% if product != blank %}
@@ -124,7 +124,7 @@
         <div class="plan-card is-selected">
           <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
           <div class="plan-top">
-            <strong>FLOW 01</strong>
+            <strong>Filtered Shower Head</strong>
             <span><em>$129</em></span>
           </div>
           <ul>
@@ -150,10 +150,10 @@
       </div>
 
       <aside class="droppy-tip">
-        {{ 'mr-droppy-wave.jpg' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
+        {{ 'dr-droppy-wave.png' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
         <div>
           <strong>Tip from Dr. Droppy</strong>
-          <p>Replace the filter every 90 days to keep FLOW 01 feeling fresh.</p>
+          <p>Replace the filter every 90 days to keep your shower feeling fresh.</p>
         </div>
       </aside>
 
@@ -169,7 +169,7 @@
         <details class="accordion">
           <summary>What's Included</summary>
           <ul>
-            <li>Drop Lab FLOW 01 Filtered Shower Head</li>
+            <li>Dr. Droppy Filtered Shower Head</li>
             <li>Pre-installed filter cartridge</li>
             <li>Plumber’s tape + fit wrench</li>
             <li>A hello from Dr. Droppy</li>
@@ -200,13 +200,13 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "Drop Lab · Filtered Shower Head"
+      "default": "Dr. Droppy · Filtered Shower Head"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "FLOW 01"
+      "default": "Filtered Shower Head"
     },
     {
       "type": "text",

@@ -20,8 +20,15 @@
     endif
 
     assign viewing_filter_addon = false
-    if request.page_type == 'product' and product and filter_product != blank and product.id == filter_product.id
-      assign viewing_filter_addon = true
+    if request.page_type == 'product' and product
+      if filter_product != blank and product.id == filter_product.id
+        assign viewing_filter_addon = true
+      elsif product.title contains 'Carbon Showerhead Filter' or product.title contains 'Carbon Filter' or product.tags contains 'filter-refill' or product.tags contains 'subscription-addon'
+        assign viewing_filter_addon = true
+        if filter_product == blank
+          assign filter_product = product
+        endif
+      endif
     endif
 
     assign main_product = nil
@@ -87,7 +94,7 @@
     endif
   -%}
 
-  {% if viewing_filter_addon and main_product != blank %}
+  {% if viewing_filter_addon and main_product != blank and filter_product != blank and main_product.id != filter_product.id %}
     <p class="pdp__switch-note">
       Carbon filters subscribe from the showerhead buy box —
       <a href="{{ main_product.url }}">open {{ main_product.title }}</a>
@@ -107,7 +114,7 @@
       {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
       <span>Dr. Droppy’s pick</span>
     </div>
-    {% if product != blank and product.media.size > 0 %}
+    {% if product != blank and product.media.size > 0 and viewing_filter_addon == false %}
       {% for media in product.media limit: 5 %}
         <img
           class="pdp__slide{% if forloop.first %} is-active{% endif %}"
@@ -128,7 +135,7 @@
   </div>
 
   <div class="pdp__thumbs" data-pdp-thumbs>
-    {% if product != blank and product.media.size > 0 %}
+    {% if product != blank and product.media.size > 0 and viewing_filter_addon == false %}
       {% for media in product.media limit: 5 %}
         <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
           {{ media | image_url: width: 200 | image_tag: alt: '' }}
@@ -197,8 +204,8 @@
           <div class="plan-card is-selected" data-main-plan>
             <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
             <div class="plan-top">
-              <strong>{{ product.title }}</strong>
-              <span><em>{{ product.selected_or_first_available_variant.price | money }}</em></span>
+              <strong>{% if product != blank %}{{ product.title }}{% else %}Filtered Shower Head{% endif %}</strong>
+              <span><em>{% if product != blank %}{{ product.selected_or_first_available_variant.price | money }}{% else %}$129{% endif %}</em></span>
             </div>
             <ul>
               <li>Filtered shower head + install kit</li>
@@ -207,7 +214,79 @@
             </ul>
           </div>
 
-          {% if filter_product != blank %}
+          {%- liquid
+            assign filter_title = section.settings.filter_title | default: 'Carbon Showerhead Filters'
+            assign filter_price_label = section.settings.filter_price_label | default: '$29.99'
+            assign filter_variant_id = section.settings.filter_variant_id | strip
+            if filter_product != blank
+              assign filter_title = filter_product.title
+              assign filter_price_label = filter_product.selected_or_first_available_variant.price | money
+              if filter_variant_id == blank
+                assign filter_variant_id = filter_product.selected_or_first_available_variant.id
+              endif
+            endif
+            assign filter_img_1 = section.settings.filter_image_1
+            assign filter_img_2 = section.settings.filter_image_2
+            assign filter_img_3 = section.settings.filter_image_3
+          -%}
+
+          <div
+            class="filter-addon is-visible"
+            data-filter-addon
+            data-filter-variant-id="{{ filter_variant_id }}"
+            data-filter-available="{% if filter_product == blank or filter_product.available %}true{% else %}false{% endif %}"
+          >
+            <div class="filter-addon__gallery" data-filter-gallery>
+              {% if filter_img_1 != blank %}
+                <img class="filter-addon__slide is-active" src="{{ filter_img_1 | image_url: width: 900 }}" alt="{{ filter_title | escape }}" data-index="0">
+              {% else %}
+                <img class="filter-addon__slide is-active" src="{{ 'filter-1.jpg' | asset_url }}" alt="{{ filter_title | escape }}" data-index="0">
+              {% endif %}
+              {% if filter_img_2 != blank %}
+                <img class="filter-addon__slide" src="{{ filter_img_2 | image_url: width: 900 }}" alt="{{ filter_title | escape }}" data-index="1" hidden>
+              {% else %}
+                <img class="filter-addon__slide" src="{{ 'filter-2.jpg' | asset_url }}" alt="{{ filter_title | escape }}" data-index="1" hidden>
+              {% endif %}
+              {% if filter_img_3 != blank %}
+                <img class="filter-addon__slide" src="{{ filter_img_3 | image_url: width: 900 }}" alt="{{ filter_title | escape }}" data-index="2" hidden>
+              {% else %}
+                <img class="filter-addon__slide" src="{{ 'filter-3.jpg' | asset_url }}" alt="{{ filter_title | escape }}" data-index="2" hidden>
+              {% endif %}
+            </div>
+            <div class="filter-addon__thumbs" data-filter-thumbs>
+              <button type="button" class="filter-addon__thumb is-active" data-index="0" aria-label="Filter photo 1">
+                {% if filter_img_1 != blank %}
+                  {{ filter_img_1 | image_url: width: 200 | image_tag: alt: '' }}
+                {% else %}
+                  {{ 'filter-1.jpg' | asset_url | img_tag: '', '' }}
+                {% endif %}
+              </button>
+              <button type="button" class="filter-addon__thumb" data-index="1" aria-label="Filter photo 2">
+                {% if filter_img_2 != blank %}
+                  {{ filter_img_2 | image_url: width: 200 | image_tag: alt: '' }}
+                {% else %}
+                  {{ 'filter-2.jpg' | asset_url | img_tag: '', '' }}
+                {% endif %}
+              </button>
+              <button type="button" class="filter-addon__thumb" data-index="2" aria-label="Filter photo 3">
+                {% if filter_img_3 != blank %}
+                  {{ filter_img_3 | image_url: width: 200 | image_tag: alt: '' }}
+                {% else %}
+                  {{ 'filter-3.jpg' | asset_url | img_tag: '', '' }}
+                {% endif %}
+              </button>
+            </div>
+
+            <div class="filter-addon__head">
+              <div>
+                <p class="filter-addon__eyebrow">Loop subscription add-on</p>
+                <strong>{{ filter_title }}</strong>
+                <p class="filter-addon__price">
+                  {{ filter_price_label }} · replace every 90 days
+                </p>
+              </div>
+            </div>
+
             <fieldset class="purchase-modes" data-purchase-modes>
               <legend>How do you want to buy?</legend>
               <label class="purchase-mode is-selected">
@@ -221,62 +300,44 @@
                 <input type="radio" name="purchase_mode" value="subscribe">
                 <span>
                   <strong>Subscribe &amp; Save</strong>
-                  <em>Add {{ filter_product.title }} on a Loop plan — discount on this order and future filters</em>
+                  <em>Add {{ filter_title }} on a Loop plan — discount on this order and future filters</em>
                 </span>
               </label>
             </fieldset>
 
-            <div
-              class="filter-addon"
-              data-filter-addon
-              hidden
-              data-filter-variant-id="{{ filter_product.selected_or_first_available_variant.id }}"
-              data-filter-available="{% if filter_product.available %}true{% else %}false{% endif %}"
-            >
-              <div class="filter-addon__head">
-                {% if filter_product.featured_media %}
-                  {{ filter_product.featured_media | image_url: width: 160 | image_tag: class: 'filter-addon__img', alt: filter_product.title }}
-                {% endif %}
-                <div>
-                  <p class="filter-addon__eyebrow">Loop subscription add-on</p>
-                  <strong>{{ filter_product.title }}</strong>
-                  <p class="filter-addon__price">
-                    From {{ filter_product.selected_or_first_available_variant.price | money }}
-                    {% if filter_has_plans %} · Subscribe &amp; Save via Loop{% endif %}
-                  </p>
-                </div>
-              </div>
-
+            <div class="filter-addon__plans" data-filter-plans>
               {% if filter_has_plans %}
-                <div class="filter-addon__plans">
-                  {% for group in filter_product.selling_plan_groups %}
-                    {% for plan in group.selling_plans %}
-                      <label class="filter-plan{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
-                        <input
-                          type="radio"
-                          name="filter_selling_plan"
-                          value="{{ plan.id }}"
-                          {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
-                        >
-                        <span>
-                          <strong>{{ plan.name }}</strong>
-                          {% if plan.description != blank %}
-                            <em>{{ plan.description }}</em>
-                          {% else %}
-                            <em>Recurring Carbon Filters — discounted vs one-time</em>
-                          {% endif %}
-                        </span>
-                      </label>
-                    {% endfor %}
+                {% for group in filter_product.selling_plan_groups %}
+                  {% for plan in group.selling_plans %}
+                    <label class="filter-plan{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
+                      <input
+                        type="radio"
+                        name="filter_selling_plan"
+                        value="{{ plan.id }}"
+                        {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                      >
+                      <span>
+                        <strong>{{ plan.name }}</strong>
+                        {% if plan.description != blank %}
+                          <em>{{ plan.description }}</em>
+                        {% else %}
+                          <em>Recurring Carbon Filters — discounted vs one-time</em>
+                        {% endif %}
+                      </span>
+                    </label>
                   {% endfor %}
-                </div>
+                {% endfor %}
               {% else %}
-                <p class="filter-addon__hint">
-                  Map this product to a Loop selling plan, then publish the Loop widget, so Subscribe &amp; Save discounts appear here.
-                </p>
+                <label class="filter-plan is-selected">
+                  <input type="radio" name="filter_selling_plan" value="" checked data-plan-placeholder>
+                  <span>
+                    <strong>Every 90 days · Subscribe &amp; Save</strong>
+                    <em>Map Carbon Filters to a Loop selling plan to unlock checkout discounts. Photos + option show now.</em>
+                  </span>
+                </label>
               {% endif %}
             </div>
-          {% endif %}
+          </div>
 
           {%- comment -%} App blocks (Loop Subscribe & Save widget, etc.) {%- endcomment -%}
           <div class="pdp__apps" data-loop-slot>
@@ -307,9 +368,41 @@
             <span><em>$129</em></span>
           </div>
           <ul>
-            <li>Set Theme settings → Featured product to your showerhead</li>
-            <li>Set Filter subscription product to Carbon Showerhead Filters</li>
+            <li>Filtered shower head + install kit</li>
+            <li>Built for clearer skin & stronger hair</li>
+            <li>60-day money-back guarantee</li>
           </ul>
+        </div>
+
+        <div class="filter-addon is-visible" data-filter-addon data-filter-variant-id="" data-filter-available="false">
+          <div class="filter-addon__gallery" data-filter-gallery>
+            <img class="filter-addon__slide is-active" src="{{ 'filter-1.jpg' | asset_url }}" alt="Carbon Showerhead Filters" data-index="0">
+            <img class="filter-addon__slide" src="{{ 'filter-2.jpg' | asset_url }}" alt="Carbon Showerhead Filters" data-index="1" hidden>
+            <img class="filter-addon__slide" src="{{ 'filter-3.jpg' | asset_url }}" alt="Carbon Showerhead Filters" data-index="2" hidden>
+          </div>
+          <div class="filter-addon__thumbs" data-filter-thumbs>
+            <button type="button" class="filter-addon__thumb is-active" data-index="0">{{ 'filter-1.jpg' | asset_url | img_tag: '', '' }}</button>
+            <button type="button" class="filter-addon__thumb" data-index="1">{{ 'filter-2.jpg' | asset_url | img_tag: '', '' }}</button>
+            <button type="button" class="filter-addon__thumb" data-index="2">{{ 'filter-3.jpg' | asset_url | img_tag: '', '' }}</button>
+          </div>
+          <div class="filter-addon__head">
+            <div>
+              <p class="filter-addon__eyebrow">Loop subscription add-on</p>
+              <strong>Carbon Showerhead Filters</strong>
+              <p class="filter-addon__price">$29.99 · replace every 90 days</p>
+            </div>
+          </div>
+          <fieldset class="purchase-modes">
+            <legend>How do you want to buy?</legend>
+            <label class="purchase-mode is-selected">
+              <input type="radio" name="purchase_mode" value="onetime" checked>
+              <span><strong>One-time</strong><em>Shower head only</em></span>
+            </label>
+            <label class="purchase-mode">
+              <input type="radio" name="purchase_mode" value="subscribe">
+              <span><strong>Subscribe &amp; Save</strong><em>Filters on a Loop plan</em></span>
+            </label>
+          </fieldset>
         </div>
 
         <div class="pdp__apps">
@@ -404,13 +497,46 @@
       "type": "product",
       "id": "product",
       "label": "Featured showerhead product",
-      "info": "Main product for this buy box. Leave blank to use Theme settings → Featured product."
+      "info": "Optional. Leave blank to use the product page product."
     },
     {
       "type": "product",
       "id": "filter_product",
-      "label": "Carbon filter subscription product",
-      "info": "Shown as the Loop Subscribe & Save add-on. Prefer tagging that product filter-refill in Shopify Admin."
+      "label": "Carbon filter product (optional)",
+      "info": "Only needed for live Subscribe checkout. Filters still show with built-in photos if this is empty."
+    },
+    {
+      "type": "text",
+      "id": "filter_variant_id",
+      "label": "Filter variant ID (optional)",
+      "info": "Paste from Shopify Admin → Carbon Filters → Variants if the product picker is empty. Numbers only."
+    },
+    {
+      "type": "text",
+      "id": "filter_title",
+      "label": "Filter title",
+      "default": "Carbon Showerhead Filters"
+    },
+    {
+      "type": "text",
+      "id": "filter_price_label",
+      "label": "Filter price label",
+      "default": "$29.99"
+    },
+    {
+      "type": "image_picker",
+      "id": "filter_image_1",
+      "label": "Filter photo 1 (optional override)"
+    },
+    {
+      "type": "image_picker",
+      "id": "filter_image_2",
+      "label": "Filter photo 2 (optional override)"
+    },
+    {
+      "type": "image_picker",
+      "id": "filter_image_3",
+      "label": "Filter photo 3 (optional override)"
     },
     {
       "type": "text",

@@ -1,39 +1,53 @@
 document.documentElement.classList.remove('no-js');
 
+function initGallery(root, slideSel, thumbSel, prevSel, nextSel) {
+  const slides = Array.from(root.querySelectorAll(slideSel));
+  const thumbs = Array.from(root.querySelectorAll(thumbSel));
+  if (!slides.length) return;
+
+  let index = Math.max(
+    0,
+    slides.findIndex((slide) => slide.classList.contains('is-active')),
+  );
+
+  const show = (next) => {
+    index = (next + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const active = i === index;
+      slide.classList.toggle('is-active', active);
+      if (active) slide.removeAttribute('hidden');
+      else slide.setAttribute('hidden', '');
+    });
+    thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('is-active', i === index);
+    });
+  };
+
+  show(index);
+
+  root.querySelector(prevSel)?.addEventListener('click', () => show(index - 1));
+  root.querySelector(nextSel)?.addEventListener('click', () => show(index + 1));
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      show(Number(thumb.dataset.index || 0));
+    });
+  });
+}
+
 function initPdpGalleries() {
   document.querySelectorAll('.pdp').forEach((root) => {
-    const slides = Array.from(root.querySelectorAll('.pdp__slide'));
-    const thumbs = Array.from(root.querySelectorAll('.pdp__thumb'));
-    if (!slides.length) return;
+    initGallery(root, '.pdp__slide', '.pdp__thumb', '[data-pdp-prev]', '[data-pdp-next]');
 
-    let index = Math.max(
-      0,
-      slides.findIndex((slide) => slide.classList.contains('is-active')),
-    );
-
-    const show = (next) => {
-      index = (next + slides.length) % slides.length;
-      slides.forEach((slide, i) => {
-        const active = i === index;
-        slide.classList.toggle('is-active', active);
-        if (active) slide.removeAttribute('hidden');
-        else slide.setAttribute('hidden', '');
-      });
-      thumbs.forEach((thumb, i) => {
-        thumb.classList.toggle('is-active', i === index);
-      });
-    };
-
-    show(index);
-
-    root.querySelector('[data-pdp-prev]')?.addEventListener('click', () => show(index - 1));
-    root.querySelector('[data-pdp-next]')?.addEventListener('click', () => show(index + 1));
-    thumbs.forEach((thumb) => {
-      thumb.addEventListener('click', () => {
-        const i = Number(thumb.dataset.index || 0);
-        show(i);
-      });
-    });
+    const filterRoot = root.querySelector('[data-filter-addon]');
+    if (filterRoot) {
+      initGallery(
+        filterRoot,
+        '.filter-addon__slide',
+        '.filter-addon__thumb',
+        null,
+        null,
+      );
+    }
 
     root.querySelectorAll('.qty-card input[type="radio"]').forEach((input) => {
       input.addEventListener('change', () => {
@@ -51,7 +65,7 @@ function selectedPurchaseMode(root) {
 
 function syncPurchaseMode(root) {
   const mode = selectedPurchaseMode(root);
-  const addon = root.querySelector('[data-filter-addon]');
+  const plans = root.querySelector('[data-filter-plans]');
   const onetimeLabel = root.querySelector('[data-atc-label-onetime]');
   const subscribeLabel = root.querySelector('[data-atc-label-subscribe]');
 
@@ -59,9 +73,8 @@ function syncPurchaseMode(root) {
     card.classList.toggle('is-selected', card.querySelector('input')?.checked);
   });
 
-  if (addon) {
-    if (mode === 'subscribe') addon.removeAttribute('hidden');
-    else addon.setAttribute('hidden', '');
+  if (plans) {
+    plans.classList.toggle('is-dimmed', mode !== 'subscribe');
   }
 
   if (onetimeLabel && subscribeLabel) {
@@ -126,10 +139,16 @@ function initPurchaseModes() {
       const headId = form.querySelector('input[name="id"]:checked')?.value
         || form.querySelector('input[name="id"]')?.value;
       const filterId = addon.dataset.filterVariantId;
-      const planId = root.querySelector('input[name="filter_selling_plan"]:checked')?.value;
+      const planInput = root.querySelector('input[name="filter_selling_plan"]:checked');
+      const planId = planInput?.value;
       const button = form.querySelector('[data-atc-button]');
 
       if (!headId) return;
+
+      if (!filterId) {
+        window.alert('Filters are shown, but checkout needs a Carbon Filters variant ID. In the buy box settings, paste the variant ID from Shopify Admin → Products → Carbon Filters.');
+        return;
+      }
 
       if (addon.dataset.filterAvailable === 'false') {
         window.alert('Carbon filters are currently unavailable.');
@@ -137,7 +156,7 @@ function initPurchaseModes() {
       }
 
       if (!planId) {
-        window.alert('Choose a Loop filter subscription plan (map Carbon Filters to a Loop selling plan first).');
+        window.alert('Map Carbon Filters to a Loop selling plan, then choose Subscribe & Save again.');
         return;
       }
 

@@ -1,3 +1,4 @@
+{% if request.page_type == 'product' or template.name == 'product' %}
 <section class="pdp" id="buy" data-section-id="{{ section.id }}">
   {% if request.page_type == 'product' and product %}
     {% assign product = product %}

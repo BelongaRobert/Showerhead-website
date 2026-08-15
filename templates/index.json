@@ -3,19 +3,19 @@
     "buybox": {
       "type": "product-buybox",
       "settings": {
-        "eyebrow": "Dr. Droppy · Clean Water",
+        "eyebrow": "Dr. Droppy \u00b7 Clean Water",
         "heading": "Filtered Shower Head",
         "tagline": "Science. Nature. Better Showers.",
-        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
+        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water \u2014 science-backed purity for your family."
       }
     },
     "hey": {
       "type": "hey-there",
       "settings": {
         "pill": "Meet Dr. Droppy",
-        "heading": "Hello! I’m Dr. Droppy.",
+        "heading": "Hello! I\u2019m Dr. Droppy.",
         "lead": "Your guide to cleaner shower water.",
-        "text": "I designed these products to bring science-backed purity into everyday showers — friendly on the outside, serious about clean water on the inside."
+        "text": "I designed these products to bring science-backed purity into everyday showers \u2014 friendly on the outside, serious about clean water on the inside."
       }
     },
     "highlights": {
@@ -23,99 +23,61 @@
       "settings": {
         "pill": "Why Dr. Droppy",
         "heading": "Cleaner water, simpler routine",
-        "text": "Filtration, feel, and install — condensed into what matters most."
-      }
-    },
-    "reviews": {
-      "type": "social-reviews",
-      "blocks": {
-        "r1": {
-          "type": "post",
-          "settings": {
-            "name": "Sophia R.",
-            "handle": "@sophia.rinses",
-            "location": "Austin, TX",
-            "title": "Sophia with Dr. Droppy shower head",
-            "body": "Skin finally stopped feeling tight after showers. Pressure is still strong — and Dr. Droppy on the box made my kids smile 💧",
-            "likes": "3,102 likes",
-            "date": "2 DAYS AGO",
-            "avatar_asset": "avatar-sophia.jpg",
-            "photo_asset": "ugc-sophia.jpg"
-          }
-        },
-        "r2": {
-          "type": "post",
-          "settings": {
-            "name": "Marcus T.",
-            "handle": "@marcus.builds",
-            "location": "Denver, CO",
-            "title": "Marcus installing filtered shower head",
-            "body": "Twisted on in under five minutes. Hair feels less brittle already. Unboxing was actually fun.",
-            "likes": "1,884 likes",
-            "date": "5 DAYS AGO",
-            "avatar_asset": "avatar-marcus.jpg",
-            "photo_asset": "ugc-marcus.jpg"
-          }
-        },
-        "r3": {
-          "type": "post",
-          "settings": {
-            "name": "Elena K.",
-            "handle": "@elena.glow",
-            "location": "Miami, FL",
-            "title": "Elena after filtered shower",
-            "body": "Chlorine smell is gone and my hair feels softer. This is my forever shower upgrade.",
-            "likes": "4,291 likes",
-            "date": "1 WEEK AGO",
-            "avatar_asset": "avatar-elena.jpg",
-            "photo_asset": "ugc-elena.jpg"
-          }
-        },
-        "r4": {
-          "type": "post",
-          "settings": {
-            "name": "Jordan P.",
-            "handle": "@jordan.home",
-            "location": "Seattle, WA",
-            "title": "Filtered shower spray",
-            "body": "Hard water used to wreck my scalp. A month in and soap rinses cleaner. Worth it.",
-            "likes": "2,067 likes",
-            "date": "2 WEEKS AGO",
-            "avatar_asset": "avatar-jordan.jpg",
-            "photo_asset": "ugc-jordan.jpg"
-          }
-        }
-      },
-      "block_order": ["r1", "r2", "r3", "r4"],
-      "settings": {
-        "pill": "Social proof",
-        "heading": "Real showers. Real reviews.",
-        "rating_label": "4.9 · 128 Reviews"
+        "text": "Filtration, feel, and install \u2014 condensed into what matters most."
       }
     },
     "marquee": {
       "type": "marquee",
       "settings": {
-        "text": "Clean Water · Better Experiences · Science-Backed Purity · Dr. Droppy · Removes Chlorine · Healthier Skin · Soft Hair · Clean Water · Better Experiences ·"
+        "text": "Clean Water \u00b7 Better Experiences \u00b7 Science-Backed Purity \u00b7 Dr. Droppy \u00b7 Removes Chlorine \u00b7 Healthier Skin \u00b7 Soft Hair \u00b7 Clean Water \u00b7 Better Experiences \u00b7"
       }
     },
     "problem": {
       "type": "problem",
       "settings": {
         "pill": "The problem",
-        "heading": "Your water isn’t safe",
-        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Dr. Droppy started campaigning for cleaner showers."
+        "heading": "Your water isn\u2019t safe",
+        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup \u2014 which is exactly why Dr. Droppy started campaigning for cleaner showers."
       }
     },
     "science": {
       "type": "science",
       "blocks": {
-        "s1": { "type": "stat", "settings": { "value": "85%", "text": "avg chlorine reduction across the filter’s 3-month lifespan" } },
-        "s2": { "type": "stat", "settings": { "value": "75%", "text": "avg chlorine reduction after 10,000 gallons of water" } },
-        "s3": { "type": "stat", "settings": { "value": "15", "text": "filtration stages packed into every filter cartridge" } },
-        "s4": { "type": "stat", "settings": { "value": "250g+", "text": "calcium sulfite & KDF-55 filtration media" } }
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "value": "85%",
+            "text": "avg chlorine reduction across the filter\u2019s 3-month lifespan"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "value": "75%",
+            "text": "avg chlorine reduction after 10,000 gallons of water"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "value": "15",
+            "text": "filtration stages packed into every filter cartridge"
+          }
+        },
+        "s4": {
+          "type": "stat",
+          "settings": {
+            "value": "250g+",
+            "text": "calcium sulfite & KDF-55 filtration media"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
       "settings": {
         "pill": "Tested & proven",
         "heading": "Best-in-class filtration",
@@ -130,14 +92,14 @@
           "type": "item",
           "settings": {
             "question": "How often do I need to replace the filter?",
-            "answer": "Dr. Droppy’s rule: swap the cartridge every 90 days for the best performance."
+            "answer": "Dr. Droppy\u2019s rule: swap the cartridge every 90 days for the best performance."
           }
         },
         "f2": {
           "type": "item",
           "settings": {
             "question": "Will the pressure be worse than my current showerhead?",
-            "answer": "Nope. It’s built for high flow while filtration runs in parallel — most people say pressure feels the same or better."
+            "answer": "Nope. It\u2019s built for high flow while filtration runs in parallel \u2014 most people say pressure feels the same or better."
           }
         },
         "f3": {
@@ -151,11 +113,16 @@
           "type": "item",
           "settings": {
             "question": "Who is Dr. Droppy?",
-            "answer": "Dr. Droppy is the friendly face of clean shower water — a science-backed guide for better skin, hair, and everyday purity."
+            "answer": "Dr. Droppy is the friendly face of clean shower water \u2014 a science-backed guide for better skin, hair, and everyday purity."
           }
         }
       },
-      "block_order": ["f1", "f2", "f3", "f4"],
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
       "settings": {
         "pill": "Support",
         "heading": "Frequently asked"
@@ -165,7 +132,7 @@
       "type": "cta-band",
       "settings": {
         "heading": "Ready for cleaner showers?",
-        "text": "Science-backed purity for clearer skin and stronger hair — guided by Dr. Droppy.",
+        "text": "Science-backed purity for clearer skin and stronger hair \u2014 guided by Dr. Droppy.",
         "button_label": "Shop now",
         "button_link": "/#buy"
       }
@@ -179,7 +146,6 @@
     "problem",
     "science",
     "faq",
-    "cta",
-    "reviews"
+    "cta"
   ]
 }

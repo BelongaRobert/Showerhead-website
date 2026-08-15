@@ -1,88 +1,116 @@
-<section class="reviews" id="reviews">
+<section class="social-proof" id="reviews">
   <div class="section-head">
-    <p class="pill">{{ section.settings.pill }}</p>
-    <h2>{{ section.settings.heading }}</h2>
+    <p class="pill">{{ section.settings.pill | default: 'Social proof' }}</p>
+    <h2>{{ section.settings.heading | default: 'Real showers. Real reviews.' }}</h2>
     <div class="rating-row center">
       <span class="stars">★★★★★</span>
-      <span>4.9 · 128 Reviews</span>
+      <span>{{ section.settings.rating_label | default: '4.9 · 128 Reviews' }}</span>
     </div>
   </div>
-  <div class="review-grid">
-    {% for block in section.blocks %}
-      <article class="review-card" {{ block.shopify_attributes }}>
-        <span class="stars">★★★★★</span>
-        <h3>{{ block.settings.title }}</h3>
-        <p>{{ block.settings.body }}</p>
-        <footer>
-          <strong>{{ block.settings.name }}</strong>
-          <span>{{ block.settings.date }}</span>
-        </footer>
-      </article>
-    {% endfor %}
+
+  <div class="social-grid">
+    <article class="ig-card">
+      <header class="ig-card__head">
+        {{ 'avatar-sophia.jpg' | asset_url | img_tag: 'Sophia R.', 'ig-card__avatar' }}
+        <div class="ig-card__meta">
+          <strong>@sophia.rinses</strong>
+          <span>Austin, TX</span>
+        </div>
+        <span class="ig-card__platform" aria-hidden="true">●●●</span>
+      </header>
+      <div class="ig-card__media">
+        {{ 'ugc-sophia.jpg' | asset_url | img_tag: 'Customer with filtered shower head', '' }}
+      </div>
+      <div class="ig-card__body">
+        <div class="ig-card__actions" aria-hidden="true"><span>♡</span><span>💬</span><span>➤</span></div>
+        <p class="ig-card__likes">3,102 likes</p>
+        <p class="ig-card__caption">
+          <strong>@sophia.rinses</strong>
+          Skin finally stopped feeling tight after showers. Pressure is still strong — and Dr. Droppy on the box made my kids smile.
+        </p>
+        <p class="ig-card__time">2 DAYS AGO</p>
+      </div>
+    </article>
+
+    <article class="ig-card">
+      <header class="ig-card__head">
+        {{ 'avatar-marcus.jpg' | asset_url | img_tag: 'Marcus T.', 'ig-card__avatar' }}
+        <div class="ig-card__meta">
+          <strong>@marcus.builds</strong>
+          <span>Denver, CO</span>
+        </div>
+        <span class="ig-card__platform" aria-hidden="true">●●●</span>
+      </header>
+      <div class="ig-card__media">
+        {{ 'ugc-marcus.jpg' | asset_url | img_tag: 'Installing filtered shower head', '' }}
+      </div>
+      <div class="ig-card__body">
+        <div class="ig-card__actions" aria-hidden="true"><span>♡</span><span>💬</span><span>➤</span></div>
+        <p class="ig-card__likes">1,884 likes</p>
+        <p class="ig-card__caption">
+          <strong>@marcus.builds</strong>
+          Twisted on in under five minutes. Hair feels less brittle already. Unboxing was actually fun.
+        </p>
+        <p class="ig-card__time">5 DAYS AGO</p>
+      </div>
+    </article>
+
+    <article class="ig-card">
+      <header class="ig-card__head">
+        {{ 'avatar-elena.jpg' | asset_url | img_tag: 'Elena K.', 'ig-card__avatar' }}
+        <div class="ig-card__meta">
+          <strong>@elena.glow</strong>
+          <span>Miami, FL</span>
+        </div>
+        <span class="ig-card__platform" aria-hidden="true">●●●</span>
+      </header>
+      <div class="ig-card__media">
+        {{ 'ugc-elena.jpg' | asset_url | img_tag: 'After a filtered shower', '' }}
+      </div>
+      <div class="ig-card__body">
+        <div class="ig-card__actions" aria-hidden="true"><span>♡</span><span>💬</span><span>➤</span></div>
+        <p class="ig-card__likes">4,291 likes</p>
+        <p class="ig-card__caption">
+          <strong>@elena.glow</strong>
+          Chlorine smell is gone and my hair feels softer. This is my forever shower upgrade.
+        </p>
+        <p class="ig-card__time">1 WEEK AGO</p>
+      </div>
+    </article>
+
+    <article class="ig-card">
+      <header class="ig-card__head">
+        {{ 'avatar-jordan.jpg' | asset_url | img_tag: 'Jordan P.', 'ig-card__avatar' }}
+        <div class="ig-card__meta">
+          <strong>@jordan.home</strong>
+          <span>Seattle, WA</span>
+        </div>
+        <span class="ig-card__platform" aria-hidden="true">●●●</span>
+      </header>
+      <div class="ig-card__media">
+        {{ 'ugc-jordan.jpg' | asset_url | img_tag: 'Filtered shower spray', '' }}
+      </div>
+      <div class="ig-card__body">
+        <div class="ig-card__actions" aria-hidden="true"><span>♡</span><span>💬</span><span>➤</span></div>
+        <p class="ig-card__likes">2,067 likes</p>
+        <p class="ig-card__caption">
+          <strong>@jordan.home</strong>
+          Hard water used to wreck my scalp. A month in and soap rinses cleaner. Worth it.
+        </p>
+        <p class="ig-card__time">2 WEEKS AGO</p>
+      </div>
+    </article>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Reviews",
+  "name": "Social reviews",
   "settings": [
-    { "type": "text", "id": "pill", "label": "Pill", "default": "Testimonials" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Real lives changed" }
+    { "type": "text", "id": "pill", "label": "Pill", "default": "Social proof" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Real showers. Real reviews." },
+    { "type": "text", "id": "rating_label", "label": "Rating label", "default": "4.9 · 128 Reviews" }
   ],
-  "blocks": [
-    {
-      "type": "review",
-      "name": "Review",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Noticeably softer water" },
-        { "type": "textarea", "id": "body", "label": "Body", "default": "My skin stopped feeling tight after every shower within the first week." },
-        { "type": "text", "id": "name", "label": "Name", "default": "Sophia R." },
-        { "type": "text", "id": "date", "label": "Date", "default": "Aug 2, 2026" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Reviews",
-      "blocks": [
-        {
-          "type": "review",
-          "settings": {
-            "title": "Noticeably softer water",
-            "body": "My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Dr. Droppy on the box made my kids smile.",
-            "name": "Sophia R.",
-            "date": "Aug 2, 2026"
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "title": "Easy install, real difference",
-            "body": "Twisted on in under five minutes. Hair feels less brittle. Dr. Droppy nailed the unboxing.",
-            "name": "Marcus T.",
-            "date": "Jul 28, 2026"
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "title": "Worth the switch",
-            "body": "It keeps flow high while cutting the chlorine smell. Dr. Droppy approved.",
-            "name": "Elena K.",
-            "date": "Jul 19, 2026"
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "title": "Great for hard water",
-            "body": "After a month my scalp irritation calmed down and soap rinses cleaner.",
-            "name": "Jordan P.",
-            "date": "Jul 11, 2026"
-          }
-        }
-      ]
-    }
-  ]
+  "presets": [{ "name": "Social reviews" }]
 }
 {% endschema %}

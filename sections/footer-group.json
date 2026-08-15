@@ -2,10 +2,18 @@
   "name": "Footer group",
   "type": "footer",
   "sections": {
+    "reviews": {
+      "type": "reviews",
+      "settings": {
+        "pill": "Social proof",
+        "heading": "Real showers. Real reviews.",
+        "rating_label": "4.9 · 128 Reviews"
+      }
+    },
     "footer": {
       "type": "footer",
       "settings": {}
     }
   },
-  "order": ["footer"]
+  "order": ["reviews", "footer"]
 }

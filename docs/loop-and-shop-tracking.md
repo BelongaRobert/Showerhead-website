@@ -71,8 +71,8 @@ Also set both on the **Product buy box** section if you prefer section-level ove
 | --- | --- |
 | Purchase options | **One-time and subscription** (do not force subscribe-only at launch) |
 | What is subscribed | **Carbon Showerhead Filters** (not the shower head itself) |
-| Frequencies | Start simple: **Every 90 days** (match filter life) |
-| Discount | e.g. **10–15% Subscribe & Save** on filter shipments (and first-order discount in Loop if you want the initial order cheaper) |
+| Frequencies | **Every 90 days** (filter life) |
+| Discount | Theme generates a stable % (12 / 15 / 18) per product and shows it on Autoship. **Set the same % in Loop → Selling plan** so checkout matches the PDP. |
 | Prepaid / gift / trial | Skip for v1 unless already decided |
 
 Document the final frequency + discount numbers once locked — agents should not invent discounts without owner confirmation.

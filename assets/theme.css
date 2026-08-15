@@ -727,7 +727,32 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   gap: 0.75rem;
   padding-right: 4.5rem;
 }
-.sub-card__top--simple { padding-right: 0; padding-bottom: 0.95rem; }
+.sub-card__sub {
+  display: block;
+  margin-top: 0.2rem;
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+.sub-card__top--simple {
+  padding-right: 0;
+  padding-bottom: 0.95rem;
+  align-items: center;
+}
+.filter-addon.is-dimmed {
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+.filter-addon__eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
 .sub-card__choice {
   display: flex;
   align-items: center;
@@ -946,14 +971,6 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   margin-top: 1rem;
   display: grid;
   gap: 0.75rem;
-}
-/* Custom Autoship UI replaces Loop chrome; keep app block in DOM for theme editor. */
-.pdp__buybox:has(.sub-box) .pdp__apps {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
 }
 .pdp__app-block { width: 100%; }
 .pdp__app-block:empty { display: none; }

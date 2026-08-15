@@ -40,13 +40,7 @@ function initPdpGalleries() {
 
     const filterRoot = root.querySelector('[data-filter-addon]');
     if (filterRoot) {
-      initGallery(
-        filterRoot,
-        '.filter-addon__slide',
-        '.filter-addon__thumb',
-        null,
-        null,
-      );
+      initGallery(filterRoot, '.filter-addon__slide', '.filter-addon__thumb', null, null);
     }
 
     root.querySelectorAll('.qty-card input[type="radio"]').forEach((input) => {
@@ -67,27 +61,35 @@ function syncPurchaseMode(root) {
   const mode = selectedPurchaseMode(root);
   const onetimeLabel = root.querySelector('[data-atc-label-onetime]');
   const subscribeLabel = root.querySelector('[data-atc-label-subscribe]');
+  const sellingPlanInput = root.querySelector('[data-selling-plan]');
+  const modes = root.querySelector('[data-purchase-modes]');
+  const headPlanId = modes?.dataset.headPlanId || '';
 
   root.querySelectorAll('.sub-card, .purchase-mode').forEach((card) => {
-    card.classList.toggle('is-selected', card.querySelector('input')?.checked);
+    card.classList.toggle('is-selected', Boolean(card.querySelector('input')?.checked));
   });
+
+  if (sellingPlanInput) {
+    sellingPlanInput.value = mode === 'subscribe' && headPlanId ? headPlanId : '';
+  }
 
   if (onetimeLabel && subscribeLabel) {
     onetimeLabel.hidden = mode === 'subscribe';
     subscribeLabel.hidden = mode !== 'subscribe';
   }
+
+  const filterAddon = root.querySelector('[data-filter-addon]');
+  if (filterAddon) {
+    filterAddon.classList.toggle('is-dimmed', mode !== 'subscribe');
+  }
 }
 
-function syncFilterPlanCards(root) {
-  root.querySelectorAll('.filter-plan').forEach((card) => {
-    card.classList.toggle('is-selected', card.querySelector('input')?.checked);
-  });
+function cartRoot() {
+  return window.Shopify?.routes?.root || '/';
 }
 
 async function addItemsToCart(items) {
-  const response = await fetch(window.Shopify?.routes?.root
-    ? `${window.Shopify.routes.root}cart/add.js`
-    : '/cart/add.js', {
+  const response = await fetch(`${cartRoot()}cart/add.js`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({ items }),
@@ -99,7 +101,7 @@ async function addItemsToCart(items) {
       const data = await response.json();
       message = data.description || data.message || message;
     } catch (_) {
-      /* ignore parse errors */
+      /* ignore */
     }
     throw new Error(message);
   }
@@ -114,60 +116,51 @@ function initPurchaseModes() {
     form.dataset.purchaseBound = 'true';
 
     syncPurchaseMode(root);
-    syncFilterPlanCards(root);
 
     root.querySelectorAll('input[name="purchase_mode"]').forEach((input) => {
       input.addEventListener('change', () => syncPurchaseMode(root));
     });
 
-    root.querySelectorAll('input[name="filter_selling_plan"]').forEach((input) => {
-      input.addEventListener('change', () => syncFilterPlanCards(root));
-    });
-
     form.addEventListener('submit', async (event) => {
-      const mode = selectedPurchaseMode(root);
-      const addon = root.querySelector('[data-filter-addon]');
-      if (mode !== 'subscribe' || !addon) return;
-
       event.preventDefault();
 
+      const mode = selectedPurchaseMode(root);
+      const modes = root.querySelector('[data-purchase-modes]');
+      const addon = root.querySelector('[data-filter-addon]');
+      const button = form.querySelector('[data-atc-button]');
       const headId = form.querySelector('input[name="id"]:checked')?.value
         || form.querySelector('input[name="id"]')?.value;
-      const filterId = addon.dataset.filterVariantId;
-      const planInput = root.querySelector('input[name="filter_selling_plan"]:checked');
-      const planId = planInput?.value;
-      const button = form.querySelector('[data-atc-button]');
 
       if (!headId) return;
 
-      if (!filterId) {
-        window.alert('Filters are shown, but checkout needs a Carbon Filters variant ID. In the buy box settings, paste the variant ID from Shopify Admin → Products → Carbon Filters.');
-        return;
-      }
+      const headPlanId = modes?.dataset.headPlanId || '';
+      const filterId = addon?.dataset.filterVariantId || modes?.dataset.filterVariantId || '';
+      const filterPlanId = addon?.dataset.filterPlanId || modes?.dataset.filterPlanId || '';
 
-      if (addon.dataset.filterAvailable === 'false') {
-        window.alert('Carbon filters are currently unavailable.');
-        return;
-      }
+      const items = [];
 
-      if (!planId) {
-        window.alert('Map Carbon Filters to a Loop selling plan, then choose Subscribe & Save again.');
-        return;
-      }
+      if (mode === 'subscribe') {
+        const headItem = { id: Number(headId), quantity: 1 };
+        if (headPlanId) headItem.selling_plan = Number(headPlanId);
+        items.push(headItem);
 
-      const items = [
-        { id: Number(headId), quantity: 1 },
-        { id: Number(filterId), quantity: 1, selling_plan: Number(planId) },
-      ];
+        if (filterId && /^\d+$/.test(String(filterId))) {
+          const filterItem = { id: Number(filterId), quantity: 1 };
+          if (filterPlanId && /^\d+$/.test(String(filterPlanId))) {
+            filterItem.selling_plan = Number(filterPlanId);
+          }
+          items.push(filterItem);
+        }
+      } else {
+        items.push({ id: Number(headId), quantity: 1 });
+      }
 
       if (button) button.disabled = true;
       try {
         await addItemsToCart(items);
-        window.location.href = window.Shopify?.routes?.root
-          ? `${window.Shopify.routes.root}cart`
-          : '/cart';
+        window.location.href = `${cartRoot()}cart`;
       } catch (error) {
-        window.alert(error.message || 'Could not add subscription to cart.');
+        window.alert(error.message || 'Could not add to cart.');
         if (button) button.disabled = false;
       }
     });

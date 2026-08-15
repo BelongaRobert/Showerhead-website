@@ -811,7 +811,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 1050px) {
-  .social-grid { grid-template-columns: repeat(4, 1fr); }
+  .social-grid { grid-template-columns: repeat(3, 1fr); }
 }
 .ig-card {
   background: #fff;

@@ -1,6 +1,11 @@
 <section class="cta-band">
   {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
   {% assign shop_now_url = shop_now_url | strip %}
+  {% if section.settings.button_link != blank %}
+    {% assign cta_url = section.settings.button_link %}
+  {% else %}
+    {% assign cta_url = shop_now_url %}
+  {% endif %}
 
   {{ 'dr-droppy-thumb.png' | asset_url | img_tag: 'Dr. Droppy', 'cta-band__mascot' }}
   <h2>{{ section.settings.heading }}</h2>
@@ -8,7 +13,7 @@
     <p>{{ section.settings.text }}</p>
   {% endif %}
   {% if section.settings.button_label != blank %}
-    <a class="btn btn--light" href="{{ shop_now_url }}">{{ section.settings.button_label }}</a>
+    <a class="btn btn--light" href="{{ cta_url }}">{{ section.settings.button_label }}</a>
   {% endif %}
 </section>
 
@@ -20,10 +25,16 @@
     { "type": "textarea", "id": "text", "label": "Text", "default": "Science-backed purity for clearer skin and stronger hair — guided by Dr. Droppy." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
     {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link override",
+      "info": "Optional. Leave blank to use the featured product page (same as Shop now)."
+    },
+    {
       "type": "product",
       "id": "product",
       "label": "Product override",
-      "info": "Optional. Leave blank to use the same featured product as Shop now."
+      "info": "Optional. Leave blank to use Theme settings → Featured product."
     }
   ],
   "presets": [{ "name": "CTA band" }]

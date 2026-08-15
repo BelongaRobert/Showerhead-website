@@ -1,0 +1,41 @@
+{%- comment -%}
+  Resolves the main showerhead product for Shop now / buy CTAs.
+  Priority:
+  1) optional product argument
+  2) theme setting featured_product
+  3) first catalog product that is NOT a filter refill / subscription add-on
+  4) first catalog product
+{%- endcomment -%}
+{%- liquid
+  assign resolved_product = nil
+  if product != blank
+    assign resolved_product = product
+  elsif settings.featured_product != blank
+    assign resolved_product = settings.featured_product
+  else
+    for candidate in collections.all.products
+      assign is_filter_addon = false
+      if candidate.tags contains 'filter-refill' or candidate.tags contains 'subscription-addon'
+        assign is_filter_addon = true
+      endif
+      if candidate.handle contains 'filter-refill' or candidate.handle contains 'carbon-filter' or candidate.handle contains 'carbon-showerhead-filter'
+        assign is_filter_addon = true
+      endif
+      if candidate.title contains 'Carbon Showerhead Filter' or candidate.title contains 'Carbon Filter'
+        assign is_filter_addon = true
+      endif
+      unless is_filter_addon
+        assign resolved_product = candidate
+        break
+      endunless
+    endfor
+    if resolved_product == blank and collections.all.products.first != blank
+      assign resolved_product = collections.all.products.first
+    endif
+  endif
+-%}
+{%- if resolved_product != blank -%}
+  {{- resolved_product.url -}}
+{%- else -%}
+  {{- routes.all_products_collection_url -}}
+{%- endif -%}

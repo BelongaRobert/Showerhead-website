@@ -44,18 +44,38 @@ Official refs:
 3. Approve requested permissions.
 4. Open the Loop admin from **Apps**.
 
-### A2. Choose the subscription model
+### A2. Choose the subscription model (Dr. Droppy)
 
-Recommended launch model for this brand:
+**Product structure (required):**
+
+| Product | Role |
+| --- | --- |
+| **Filtered Shower Head** | Main PDP / Shop now target. One-time purchase of the head. |
+| **Carbon Showerhead Filters** | Loop subscription add-on only — not the Shop now landing page. |
+
+Tag the filter product in Shopify Admin with `filter-refill` (optional but recommended).
+
+**Theme settings (Online Store → Themes → Customize → Theme settings → Shop links):**
+
+1. **Featured showerhead product** → Filtered Shower Head  
+2. **Carbon filter subscription product** → Carbon Showerhead Filters  
+
+Also set both on the **Product buy box** section if you prefer section-level overrides.
+
+**Purchase UX on the showerhead page:**
+
+- **One-time** — shower head only  
+- **Subscribe & Save** — shower head + Carbon Filters on a Loop selling plan (discount applies to the subscribed filters / plan; future filter shipments stay on the plan)
 
 | Decision | Recommendation |
 | --- | --- |
 | Purchase options | **One-time and subscription** (do not force subscribe-only at launch) |
-| Frequencies | Start simple: e.g. **Every 30 / 60 / 90 days** (filters / replacement heads — adjust to real consume rate) |
-| Discount | e.g. **10–15% Subscribe & Save** vs one-time |
+| What is subscribed | **Carbon Showerhead Filters** (not the shower head itself) |
+| Frequencies | Start simple: **Every 90 days** (match filter life) |
+| Discount | e.g. **10–15% Subscribe & Save** on filter shipments (and first-order discount in Loop if you want the initial order cheaper) |
 | Prepaid / gift / trial | Skip for v1 unless already decided |
 
-Document the final frequency + discount numbers in the PR or Notion once locked — agents should not invent discounts without owner confirmation.
+Document the final frequency + discount numbers once locked — agents should not invent discounts without owner confirmation.
 
 ### A3. Create a selling plan in Loop
 
@@ -67,27 +87,28 @@ In Loop admin:
 4. Add billing/delivery frequencies and discount %.
 5. Save.
 
-### A4. Map products (or collections)
+### A4. Map products (critical)
 
-1. Open the selling plan → **Add products** (or **Collections**).
-2. Map FLOW 01 / any refill or filter SKUs that should allow subscribe.
-3. Confirm each mapped product shows subscription options in Loop’s product list.
+1. Open the selling plan → **Add products**.
+2. Map **Carbon Showerhead Filters** (the refill SKU) — this is the subscription product.
+3. Do **not** make Carbon Filters the only / first catalog product customers land on via Shop now; keep Featured product = showerhead.
+4. Optional: if you also want Loop’s native widget chrome on the showerhead SKU itself, you can map the showerhead too — but the theme buy box already exposes filter selling plans as the Subscribe path.
+
+If Shop now still opens Carbon Filters: set Theme settings → Featured showerhead, hard-refresh, and confirm the filter product is tagged `filter-refill`.
 
 ### A5. Install the Loop widget on the theme
 
 Brand-matched widget design guide: [`docs/loop-widget-design.md`](./loop-widget-design.md).
 
-Prefer **app block** (Online Store 2.0) — no custom liquid unless the theme blocks it.
+Prefer **app block** (Online Store 2.0) — no custom billing code.
 
-**Theme status (Dr. Droppy):** `sections/product-buybox.liquid` on `cursor/shopify-theme-36e5` now supports `@app` blocks and renders them **above Add to cart** on the product page. After this theme is published, Loop’s “No product templates eligible…” warning should clear — then add the Loop widget via Theme editor → Product page → Product buy box → Add block → Apps.
+**Theme status (Dr. Droppy):** `sections/product-buybox.liquid` supports `@app` blocks above Add to cart, plus a **Subscribe & Save** path that adds the Carbon Filter variant with its Loop `selling_plan`.
 
-1. Loop admin → **Acquire → Widget** (or Widgets) → **Create / configure widget**.
-2. Match brand styles lightly (button, copy like `Subscribe & Save 15%`). Keep layout clean — one purchase-option control near Add to Cart.
-3. Map widget to the **product** template(s) used by FLOW 01.
-4. Use **Add app block** so Shopify theme editor places the Loop block on the product page (typically above quantity / ATC).
-5. **Save** theme → back in Loop click **Refresh status** → confirm templates show as installed.
-6. If using a page builder (GemPages etc.), follow that builder’s Loop placement rules; widget only shows on products mapped to a selling plan.
-
+1. Loop admin → **Acquire → Widget** → configure / publish.
+2. Theme editor → Product page → Product buy box → confirm Loop app block is present → **Save**.
+3. Loop → **Refresh status** → templates show Added.
+4. Widget visibility rule: Loop only injects UI on products mapped to a selling plan. Filters are selected via the theme add-on when you choose Subscribe; map filters in Loop so `selling_plan` IDs exist.
+5. Publish the Loop widget after design.
 ### A6. Customer portal + emails
 
 1. Enable Loop **customer portal** (self-serve skip / swap / cancel as allowed by plan).
@@ -99,12 +120,13 @@ Prefer **app block** (Online Store 2.0) — no custom liquid unless the theme bl
 
 ### A7. QA checklist (Loop)
 
-- [ ] Product page shows **One-time** vs **Subscribe** options.
-- [ ] Choosing subscribe applies correct discount and selling plan in cart/checkout.
-- [ ] Checkout completes; order tagged/recognized as subscription in Loop.
-- [ ] Test customer can open portal and cancel or skip.
-- [ ] Mobile product page: widget does not break buy box layout.
-- [ ] One-time purchase still works with no subscription selected.
+- [ ] Shop now opens the **Filtered Shower Head** PDP (not Carbon Filters).
+- [ ] Buy box heading stays **Filtered Shower Head**; filter appears only under Subscribe & Save.
+- [ ] One-time adds shower head only.
+- [ ] Subscribe adds shower head + Carbon Filters with a Loop selling plan; discount shows in cart/checkout.
+- [ ] Future filter renewals appear in Loop portal.
+- [ ] Loop widget published; filter product mapped to the selling plan.
+- [ ] Mobile buy box layout intact.
 
 ---
 

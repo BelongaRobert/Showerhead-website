@@ -1,11 +1,105 @@
 {% if request.page_type == 'product' or template.name == 'product' %}
 <section class="pdp" id="buy" data-section-id="{{ section.id }}">
-  {% if request.page_type == 'product' and product %}
-    {% assign product = product %}
-  {% elsif section.settings.product != blank %}
-    {% assign product = section.settings.product %}
-  {% else %}
-    {% assign product = collections.all.products.first %}
+  {%- liquid
+    assign filter_product = section.settings.filter_product
+    if filter_product == blank
+      assign filter_product = settings.filter_subscription_product
+    endif
+    if filter_product == blank
+      for candidate in collections.all.products
+        if candidate.tags contains 'filter-refill' or candidate.tags contains 'subscription-addon' or candidate.title contains 'Carbon Showerhead Filter' or candidate.title contains 'Carbon Filter' or candidate.handle contains 'carbon-filter' or candidate.handle contains 'carbon-showerhead-filter'
+          assign filter_product = candidate
+          break
+        endif
+      endfor
+    endif
+
+    assign featured = section.settings.product
+    if featured == blank
+      assign featured = settings.featured_product
+    endif
+
+    assign viewing_filter_addon = false
+    if request.page_type == 'product' and product and filter_product != blank and product.id == filter_product.id
+      assign viewing_filter_addon = true
+    endif
+
+    assign main_product = nil
+    if viewing_filter_addon
+      if featured != blank
+        assign main_product = featured
+      else
+        for candidate in collections.all.products
+          assign skip_candidate = false
+          if filter_product != blank and candidate.id == filter_product.id
+            assign skip_candidate = true
+          endif
+          assign is_filter_addon = false
+          if candidate.tags contains 'filter-refill' or candidate.tags contains 'subscription-addon'
+            assign is_filter_addon = true
+          endif
+          if candidate.handle contains 'filter-refill' or candidate.handle contains 'carbon-filter' or candidate.handle contains 'carbon-showerhead-filter'
+            assign is_filter_addon = true
+          endif
+          if candidate.title contains 'Carbon Showerhead Filter' or candidate.title contains 'Carbon Filter'
+            assign is_filter_addon = true
+          endif
+          if skip_candidate == false and is_filter_addon == false
+            assign main_product = candidate
+            break
+          endif
+        endfor
+      endif
+    elsif request.page_type == 'product' and product
+      assign main_product = product
+    elsif featured != blank
+      assign main_product = featured
+    else
+      for candidate in collections.all.products
+        assign is_filter_addon = false
+        if filter_product != blank and candidate.id == filter_product.id
+          assign is_filter_addon = true
+        endif
+        if candidate.tags contains 'filter-refill' or candidate.tags contains 'subscription-addon'
+          assign is_filter_addon = true
+        endif
+        if candidate.handle contains 'filter-refill' or candidate.handle contains 'carbon-filter' or candidate.handle contains 'carbon-showerhead-filter'
+          assign is_filter_addon = true
+        endif
+        if candidate.title contains 'Carbon Showerhead Filter' or candidate.title contains 'Carbon Filter'
+          assign is_filter_addon = true
+        endif
+        unless is_filter_addon
+          assign main_product = candidate
+          break
+        endunless
+      endfor
+    endif
+
+    if main_product == blank
+      assign main_product = collections.all.products.first
+    endif
+
+    assign product = main_product
+    assign filter_has_plans = false
+    if filter_product != blank and filter_product.selling_plan_groups.size > 0
+      assign filter_has_plans = true
+    endif
+  -%}
+
+  {% if viewing_filter_addon and main_product != blank %}
+    <p class="pdp__switch-note">
+      Carbon filters subscribe from the showerhead buy box —
+      <a href="{{ main_product.url }}">open {{ main_product.title }}</a>
+    </p>
+    <script>
+      (function () {
+        var target = {{ main_product.url | json }};
+        if (target && window.location.pathname !== target.split('?')[0]) {
+          window.location.replace(target);
+        }
+      })();
+    </script>
   {% endif %}
 
   <div class="pdp__banner" id="PdpMain-{{ section.id }}">
@@ -53,8 +147,6 @@
       <h1>
         {% if section.settings.heading != blank %}
           {{ section.settings.heading }}
-        {% elsif product != blank %}
-          {{ product.title }}
         {% else %}
           Filtered Shower Head
         {% endif %}
@@ -102,7 +194,7 @@
             <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
           {% endif %}
 
-          <div class="plan-card is-selected">
+          <div class="plan-card is-selected" data-main-plan>
             <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
             <div class="plan-top">
               <strong>{{ product.title }}</strong>
@@ -115,8 +207,79 @@
             </ul>
           </div>
 
+          {% if filter_product != blank %}
+            <fieldset class="purchase-modes" data-purchase-modes>
+              <legend>How do you want to buy?</legend>
+              <label class="purchase-mode is-selected">
+                <input type="radio" name="purchase_mode" value="onetime" checked>
+                <span>
+                  <strong>One-time</strong>
+                  <em>Shower head only — add filters later anytime</em>
+                </span>
+              </label>
+              <label class="purchase-mode">
+                <input type="radio" name="purchase_mode" value="subscribe">
+                <span>
+                  <strong>Subscribe &amp; Save</strong>
+                  <em>Add {{ filter_product.title }} on a Loop plan — discount on this order and future filters</em>
+                </span>
+              </label>
+            </fieldset>
+
+            <div
+              class="filter-addon"
+              data-filter-addon
+              hidden
+              data-filter-variant-id="{{ filter_product.selected_or_first_available_variant.id }}"
+              data-filter-available="{% if filter_product.available %}true{% else %}false{% endif %}"
+            >
+              <div class="filter-addon__head">
+                {% if filter_product.featured_media %}
+                  {{ filter_product.featured_media | image_url: width: 160 | image_tag: class: 'filter-addon__img', alt: filter_product.title }}
+                {% endif %}
+                <div>
+                  <p class="filter-addon__eyebrow">Loop subscription add-on</p>
+                  <strong>{{ filter_product.title }}</strong>
+                  <p class="filter-addon__price">
+                    From {{ filter_product.selected_or_first_available_variant.price | money }}
+                    {% if filter_has_plans %} · Subscribe &amp; Save via Loop{% endif %}
+                  </p>
+                </div>
+              </div>
+
+              {% if filter_has_plans %}
+                <div class="filter-addon__plans">
+                  {% for group in filter_product.selling_plan_groups %}
+                    {% for plan in group.selling_plans %}
+                      <label class="filter-plan{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
+                        <input
+                          type="radio"
+                          name="filter_selling_plan"
+                          value="{{ plan.id }}"
+                          {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                        >
+                        <span>
+                          <strong>{{ plan.name }}</strong>
+                          {% if plan.description != blank %}
+                            <em>{{ plan.description }}</em>
+                          {% else %}
+                            <em>Recurring Carbon Filters — discounted vs one-time</em>
+                          {% endif %}
+                        </span>
+                      </label>
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <p class="filter-addon__hint">
+                  Map this product to a Loop selling plan, then publish the Loop widget, so Subscribe &amp; Save discounts appear here.
+                </p>
+              {% endif %}
+            </div>
+          {% endif %}
+
           {%- comment -%} App blocks (Loop Subscribe & Save widget, etc.) {%- endcomment -%}
-          <div class="pdp__apps">
+          <div class="pdp__apps" data-loop-slot>
             {% for block in section.blocks %}
               {% case block.type %}
                 {% when '@app' %}
@@ -127,9 +290,10 @@
             {% endfor %}
           </div>
 
-          <button class="btn btn--block" type="submit" {% unless product.available %}disabled{% endunless %}>
+          <button class="btn btn--block" type="submit" data-atc-button {% unless product.available %}disabled{% endunless %}>
             {% if product.available %}
-              Add to cart — {{ product.selected_or_first_available_variant.price | money }}
+              <span data-atc-label-onetime>Add to cart — {{ product.selected_or_first_available_variant.price | money }}</span>
+              <span data-atc-label-subscribe hidden>Subscribe &amp; add filters</span>
             {% else %}
               Sold out
             {% endif %}
@@ -143,8 +307,8 @@
             <span><em>$129</em></span>
           </div>
           <ul>
-            <li>Add a product in Shopify Admin to enable checkout</li>
-            <li>Then select it in this section’s settings</li>
+            <li>Set Theme settings → Featured product to your showerhead</li>
+            <li>Set Filter subscription product to Carbon Showerhead Filters</li>
           </ul>
         </div>
 
@@ -180,7 +344,7 @@
         {{ 'dr-droppy-wave.png' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
         <div>
           <strong>Tip from Dr. Droppy</strong>
-          <p>Replace the filter every 90 days to keep your shower feeling fresh.</p>
+          <p>Replace the filter every 90 days — Subscribe &amp; Save keeps Carbon Filters coming automatically.</p>
         </div>
       </aside>
 
@@ -239,7 +403,14 @@
     {
       "type": "product",
       "id": "product",
-      "label": "Featured product"
+      "label": "Featured showerhead product",
+      "info": "Main product for this buy box. Leave blank to use Theme settings → Featured product."
+    },
+    {
+      "type": "product",
+      "id": "filter_product",
+      "label": "Carbon filter subscription product",
+      "info": "Shown as the Loop Subscribe & Save add-on. Prefer tagging that product filter-refill in Shopify Admin."
     },
     {
       "type": "text",

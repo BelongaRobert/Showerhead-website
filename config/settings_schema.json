@@ -13,8 +13,14 @@
       {
         "type": "product",
         "id": "featured_product",
-        "label": "Featured product",
-        "info": "Used by Shop now, Shop, and other buy CTAs across the theme."
+        "label": "Featured showerhead product",
+        "info": "Main product for Shop now / Shop CTAs. Must be the Filtered Shower Head — not Carbon Filters."
+      },
+      {
+        "type": "product",
+        "id": "filter_subscription_product",
+        "label": "Carbon filter subscription product",
+        "info": "Loop Subscribe & Save add-on shown in the product buy box. Tag this product filter-refill in Admin."
       }
     ]
   },

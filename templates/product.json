@@ -9,11 +9,12 @@
         "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
       }
     },
-    "benefits": {
-      "type": "benefits",
+    "highlights": {
+      "type": "highlights",
       "settings": {
-        "pill": "A healthier you",
-        "heading": "You’ll experience"
+        "pill": "Why Dr. Droppy",
+        "heading": "Cleaner water, simpler routine",
+        "text": "Filtration, feel, and install — condensed into what matters most."
       }
     },
     "faq": {
@@ -34,10 +35,7 @@
           }
         }
       },
-      "block_order": [
-        "f1",
-        "f2"
-      ],
+      "block_order": ["f1", "f2"],
       "settings": {
         "pill": "Support",
         "heading": "Frequently asked"
@@ -48,14 +46,10 @@
       "settings": {
         "heading": "Ready for cleaner showers?",
         "text": "Add to cart and let Dr. Droppy guide the rinse.",
-        "button_label": "Shop now"
+        "button_label": "Back to home",
+        "button_link": "/"
       }
     }
   },
-  "order": [
-    "main",
-    "benefits",
-    "faq",
-    "cta"
-  ]
+  "order": ["main", "highlights", "faq", "cta"]
 }

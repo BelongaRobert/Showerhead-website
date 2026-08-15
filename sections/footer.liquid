@@ -1,4 +1,7 @@
 <footer class="site-footer">
+  {% capture shop_now_url %}{% render 'shop-now-url' %}{% endcapture %}
+  {% assign shop_now_url = shop_now_url | strip %}
+
   <div class="footer-grid">
     <div>
       <p class="footer-brand">
@@ -9,7 +12,7 @@
     </div>
     <div>
       <h3>Shop</h3>
-      <a href="{% render 'shop-now-url' %}">Filtered Shower Head</a>
+      <a href="{{ shop_now_url }}">Filtered Shower Head</a>
       <a href="{{ routes.cart_url }}">Cart</a>
     </div>
     <div>

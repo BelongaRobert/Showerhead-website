@@ -1,12 +1,13 @@
 {
   "sections": {
-    "buybox": {
-      "type": "product-buybox",
+    "hero": {
+      "type": "hero",
       "settings": {
         "eyebrow": "Dr. Droppy · Clean Water",
         "heading": "Filtered Shower Head",
         "tagline": "Science. Nature. Better Showers.",
-        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
+        "text": "Science-backed purity for your family — cleaner water for healthier skin and hair.",
+        "button_label": "Shop now"
       }
     },
     "hey": {
@@ -72,12 +73,7 @@
           }
         }
       },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
-      ],
+      "block_order": ["s1", "s2", "s3", "s4"],
       "settings": {
         "pill": "Tested & proven",
         "heading": "Best-in-class filtration",
@@ -116,12 +112,7 @@
           }
         }
       },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4"
-      ],
+      "block_order": ["f1", "f2", "f3", "f4"],
       "settings": {
         "pill": "Support",
         "heading": "Frequently asked"
@@ -137,7 +128,7 @@
     }
   },
   "order": [
-    "buybox",
+    "hero",
     "hey",
     "highlights",
     "marquee",

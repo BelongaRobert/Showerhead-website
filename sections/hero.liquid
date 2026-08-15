@@ -1,6 +1,9 @@
 <section class="hero">
+  {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
+  {% assign shop_now_url = shop_now_url | strip %}
+
   <div class="hero__media">
-    {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Filtered shower head', 'hero__image' }}
+    {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'hero__image' }}
     <div class="hero__badge">
       {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'hero__badge-img' }}
       <span>Dr. Droppy’s pick</span>
@@ -18,13 +21,13 @@
       <p class="lede">{{ section.settings.text }}</p>
     {% endif %}
     <ul class="chips">
-      <li>Better water</li>
-      <li>Better skin</li>
-      <li>Better hair</li>
-      <li>Better you</li>
+      <li>Removes chlorine</li>
+      <li>Hydro-Shield filtration</li>
+      <li>Soothes skin & hair</li>
+      <li>Easy install</li>
     </ul>
     {% if section.settings.button_label != blank %}
-      <a class="btn" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+      <a class="btn" href="{{ shop_now_url }}">{{ section.settings.button_label }}</a>
     {% endif %}
   </div>
 </section>
@@ -33,12 +36,22 @@
 {
   "name": "Hero",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dr. Droppy · Filtered Shower Head" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dr. Droppy · Clean Water" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Filtered Shower Head" },
-    { "type": "text", "id": "tagline", "label": "Tagline", "default": "The shower upgrade your skin will love." },
-    { "type": "textarea", "id": "text", "label": "Text", "default": "A playful, powerful multi-stage shower filter." },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Science. Nature. Better Showers." },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Science-backed purity for your family — cleaner water for healthier skin and hair."
+    },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
-    { "type": "url", "id": "button_link", "label": "Button link" }
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product override",
+      "info": "Optional. Shop now goes to this product page. Leave blank to use Theme settings → Featured product."
+    }
   ],
   "presets": [{ "name": "Hero" }]
 }

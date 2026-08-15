@@ -189,10 +189,28 @@
       </div>
   </div>
 </section>
+{% else %}
+  {% comment %} Never render the product buy box on the homepage or other templates. {% endcomment %}
+  {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
+  <section class="hero" id="buy">
+    <div class="hero__media">
+      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'hero__image' }}
+    </div>
+    <div class="hero__copy">
+      <p class="eyebrow">Dr. Droppy · Clean Water</p>
+      <h1>Filtered Shower Head</h1>
+      <p class="tagline">Science. Nature. Better Showers.</p>
+      <a class="btn" href="{{ shop_now_url | strip }}">Shop now</a>
+    </div>
+  </section>
+{% endif %}
 
 {% schema %}
 {
   "name": "Product buy box",
+  "enabled_on": {
+    "templates": ["product"]
+  },
   "settings": [
     {
       "type": "product",

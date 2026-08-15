@@ -115,6 +115,18 @@
             </ul>
           </div>
 
+          {%- comment -%} App blocks (Loop Subscribe & Save widget, etc.) {%- endcomment -%}
+          <div class="pdp__apps">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when '@app' %}
+                  <div class="pdp__app-block" {{ block.shopify_attributes }}>
+                    {% render block %}
+                  </div>
+              {% endcase %}
+            {% endfor %}
+          </div>
+
           <button class="btn btn--block" type="submit" {% unless product.available %}disabled{% endunless %}>
             {% if product.available %}
               Add to cart — {{ product.selected_or_first_available_variant.price | money }}
@@ -135,6 +147,18 @@
             <li>Then select it in this section’s settings</li>
           </ul>
         </div>
+
+        <div class="pdp__apps">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when '@app' %}
+                <div class="pdp__app-block" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+
         <a class="btn btn--block" href="{{ routes.all_products_collection_url }}">Shop products</a>
       {% endif %}
 
@@ -240,6 +264,11 @@
       "id": "text",
       "label": "Description",
       "default": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Dr. Droppy."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
     }
   ],
   "presets": [{ "name": "Product buy box" }]

@@ -12,6 +12,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
     {{ content_for_header }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'loop-widget.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </head>
   <body class="template-{{ template.name }}">

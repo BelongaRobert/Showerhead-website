@@ -1,0 +1,140 @@
+/* Dr. Droppy — Loop Subscriptions widget skin
+   Scopes Loop app-block UI to match theme plan cards / chips / buttons. */
+
+.pdp__apps {
+  margin-top: 1rem;
+}
+
+.pdp__apps :is(
+  .loop-widget,
+  .loop-widget-container,
+  .loop-subscription-widget,
+  [class*="loop-widget"],
+  [class*="LoopWidget"],
+  [class*="loop_widget"]
+),
+.pdp__app-block > * {
+  font-family: var(--font) !important;
+  color: var(--ink) !important;
+}
+
+/* Outer card */
+.pdp__apps :is(
+  .loop-widget,
+  .loop-widget-container,
+  [class*="loop-widget"],
+  [class*="LoopWidget"]
+) {
+  background: #fff !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 1.15rem !important;
+  box-shadow: 0 14px 28px rgba(15, 44, 89, 0.06) !important;
+  padding: 0.95rem 1rem !important;
+  margin: 0 !important;
+}
+
+/* Option rows / radios / buttons */
+.pdp__apps :is(label, .loop-option, [class*="selling-plan"], [class*="purchase-option"]) {
+  border-radius: 0.85rem !important;
+}
+
+.pdp__apps :is(
+  [class*="option"],
+  [class*="plan"],
+  [class*="radio"],
+  button,
+  .loop-button
+) {
+  font-family: var(--font) !important;
+}
+
+/* Selected state — sky fill like theme chips/buttons */
+.pdp__apps :is(
+  [aria-checked="true"],
+  [aria-pressed="true"],
+  .selected,
+  .is-selected,
+  .active,
+  input:checked + *,
+  input:checked ~ *
+) {
+  background: color-mix(in srgb, var(--sky) 35%, white) !important;
+  border-color: var(--ink) !important;
+  color: var(--ink) !important;
+}
+
+/* Frequency chips / button group */
+.pdp__apps :is(button, [role="button"], .loop-frequency, [class*="frequency"]) {
+  border: 2px solid var(--ink) !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  min-height: 2.35rem !important;
+}
+
+.pdp__apps :is(button, [role="button"], .loop-frequency, [class*="frequency"]):hover {
+  background: var(--blue-soft) !important;
+}
+
+.pdp__apps :is(
+  button[aria-pressed="true"],
+  button.selected,
+  button.active,
+  [class*="frequency"].selected,
+  [class*="frequency"].active
+) {
+  background: var(--sky) !important;
+  box-shadow: 3px 3px 0 rgba(15, 44, 89, 0.18) !important;
+}
+
+/* Badges */
+.pdp__apps :is([class*="badge"], [class*="tag"], .popular, .save) {
+  background: var(--sky) !important;
+  color: var(--ink) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 999px !important;
+  font-family: var(--display) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Text hierarchy */
+.pdp__apps :is(h1, h2, h3, h4, strong, [class*="title"]) {
+  font-family: var(--display) !important;
+  color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+
+.pdp__apps :is(p, span, small, [class*="desc"], [class*="label"]) {
+  color: var(--ink-soft) !important;
+}
+
+.pdp__apps :is([class*="price"], .money) {
+  color: var(--ink) !important;
+  font-weight: 800 !important;
+}
+
+/* Inputs */
+.pdp__apps :is(input[type="radio"], input[type="checkbox"]) {
+  accent-color: var(--sky) !important;
+}
+
+.pdp__apps :is(select, input[type="text"]) {
+  border: 2px solid var(--ink) !important;
+  border-radius: 0.75rem !important;
+  background: #fff !important;
+  color: var(--ink) !important;
+  min-height: 2.5rem !important;
+  font-family: var(--font) !important;
+}
+
+/* Dropdown menus */
+.pdp__apps :is([class*="dropdown"], [class*="menu"], [role="listbox"]) {
+  border: 2px solid var(--ink) !important;
+  border-radius: 0.85rem !important;
+  background: #fff !important;
+  box-shadow: 0 14px 28px rgba(15, 44, 89, 0.1) !important;
+}

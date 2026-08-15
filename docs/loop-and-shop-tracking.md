@@ -75,6 +75,8 @@ In Loop admin:
 
 ### A5. Install the Loop widget on the theme
 
+Brand-matched widget design guide: [`docs/loop-widget-design.md`](./loop-widget-design.md).
+
 Prefer **app block** (Online Store 2.0) — no custom liquid unless the theme blocks it.
 
 **Theme status (Dr. Droppy):** `sections/product-buybox.liquid` on `cursor/shopify-theme-36e5` now supports `@app` blocks and renders them **above Add to cart** on the product page. After this theme is published, Loop’s “No product templates eligible…” warning should clear — then add the Loop widget via Theme editor → Product page → Product buy box → Add block → Apps.

@@ -269,9 +269,15 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 .hey__lead { margin: 0.5rem 0 0; font-family: var(--display); font-size: 1.3rem; }
 .hey p:last-child { margin: 0.85rem 0 0; max-width: 42ch; color: rgba(255,255,255,0.92); line-height: 1.6; }
 
-.process, .benefits, .collection, .cart, .page, .collection-list { padding: 3.5rem 1.25rem; }
+.process, .benefits, .highlights, .collection, .cart, .page, .collection-list { padding: 3.5rem 1.25rem; }
 .section-head { width: min(100%, 40rem); margin: 0 auto 2rem; text-align: center; }
 .section-head h1, .section-head h2 { font-size: clamp(2rem, 5vw, 3rem); }
+.section-lead {
+  margin: 0.75rem auto 0;
+  max-width: 40ch;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
 .process { background: var(--sand); }
 .process__track {
   width: min(100%, var(--max));
@@ -732,6 +738,166 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   margin-top: 1rem;
   font-size: 0.82rem;
   color: var(--ink-soft);
+}
+
+/* Condensed benefits + process */
+.highlights {
+  background: linear-gradient(180deg, #ffffff, var(--blue-soft));
+}
+.highlights__grid {
+  width: min(100%, var(--max));
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 860px) {
+  .highlights__grid { grid-template-columns: repeat(3, 1fr); gap: 1.15rem; }
+}
+.highlight-card {
+  position: relative;
+  padding: 0.9rem;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 1.15rem;
+  box-shadow: 0 14px 28px rgba(15, 44, 89, 0.06);
+}
+.highlight-card__step {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 1;
+  min-width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--sky);
+  border: 2px solid var(--ink);
+  font-family: var(--display);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.highlight-card__img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 0.85rem;
+  background: #fff;
+}
+.highlight-card h3 {
+  margin: 0.85rem 0 0;
+  font-size: 1.15rem;
+}
+.highlight-card p {
+  margin: 0.4rem 0 0.2rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Instagram-style social testimonials */
+.social-proof {
+  padding: 3.5rem 1.25rem;
+  background: #fafafa;
+}
+.social-grid {
+  width: min(100%, var(--max));
+  margin: 0 auto;
+  display: grid;
+  gap: 1.1rem;
+}
+@media (min-width: 700px) {
+  .social-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1050px) {
+  .social-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.ig-card {
+  background: #fff;
+  border: 1px solid rgba(15, 44, 89, 0.12);
+  border-radius: 0.85rem;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(15, 44, 89, 0.05);
+}
+.ig-card__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.75rem 0.8rem;
+}
+.ig-card__avatar {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1.5px solid var(--sky);
+}
+.ig-card__avatar--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-soft);
+  font-weight: 800;
+  color: var(--ink);
+}
+.ig-card__meta {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.ig-card__meta strong {
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ig-card__meta span {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.ig-card__platform {
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+}
+.ig-card__media img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--blue-soft);
+}
+.ig-card__body {
+  padding: 0.7rem 0.85rem 0.95rem;
+}
+.ig-card__actions {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  margin-bottom: 0.45rem;
+}
+.ig-card__likes {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.ig-card__caption {
+  margin: 0.35rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.ig-card__caption strong {
+  margin-right: 0.25rem;
+}
+.ig-card__time {
+  margin: 0.45rem 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
 }
 
 .marquee {

@@ -18,57 +18,79 @@
         "text": "I designed these products to bring science-backed purity into everyday showers — friendly on the outside, serious about clean water on the inside."
       }
     },
+    "highlights": {
+      "type": "highlights",
+      "settings": {
+        "pill": "Why Dr. Droppy",
+        "heading": "Cleaner water, simpler routine",
+        "text": "Filtration, feel, and install — condensed into what matters most."
+      }
+    },
     "reviews": {
-      "type": "reviews",
+      "type": "social-reviews",
       "blocks": {
         "r1": {
-          "type": "review",
+          "type": "post",
           "settings": {
-            "title": "Noticeably softer water",
-            "body": "My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Dr. Droppy on the box made my kids smile.",
             "name": "Sophia R.",
-            "date": "Aug 2, 2026"
+            "handle": "@sophia.rinses",
+            "location": "Austin, TX",
+            "title": "Sophia with Dr. Droppy shower head",
+            "body": "Skin finally stopped feeling tight after showers. Pressure is still strong — and Dr. Droppy on the box made my kids smile 💧",
+            "likes": "3,102 likes",
+            "date": "2 DAYS AGO",
+            "avatar_asset": "avatar-sophia.jpg",
+            "photo_asset": "ugc-sophia.jpg"
           }
         },
         "r2": {
-          "type": "review",
+          "type": "post",
           "settings": {
-            "title": "Easy install, real difference",
-            "body": "Twisted on in under five minutes. Hair feels less brittle. Dr. Droppy nailed the unboxing.",
             "name": "Marcus T.",
-            "date": "Jul 28, 2026"
+            "handle": "@marcus.builds",
+            "location": "Denver, CO",
+            "title": "Marcus installing filtered shower head",
+            "body": "Twisted on in under five minutes. Hair feels less brittle already. Unboxing was actually fun.",
+            "likes": "1,884 likes",
+            "date": "5 DAYS AGO",
+            "avatar_asset": "avatar-marcus.jpg",
+            "photo_asset": "ugc-marcus.jpg"
           }
         },
         "r3": {
-          "type": "review",
+          "type": "post",
           "settings": {
-            "title": "Worth the switch",
-            "body": "It keeps flow high while cutting the chlorine smell. Dr. Droppy approved.",
             "name": "Elena K.",
-            "date": "Jul 19, 2026"
+            "handle": "@elena.glow",
+            "location": "Miami, FL",
+            "title": "Elena after filtered shower",
+            "body": "Chlorine smell is gone and my hair feels softer. This is my forever shower upgrade.",
+            "likes": "4,291 likes",
+            "date": "1 WEEK AGO",
+            "avatar_asset": "avatar-elena.jpg",
+            "photo_asset": "ugc-elena.jpg"
           }
         },
         "r4": {
-          "type": "review",
+          "type": "post",
           "settings": {
-            "title": "Great for hard water",
-            "body": "After a month my scalp irritation calmed down and soap rinses cleaner.",
             "name": "Jordan P.",
-            "date": "Jul 11, 2026"
+            "handle": "@jordan.home",
+            "location": "Seattle, WA",
+            "title": "Filtered shower spray",
+            "body": "Hard water used to wreck my scalp. A month in and soap rinses cleaner. Worth it.",
+            "likes": "2,067 likes",
+            "date": "2 WEEKS AGO",
+            "avatar_asset": "avatar-jordan.jpg",
+            "photo_asset": "ugc-jordan.jpg"
           }
         }
       },
       "block_order": ["r1", "r2", "r3", "r4"],
       "settings": {
-        "pill": "Testimonials",
-        "heading": "Real lives changed"
-      }
-    },
-    "benefits": {
-      "type": "benefits",
-      "settings": {
-        "pill": "A healthier you",
-        "heading": "You’ll experience"
+        "pill": "Social proof",
+        "heading": "Real showers. Real reviews.",
+        "rating_label": "4.9 · 128 Reviews"
       }
     },
     "marquee": {
@@ -83,13 +105,6 @@
         "pill": "The problem",
         "heading": "Your water isn’t safe",
         "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Dr. Droppy started campaigning for cleaner showers."
-      }
-    },
-    "process": {
-      "type": "process",
-      "settings": {
-        "pill": "How filtration works",
-        "heading": "From bad water to better you"
       }
     },
     "science": {
@@ -159,11 +174,10 @@
   "order": [
     "buybox",
     "hey",
+    "highlights",
     "reviews",
-    "benefits",
     "marquee",
     "problem",
-    "process",
     "science",
     "faq",
     "cta"

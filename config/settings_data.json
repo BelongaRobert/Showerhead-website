@@ -9,7 +9,9 @@
  */
 {
   "current": {
+    "featured_product": "dr-droppys-filtered-showerhead",
     "color_ink": "#1B2A4A",
-    "color_yellow": "#89D6F2"
+    "color_yellow": "#89D6F2",
+    "content_for_index": []
   }
 }

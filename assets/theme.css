@@ -1009,3 +1009,5 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .marquee__track { animation: none; }
 }
+
+.footer-note { margin: 0.45rem 0 0; font-size: 0.78rem; color: rgba(255,255,255,0.55); }

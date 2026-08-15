@@ -664,20 +664,190 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   box-shadow: 3px 3px 0 rgba(27, 42, 74, 0.12);
 }
 
+.sub-box {
+  margin: 1.15rem 0 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.sub-box__label {
+  margin: 0 0 0.15rem;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.sub-card {
+  position: relative;
+  display: block;
+  padding: 0.95rem 1rem 0;
+  border: 2px solid #c9d4e4;
+  border-radius: 1rem;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+}
+.sub-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.sub-card--autoship {
+  padding-bottom: 0;
+  background: color-mix(in srgb, var(--blue-soft) 55%, white);
+}
+.sub-card.is-selected,
+.sub-card:has(input:checked) {
+  border-color: var(--sky);
+  box-shadow: 0 0 0 1px var(--sky);
+}
+.sub-card--autoship.is-selected,
+.sub-card--autoship:has(input:checked) {
+  border-color: #4aa8d4;
+  background: color-mix(in srgb, var(--blue-soft) 72%, white);
+}
+.sub-card__save {
+  position: absolute;
+  top: -0.05rem;
+  right: 0.75rem;
+  z-index: 1;
+  padding: 0.35rem 0.55rem 0.3rem;
+  border-radius: 0 0 0.55rem 0.55rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+.sub-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-right: 4.5rem;
+}
+.sub-card__top--simple { padding-right: 0; padding-bottom: 0.95rem; }
+.sub-card__choice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+.sub-card__radio {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 2px solid #8aa0bf;
+  border-radius: 999px;
+  background: #fff;
+  position: relative;
+}
+.sub-card:has(input:checked) .sub-card__radio,
+.sub-card.is-selected .sub-card__radio {
+  border-color: var(--ink);
+}
+.sub-card:has(input:checked) .sub-card__radio::after,
+.sub-card.is-selected .sub-card__radio::after {
+  content: "";
+  position: absolute;
+  inset: 0.18rem;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.sub-card__title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.sub-card__pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  text-align: right;
+}
+.sub-card__pricing em {
+  font-style: normal;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.sub-card__pricing s {
+  color: #8b97ab;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.sub-card__perks {
+  margin: 0.75rem 0 0.85rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+.sub-card__perks li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+.sub-card__perks li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #1f7a4c;
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+.sub-card__popular {
+  display: block;
+  margin: 0 -1rem;
+  padding: 0.55rem 1rem;
+  background: #f2d35b;
+  color: var(--ink);
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, #f2d35b);
+}
+.sub-box__note {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .filter-addon {
   margin-top: 1rem;
-  padding: 0.95rem 1rem 1.05rem;
-  border: 2px solid var(--ink);
-  border-radius: 1rem;
-  background: color-mix(in srgb, var(--sand) 80%, white);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 .filter-addon.is-visible { display: block; }
 .filter-addon__gallery {
   position: relative;
   aspect-ratio: 1;
-  border-radius: 0.85rem;
+  border-radius: 1rem;
   overflow: hidden;
-  border: 2px solid var(--ink);
+  border: 2px solid var(--line);
   background: white;
 }
 .filter-addon__slide {
@@ -776,6 +946,14 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   margin-top: 1rem;
   display: grid;
   gap: 0.75rem;
+}
+/* Custom Autoship UI replaces Loop chrome; keep app block in DOM for theme editor. */
+.pdp__buybox:has(.sub-box) .pdp__apps {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
 }
 .pdp__app-block { width: 100%; }
 .pdp__app-block:empty { display: none; }

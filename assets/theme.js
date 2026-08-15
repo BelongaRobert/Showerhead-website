@@ -60,22 +60,17 @@ function initPdpGalleries() {
 }
 
 function selectedPurchaseMode(root) {
-  return root.querySelector('input[name="purchase_mode"]:checked')?.value || 'onetime';
+  return root.querySelector('input[name="purchase_mode"]:checked')?.value || 'subscribe';
 }
 
 function syncPurchaseMode(root) {
   const mode = selectedPurchaseMode(root);
-  const plans = root.querySelector('[data-filter-plans]');
   const onetimeLabel = root.querySelector('[data-atc-label-onetime]');
   const subscribeLabel = root.querySelector('[data-atc-label-subscribe]');
 
-  root.querySelectorAll('.purchase-mode').forEach((card) => {
+  root.querySelectorAll('.sub-card, .purchase-mode').forEach((card) => {
     card.classList.toggle('is-selected', card.querySelector('input')?.checked);
   });
-
-  if (plans) {
-    plans.classList.toggle('is-dimmed', mode !== 'subscribe');
-  }
 
   if (onetimeLabel && subscribeLabel) {
     onetimeLabel.hidden = mode === 'subscribe';

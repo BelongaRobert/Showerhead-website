@@ -218,6 +218,15 @@
             assign filter_title = section.settings.filter_title | default: 'Carbon Showerhead Filters'
             assign filter_price_label = section.settings.filter_price_label | default: '$29.99'
             assign filter_variant_id = section.settings.filter_variant_id | strip
+            assign head_price = product.selected_or_first_available_variant.price
+            assign compare_price = section.settings.autoship_compare_price | default: '$199'
+            assign autoship_price = section.settings.autoship_price | default: ''
+            if autoship_price == blank and product != blank
+              assign autoship_price = head_price | money
+            elsif autoship_price == blank
+              assign autoship_price = '$129'
+            endif
+            assign save_badge = section.settings.autoship_save_badge | default: 'SAVE $70'
             if filter_product != blank
               assign filter_title = filter_product.title
               assign filter_price_label = filter_product.selected_or_first_available_variant.price | money
@@ -228,6 +237,10 @@
             assign filter_img_1 = section.settings.filter_image_1
             assign filter_img_2 = section.settings.filter_image_2
             assign filter_img_3 = section.settings.filter_image_3
+            assign first_plan_id = ''
+            if filter_has_plans
+              assign first_plan_id = filter_product.selling_plan_groups.first.selling_plans.first.id
+            endif
           -%}
 
           <div
@@ -277,66 +290,58 @@
               </button>
             </div>
 
-            <div class="filter-addon__head">
-              <div>
-                <p class="filter-addon__eyebrow">Loop subscription add-on</p>
-                <strong>{{ filter_title }}</strong>
-                <p class="filter-addon__price">
-                  {{ filter_price_label }} · replace every 90 days
-                </p>
-              </div>
-            </div>
+            <fieldset class="sub-box" data-purchase-modes>
+              <legend class="sub-box__label">Subscription</legend>
 
-            <fieldset class="purchase-modes" data-purchase-modes>
-              <legend>How do you want to buy?</legend>
-              <label class="purchase-mode is-selected">
-                <input type="radio" name="purchase_mode" value="onetime" checked>
-                <span>
-                  <strong>One-time</strong>
-                  <em>Shower head only — add filters later anytime</em>
+              <label class="sub-card sub-card--autoship is-selected">
+                <input type="radio" name="purchase_mode" value="subscribe" checked>
+                <span class="sub-card__save">{{ save_badge }}</span>
+                <span class="sub-card__top">
+                  <span class="sub-card__choice">
+                    <span class="sub-card__radio" aria-hidden="true"></span>
+                    <strong class="sub-card__title">Autoship</strong>
+                  </span>
+                  <span class="sub-card__pricing">
+                    <em>{{ autoship_price }}</em>
+                    <s>{{ compare_price }}</s>
+                  </span>
                 </span>
+                <ul class="sub-card__perks">
+                  <li>Showerhead + Filter + Filter Subscription</li>
+                  <li>Filter shipped every 90 days ({{ filter_price_label }})</li>
+                  <li>Delivery during sellouts</li>
+                  <li>Pause or cancel anytime</li>
+                </ul>
+                <span class="sub-card__popular">Most popular option</span>
+                {% if filter_has_plans %}
+                  <span class="visually-hidden" data-filter-plans>
+                    {% for group in filter_product.selling_plan_groups %}
+                      {% for plan in group.selling_plans %}
+                        <input
+                          type="radio"
+                          name="filter_selling_plan"
+                          value="{{ plan.id }}"
+                          {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                        >
+                      {% endfor %}
+                    {% endfor %}
+                  </span>
+                {% else %}
+                  <input type="hidden" name="filter_selling_plan" value="{{ first_plan_id }}" data-plan-placeholder>
+                {% endif %}
               </label>
-              <label class="purchase-mode">
-                <input type="radio" name="purchase_mode" value="subscribe">
-                <span>
-                  <strong>Subscribe &amp; Save</strong>
-                  <em>Add {{ filter_title }} on a Loop plan — discount on this order and future filters</em>
+
+              <label class="sub-card sub-card--onetime">
+                <input type="radio" name="purchase_mode" value="onetime">
+                <span class="sub-card__top sub-card__top--simple">
+                  <span class="sub-card__choice">
+                    <span class="sub-card__radio" aria-hidden="true"></span>
+                    <strong class="sub-card__title">One-Time Purchase</strong>
+                  </span>
                 </span>
               </label>
             </fieldset>
-
-            <div class="filter-addon__plans" data-filter-plans>
-              {% if filter_has_plans %}
-                {% for group in filter_product.selling_plan_groups %}
-                  {% for plan in group.selling_plans %}
-                    <label class="filter-plan{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
-                      <input
-                        type="radio"
-                        name="filter_selling_plan"
-                        value="{{ plan.id }}"
-                        {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
-                      >
-                      <span>
-                        <strong>{{ plan.name }}</strong>
-                        {% if plan.description != blank %}
-                          <em>{{ plan.description }}</em>
-                        {% else %}
-                          <em>Recurring Carbon Filters — discounted vs one-time</em>
-                        {% endif %}
-                      </span>
-                    </label>
-                  {% endfor %}
-                {% endfor %}
-              {% else %}
-                <label class="filter-plan is-selected">
-                  <input type="radio" name="filter_selling_plan" value="" checked data-plan-placeholder>
-                  <span>
-                    <strong>Every 90 days · Subscribe &amp; Save</strong>
-                    <em>Map Carbon Filters to a Loop selling plan to unlock checkout discounts. Photos + option show now.</em>
-                  </span>
-                </label>
-              {% endif %}
-            </div>
+            <p class="sub-box__note">*Price automatically updates in cart</p>
           </div>
 
           {%- comment -%} App blocks (Loop Subscribe & Save widget, etc.) {%- endcomment -%}
@@ -353,8 +358,8 @@
 
           <button class="btn btn--block" type="submit" data-atc-button {% unless product.available %}disabled{% endunless %}>
             {% if product.available %}
-              <span data-atc-label-onetime>Add to cart — {{ product.selected_or_first_available_variant.price | money }}</span>
-              <span data-atc-label-subscribe hidden>Subscribe &amp; add filters</span>
+              <span data-atc-label-subscribe>Add Autoship — {{ autoship_price }}</span>
+              <span data-atc-label-onetime hidden>Add to cart — {{ product.selected_or_first_available_variant.price | money }}</span>
             {% else %}
               Sold out
             {% endif %}
@@ -385,24 +390,37 @@
             <button type="button" class="filter-addon__thumb" data-index="1">{{ 'filter-2.jpg' | asset_url | img_tag: '', '' }}</button>
             <button type="button" class="filter-addon__thumb" data-index="2">{{ 'filter-3.jpg' | asset_url | img_tag: '', '' }}</button>
           </div>
-          <div class="filter-addon__head">
-            <div>
-              <p class="filter-addon__eyebrow">Loop subscription add-on</p>
-              <strong>Carbon Showerhead Filters</strong>
-              <p class="filter-addon__price">$29.99 · replace every 90 days</p>
-            </div>
-          </div>
-          <fieldset class="purchase-modes">
-            <legend>How do you want to buy?</legend>
-            <label class="purchase-mode is-selected">
-              <input type="radio" name="purchase_mode" value="onetime" checked>
-              <span><strong>One-time</strong><em>Shower head only</em></span>
+          <fieldset class="sub-box" data-purchase-modes>
+            <legend class="sub-box__label">Subscription</legend>
+            <label class="sub-card sub-card--autoship is-selected">
+              <input type="radio" name="purchase_mode" value="subscribe" checked>
+              <span class="sub-card__save">SAVE $70</span>
+              <span class="sub-card__top">
+                <span class="sub-card__choice">
+                  <span class="sub-card__radio" aria-hidden="true"></span>
+                  <strong class="sub-card__title">Autoship</strong>
+                </span>
+                <span class="sub-card__pricing"><em>$129</em><s>$199</s></span>
+              </span>
+              <ul class="sub-card__perks">
+                <li>Showerhead + Filter + Filter Subscription</li>
+                <li>Filter shipped every 90 days ($29.99)</li>
+                <li>Delivery during sellouts</li>
+                <li>Pause or cancel anytime</li>
+              </ul>
+              <span class="sub-card__popular">Most popular option</span>
             </label>
-            <label class="purchase-mode">
-              <input type="radio" name="purchase_mode" value="subscribe">
-              <span><strong>Subscribe &amp; Save</strong><em>Filters on a Loop plan</em></span>
+            <label class="sub-card sub-card--onetime">
+              <input type="radio" name="purchase_mode" value="onetime">
+              <span class="sub-card__top sub-card__top--simple">
+                <span class="sub-card__choice">
+                  <span class="sub-card__radio" aria-hidden="true"></span>
+                  <strong class="sub-card__title">One-Time Purchase</strong>
+                </span>
+              </span>
             </label>
           </fieldset>
+          <p class="sub-box__note">*Price automatically updates in cart</p>
         </div>
 
         <div class="pdp__apps">
@@ -437,7 +455,7 @@
         {{ 'dr-droppy-wave.png' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
         <div>
           <strong>Tip from Dr. Droppy</strong>
-          <p>Replace the filter every 90 days — Subscribe &amp; Save keeps Carbon Filters coming automatically.</p>
+          <p>Replace the filter every 90 days — Autoship keeps Carbon Filters coming automatically.</p>
         </div>
       </aside>
 
@@ -522,6 +540,25 @@
       "id": "filter_price_label",
       "label": "Filter price label",
       "default": "$29.99"
+    },
+    {
+      "type": "text",
+      "id": "autoship_price",
+      "label": "Autoship price",
+      "info": "Leave blank to use the showerhead product price.",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "autoship_compare_price",
+      "label": "Autoship compare-at price",
+      "default": "$199"
+    },
+    {
+      "type": "text",
+      "id": "autoship_save_badge",
+      "label": "Autoship save badge",
+      "default": "SAVE $70"
     },
     {
       "type": "image_picker",

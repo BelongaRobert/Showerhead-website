@@ -3,19 +3,19 @@
     "buybox": {
       "type": "product-buybox",
       "settings": {
-        "eyebrow": "Dr. Droppy \u00b7 Clean Water",
+        "eyebrow": "Dr. Droppy · Clean Water",
         "heading": "Filtered Shower Head",
         "tagline": "Science. Nature. Better Showers.",
-        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water \u2014 science-backed purity for your family."
+        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
       }
     },
     "hey": {
       "type": "hey-there",
       "settings": {
         "pill": "Meet Dr. Droppy",
-        "heading": "Hello! I\u2019m Dr. Droppy.",
+        "heading": "Hello! I’m Dr. Droppy.",
         "lead": "Your guide to cleaner shower water.",
-        "text": "I designed these products to bring science-backed purity into everyday showers \u2014 friendly on the outside, serious about clean water on the inside."
+        "text": "I designed these products to bring science-backed purity into everyday showers — friendly on the outside, serious about clean water on the inside."
       }
     },
     "highlights": {
@@ -23,21 +23,21 @@
       "settings": {
         "pill": "Why Dr. Droppy",
         "heading": "Cleaner water, simpler routine",
-        "text": "Filtration, feel, and install \u2014 condensed into what matters most."
+        "text": "Filtration, feel, and install — condensed into what matters most."
       }
     },
     "marquee": {
       "type": "marquee",
       "settings": {
-        "text": "Clean Water \u00b7 Better Experiences \u00b7 Science-Backed Purity \u00b7 Dr. Droppy \u00b7 Removes Chlorine \u00b7 Healthier Skin \u00b7 Soft Hair \u00b7 Clean Water \u00b7 Better Experiences \u00b7"
+        "text": "Clean Water · Better Experiences · Science-Backed Purity · Dr. Droppy · Removes Chlorine · Healthier Skin · Soft Hair · Clean Water · Better Experiences ·"
       }
     },
     "problem": {
       "type": "problem",
       "settings": {
         "pill": "The problem",
-        "heading": "Your water isn\u2019t safe",
-        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup \u2014 which is exactly why Dr. Droppy started campaigning for cleaner showers."
+        "heading": "Your water isn’t safe",
+        "text": "Millions of homes rely on decades-old plumbing lined with rust, scale, and bacteria buildup — which is exactly why Dr. Droppy started campaigning for cleaner showers."
       }
     },
     "science": {
@@ -47,7 +47,7 @@
           "type": "stat",
           "settings": {
             "value": "85%",
-            "text": "avg chlorine reduction across the filter\u2019s 3-month lifespan"
+            "text": "avg chlorine reduction across the filter’s 3-month lifespan"
           }
         },
         "s2": {
@@ -81,8 +81,7 @@
       "settings": {
         "pill": "Tested & proven",
         "heading": "Best-in-class filtration",
-        "button_label": "Shop now",
-        "button_link": "/#buy"
+        "button_label": "Shop now"
       }
     },
     "faq": {
@@ -92,14 +91,14 @@
           "type": "item",
           "settings": {
             "question": "How often do I need to replace the filter?",
-            "answer": "Dr. Droppy\u2019s rule: swap the cartridge every 90 days for the best performance."
+            "answer": "Dr. Droppy’s rule: swap the cartridge every 90 days for the best performance."
           }
         },
         "f2": {
           "type": "item",
           "settings": {
             "question": "Will the pressure be worse than my current showerhead?",
-            "answer": "Nope. It\u2019s built for high flow while filtration runs in parallel \u2014 most people say pressure feels the same or better."
+            "answer": "Nope. It’s built for high flow while filtration runs in parallel — most people say pressure feels the same or better."
           }
         },
         "f3": {
@@ -113,7 +112,7 @@
           "type": "item",
           "settings": {
             "question": "Who is Dr. Droppy?",
-            "answer": "Dr. Droppy is the friendly face of clean shower water \u2014 a science-backed guide for better skin, hair, and everyday purity."
+            "answer": "Dr. Droppy is the friendly face of clean shower water — a science-backed guide for better skin, hair, and everyday purity."
           }
         }
       },
@@ -132,9 +131,8 @@
       "type": "cta-band",
       "settings": {
         "heading": "Ready for cleaner showers?",
-        "text": "Science-backed purity for clearer skin and stronger hair \u2014 guided by Dr. Droppy.",
-        "button_label": "Shop now",
-        "button_link": "/#buy"
+        "text": "Science-backed purity for clearer skin and stronger hair — guided by Dr. Droppy.",
+        "button_label": "Shop now"
       }
     }
   },

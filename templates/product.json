@@ -34,7 +34,10 @@
           }
         }
       },
-      "block_order": ["f1", "f2"],
+      "block_order": [
+        "f1",
+        "f2"
+      ],
       "settings": {
         "pill": "Support",
         "heading": "Frequently asked"
@@ -45,10 +48,14 @@
       "settings": {
         "heading": "Ready for cleaner showers?",
         "text": "Add to cart and let Dr. Droppy guide the rinse.",
-        "button_label": "Back to shop",
-        "button_link": "/collections/all"
+        "button_label": "Shop now"
       }
     }
   },
-  "order": ["main", "benefits", "faq", "cta"]
+  "order": [
+    "main",
+    "benefits",
+    "faq",
+    "cta"
+  ]
 }

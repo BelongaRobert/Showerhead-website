@@ -1,4 +1,7 @@
 <section class="science" id="science">
+  {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
+  {% assign shop_now_url = shop_now_url | strip %}
+
   <div class="section-head">
     <p class="pill">{{ section.settings.pill }}</p>
     <h2>{{ section.settings.heading }}</h2>
@@ -12,7 +15,7 @@
     {% endfor %}
   </div>
   {% if section.settings.button_label != blank %}
-    <a class="btn btn--center" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+    <a class="btn btn--center" href="{{ shop_now_url }}">{{ section.settings.button_label }}</a>
   {% endif %}
 </section>
 
@@ -22,8 +25,13 @@
   "settings": [
     { "type": "text", "id": "pill", "label": "Pill", "default": "Tested & proven" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Best-in-class filtration" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Add to cart" },
-    { "type": "url", "id": "button_link", "label": "Button link", "default": "/#buy" }
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product override",
+      "info": "Optional. Leave blank to use the same featured product as Shop now."
+    }
   ],
   "blocks": [
     {

@@ -1,15 +1,6 @@
 <header class="site-header">
-  {% if section.settings.product != blank %}
-    {% assign shop_now_product = section.settings.product %}
-  {% else %}
-    {% assign shop_now_product = collections.all.products.first %}
-  {% endif %}
-
-  {% if shop_now_product != blank %}
-    {% assign shop_now_url = shop_now_product.url %}
-  {% else %}
-    {% assign shop_now_url = routes.all_products_collection_url %}
-  {% endif %}
+  {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
+  {% assign shop_now_url = shop_now_url | strip %}
 
   <div class="site-header__left">
     <nav class="site-nav" aria-label="Primary">
@@ -37,8 +28,8 @@
     {
       "type": "product",
       "id": "product",
-      "label": "Shop now product",
-      "info": "Used by the Shop / Shop now links. Defaults to your first product if empty."
+      "label": "Shop now product override",
+      "info": "Optional. Leave blank to use Theme settings → Featured product."
     }
   ]
 }

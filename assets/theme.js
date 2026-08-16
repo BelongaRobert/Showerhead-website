@@ -63,9 +63,14 @@ function syncPurchaseMode(root) {
   const subscribeLabel = root.querySelector('[data-atc-label-subscribe]');
   const sellingPlanInput = root.querySelector('[data-selling-plan]');
   const modes = root.querySelector('[data-purchase-modes]');
-  const headPlanId = modes?.dataset.headPlanId || '';
+  const headPlanFromRadio = root.querySelector('input[name="head_selling_plan"]:checked')?.value;
+  const headPlanId = headPlanFromRadio || modes?.dataset.headPlanId || '';
 
-  root.querySelectorAll('.sub-card, .purchase-mode').forEach((card) => {
+  root.querySelectorAll('.sub-card').forEach((card) => {
+    card.classList.toggle('is-selected', Boolean(card.querySelector('input[name="purchase_mode"]')?.checked));
+  });
+
+  root.querySelectorAll('.sub-freq').forEach((card) => {
     card.classList.toggle('is-selected', Boolean(card.querySelector('input')?.checked));
   });
 
@@ -81,6 +86,11 @@ function syncPurchaseMode(root) {
   const filterAddon = root.querySelector('[data-filter-addon]');
   if (filterAddon) {
     filterAddon.classList.toggle('is-dimmed', mode !== 'subscribe');
+  }
+
+  const freqs = root.querySelector('.sub-card__frequencies');
+  if (freqs) {
+    freqs.classList.toggle('is-dimmed', mode !== 'subscribe');
   }
 }
 
@@ -109,6 +119,18 @@ async function addItemsToCart(items) {
   return response.json();
 }
 
+function readLoopSellingPlan(form) {
+  const candidates = form.querySelectorAll(
+    'input[name="selling_plan"], select[name="selling_plan"], input[name="selling_plan_id"]',
+  );
+  for (const el of candidates) {
+    if (el.hasAttribute('data-selling-plan')) continue;
+    const value = el.value;
+    if (value && /^\d+$/.test(String(value))) return value;
+  }
+  return '';
+}
+
 function initPurchaseModes() {
   document.querySelectorAll('.pdp').forEach((root) => {
     const form = root.querySelector('form.pdp__form');
@@ -117,7 +139,7 @@ function initPurchaseModes() {
 
     syncPurchaseMode(root);
 
-    root.querySelectorAll('input[name="purchase_mode"]').forEach((input) => {
+    root.querySelectorAll('input[name="purchase_mode"], input[name="filter_selling_plan"], input[name="head_selling_plan"]').forEach((input) => {
       input.addEventListener('change', () => syncPurchaseMode(root));
     });
 
@@ -133,15 +155,24 @@ function initPurchaseModes() {
 
       if (!headId) return;
 
-      const headPlanId = modes?.dataset.headPlanId || '';
+      const headPlanFromRadio = root.querySelector('input[name="head_selling_plan"]:checked')?.value;
+      const filterPlanFromRadio = root.querySelector('input[name="filter_selling_plan"]:checked')?.value;
+      const loopPlan = readLoopSellingPlan(form);
+
+      const headPlanId = headPlanFromRadio || modes?.dataset.headPlanId || loopPlan || '';
       const filterId = addon?.dataset.filterVariantId || modes?.dataset.filterVariantId || '';
-      const filterPlanId = addon?.dataset.filterPlanId || modes?.dataset.filterPlanId || '';
+      const filterPlanId = filterPlanFromRadio
+        || addon?.dataset.filterPlanId
+        || modes?.dataset.filterPlanId
+        || '';
 
       const items = [];
 
       if (mode === 'subscribe') {
         const headItem = { id: Number(headId), quantity: 1 };
-        if (headPlanId) headItem.selling_plan = Number(headPlanId);
+        if (headPlanId && /^\d+$/.test(String(headPlanId))) {
+          headItem.selling_plan = Number(headPlanId);
+        }
         items.push(headItem);
 
         if (filterId && /^\d+$/.test(String(filterId))) {
@@ -167,9 +198,19 @@ function initPurchaseModes() {
   });
 }
 
+function revealLiveLoopWidgets() {
+  document.querySelectorAll('[data-loop-slot]').forEach((slot) => {
+    const hasContent = Boolean(slot.querySelector('.pdp__app-block')?.childElementCount);
+    slot.classList.toggle('has-content', hasContent);
+  });
+}
+
 function initPdp() {
   initPdpGalleries();
   initPurchaseModes();
+  revealLiveLoopWidgets();
+  window.setTimeout(revealLiveLoopWidgets, 800);
+  window.setTimeout(revealLiveLoopWidgets, 2000);
 }
 
 document.addEventListener('DOMContentLoaded', initPdp);

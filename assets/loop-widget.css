@@ -1,8 +1,22 @@
-/* Dr. Droppy — Loop Subscriptions widget skin
-   Scopes Loop app-block UI to match theme plan cards / chips / buttons. */
+/* Dr. Droppy — Loop Subscriptions widget skin (Autoship design) */
 
 .pdp__apps {
   margin-top: 1rem;
+  display: none;
+}
+
+.pdp__apps.has-content,
+.pdp__apps.is-loop-live {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.pdp__apps-label {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .pdp__apps :is(
@@ -18,37 +32,30 @@
   color: var(--ink) !important;
 }
 
-/* Outer card */
+/* Outer card — Autoship style */
 .pdp__apps :is(
   .loop-widget,
   .loop-widget-container,
   [class*="loop-widget"],
   [class*="LoopWidget"]
 ) {
-  background: #fff !important;
-  border: 2px solid var(--ink) !important;
-  border-radius: 1.15rem !important;
-  box-shadow: 0 14px 28px rgba(15, 44, 89, 0.06) !important;
+  background: color-mix(in srgb, var(--blue-soft) 72%, white) !important;
+  border: 2px solid #4aa8d4 !important;
+  border-radius: 1rem !important;
+  box-shadow: none !important;
   padding: 0.95rem 1rem !important;
   margin: 0 !important;
+  overflow: hidden !important;
 }
 
-/* Option rows / radios / buttons */
 .pdp__apps :is(label, .loop-option, [class*="selling-plan"], [class*="purchase-option"]) {
   border-radius: 0.85rem !important;
+  border: 2px solid #c9d4e4 !important;
+  background: #fff !important;
+  padding: 0.75rem 0.85rem !important;
+  margin: 0.45rem 0 !important;
 }
 
-.pdp__apps :is(
-  [class*="option"],
-  [class*="plan"],
-  [class*="radio"],
-  button,
-  .loop-button
-) {
-  font-family: var(--font) !important;
-}
-
-/* Selected state — sky fill like theme chips/buttons */
 .pdp__apps :is(
   [aria-checked="true"],
   [aria-pressed="true"],
@@ -58,12 +65,11 @@
   input:checked + *,
   input:checked ~ *
 ) {
-  background: color-mix(in srgb, var(--sky) 35%, white) !important;
-  border-color: var(--ink) !important;
+  background: color-mix(in srgb, var(--sky) 40%, white) !important;
+  border-color: #4aa8d4 !important;
   color: var(--ink) !important;
 }
 
-/* Frequency chips / button group */
 .pdp__apps :is(button, [role="button"], .loop-frequency, [class*="frequency"]) {
   border: 2px solid var(--ink) !important;
   border-radius: 999px !important;
@@ -89,23 +95,21 @@
   box-shadow: 3px 3px 0 rgba(15, 44, 89, 0.18) !important;
 }
 
-/* Badges */
 .pdp__apps :is([class*="badge"], [class*="tag"], .popular, .save) {
-  background: var(--sky) !important;
-  color: var(--ink) !important;
-  border: 2px solid var(--ink) !important;
-  border-radius: 999px !important;
+  background: var(--ink) !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 0 0 0.55rem 0.55rem !important;
   font-family: var(--display) !important;
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em !important;
 }
 
-/* Text hierarchy */
 .pdp__apps :is(h1, h2, h3, h4, strong, [class*="title"]) {
   font-family: var(--display) !important;
   color: var(--ink) !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
 }
 
 .pdp__apps :is(p, span, small, [class*="desc"], [class*="label"]) {
@@ -117,9 +121,8 @@
   font-weight: 800 !important;
 }
 
-/* Inputs */
 .pdp__apps :is(input[type="radio"], input[type="checkbox"]) {
-  accent-color: var(--sky) !important;
+  accent-color: var(--ink) !important;
 }
 
 .pdp__apps :is(select, input[type="text"]) {
@@ -131,10 +134,24 @@
   font-family: var(--font) !important;
 }
 
-/* Dropdown menus */
 .pdp__apps :is([class*="dropdown"], [class*="menu"], [role="listbox"]) {
   border: 2px solid var(--ink) !important;
   border-radius: 0.85rem !important;
   background: #fff !important;
   box-shadow: 0 14px 28px rgba(15, 44, 89, 0.1) !important;
+}
+
+/* Most-popular style footer if Loop exposes a selected subscribe row */
+.pdp__apps :is([class*="subscribe"], [class*="subscription"]):has(input:checked)::after {
+  content: "Most popular option";
+  display: block;
+  margin: 0.75rem -1rem -0.95rem;
+  padding: 0.55rem 1rem;
+  background: #f2d35b;
+  color: var(--ink);
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }

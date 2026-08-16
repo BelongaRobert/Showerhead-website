@@ -715,6 +715,12 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   font-weight: 700;
   color: var(--ink);
 }
+.sub-box__sync {
+  margin: -0.1rem 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--blue);
+}
 .sub-card {
   position: relative;
   display: block;
@@ -877,6 +883,50 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-top: 1px solid color-mix(in srgb, var(--ink) 12%, #f2d35b);
+}
+.sub-card__frequencies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.15rem 0 0.85rem;
+}
+.sub-card__frequencies.is-dimmed { opacity: 0.45; }
+.sub-card__freq-label {
+  flex: 1 0 100%;
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.sub-freq {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.sub-freq input { position: absolute; opacity: 0; pointer-events: none; }
+.sub-freq.is-selected,
+.sub-freq:has(input:checked) {
+  background: var(--sky);
+  box-shadow: 2px 2px 0 rgba(15, 44, 89, 0.16);
+}
+.sub-card__loop-hint {
+  margin: 0.35rem 0 0.85rem;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.pdp__apps-label {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 .sub-box__note {
   margin: 0.15rem 0 0;

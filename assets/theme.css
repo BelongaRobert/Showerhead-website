@@ -571,10 +571,26 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 .pdp__thumb.is-active { border-color: var(--ink); }
 .pdp__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-.pdp__buybox {
+/* Hide legacy buy-box ATC — Subscription options section owns checkout CTA */
+.pdp__form > .btn--block {
+  display: none !important;
+}
+
+.sub-panel {
   width: min(100%, 40rem);
-  margin: 1.25rem auto 0;
+  margin: 0 auto 1.5rem;
   padding: 0 1.25rem;
+}
+.sub-panel__inner {
+  display: grid;
+  gap: 0.7rem;
+}
+.sub-panel__heading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 .pdp__buybox h1 {
   font-size: clamp(2.4rem, 7vw, 3.6rem);

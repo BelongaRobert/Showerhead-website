@@ -1,0 +1,216 @@
+{%- comment -%}
+  Standalone Subscription options — kept separate so GitHub→Shopify sync
+  cannot leave the product page stuck on an older buy-box-only layout.
+{%- endcomment -%}
+
+{%- liquid
+  assign head = product
+  if section.settings.product != blank
+    assign head = section.settings.product
+  elsif settings.featured_product != blank
+    assign head = settings.featured_product
+  endif
+
+  assign filter = section.settings.filter_product
+  if filter == blank
+    assign filter = settings.filter_subscription_product
+  endif
+  if filter == blank and collections.all.products.size > 0
+    for p in collections.all.products
+      if head == blank or p.id != head.id
+        if p.title contains 'Carbon' or p.title contains 'Filter' or p.tags contains 'filter-refill' or p.handle contains 'filter' or p.handle contains 'carbon'
+          assign filter = p
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  assign head_price = 10999
+  if head != blank
+    assign head_price = head.selected_or_first_available_variant.price
+  endif
+  assign filter_price = 2999
+  if filter != blank
+    assign filter_price = filter.selected_or_first_available_variant.price
+  endif
+
+  assign discount_pct = 15
+  assign filter_plan_id = ''
+  if filter != blank and filter.selling_plan_groups.size > 0
+    assign filter_plan_id = filter.selling_plan_groups.first.selling_plans.first.id
+    for adj in filter.selling_plan_groups.first.selling_plans.first.price_adjustments
+      if adj.value_type == 'percentage' and adj.value > 0
+        assign discount_pct = adj.value
+      endif
+    endfor
+  endif
+
+  assign head_plan_id = ''
+  if head != blank and head.selling_plan_groups.size > 0
+    assign head_plan_id = head.selling_plan_groups.first.selling_plans.first.id
+    for adj in head.selling_plan_groups.first.selling_plans.first.price_adjustments
+      if adj.value_type == 'percentage' and adj.value > 0
+        assign discount_pct = adj.value
+      endif
+    endfor
+  endif
+
+  assign filter_off = filter_price | times: discount_pct | divided_by: 100
+  assign filter_sale = filter_price | minus: filter_off
+  assign autoship_total = head_price | plus: filter_sale
+  assign compare_total = head_price | plus: filter_price
+  assign head_variant_id = ''
+  if head != blank
+    assign head_variant_id = head.selected_or_first_available_variant.id
+  endif
+  assign filter_variant_id = ''
+  if filter != blank
+    assign filter_variant_id = filter.selected_or_first_available_variant.id
+  endif
+-%}
+
+<section
+  class="sub-panel"
+  id="subscription"
+  data-sub-panel
+  data-head-id="{{ head_variant_id }}"
+  data-head-plan-id="{{ head_plan_id }}"
+  data-filter-id="{{ filter_variant_id }}"
+  data-filter-plan-id="{{ filter_plan_id }}"
+>
+  <div class="sub-panel__inner">
+    <h2 class="sub-panel__heading">Subscription</h2>
+
+    <label class="sub-card sub-card--autoship is-selected">
+      <input type="radio" name="dd_purchase_mode" value="subscribe" checked form="{{ section.id }}-bridge">
+      <span class="sub-card__save">SAVE {{ discount_pct }}%</span>
+      <span class="sub-card__top">
+        <span class="sub-card__choice">
+          <span class="sub-card__radio" aria-hidden="true"></span>
+          <strong class="sub-card__title">Autoship</strong>
+        </span>
+        <span class="sub-card__pricing">
+          <em>{{ autoship_total | money }}</em>
+          <s>{{ compare_total | money }}</s>
+        </span>
+      </span>
+      <ul class="sub-card__perks">
+        <li>Showerhead + Filter + Filter Subscription</li>
+        <li>Filter shipped every 90 days ({{ filter_sale | money }})</li>
+        <li>{{ discount_pct }}% off via Loop Subscribe &amp; Save</li>
+        <li>Pause or cancel anytime</li>
+      </ul>
+
+      {% if filter != blank and filter.selling_plan_groups.size > 0 %}
+        <div class="sub-card__frequencies">
+          <p class="sub-card__freq-label">Loop delivery</p>
+          {% for group in filter.selling_plan_groups %}
+            {% for plan in group.selling_plans %}
+              <label class="sub-freq{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
+                <input
+                  type="radio"
+                  name="dd_filter_plan"
+                  value="{{ plan.id }}"
+                  {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                  form="{{ section.id }}-bridge"
+                >
+                <span>{{ plan.name }}</span>
+              </label>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <span class="sub-card__popular">Most popular option</span>
+    </label>
+
+    <label class="sub-card sub-card--onetime">
+      <input type="radio" name="dd_purchase_mode" value="onetime" form="{{ section.id }}-bridge">
+      <span class="sub-card__top sub-card__top--simple">
+        <span class="sub-card__choice">
+          <span class="sub-card__radio" aria-hidden="true"></span>
+          <strong class="sub-card__title">One-Time Purchase</strong>
+        </span>
+        <span class="sub-card__pricing">
+          <em>{{ head_price | money }}</em>
+        </span>
+      </span>
+    </label>
+
+    {% if filter != blank %}
+      <div class="filter-addon is-visible" data-filter-addon>
+        <p class="filter-addon__eyebrow">Included with Autoship</p>
+        <div class="filter-addon__gallery" data-filter-gallery>
+          {% if filter.featured_media %}
+            <img class="filter-addon__slide is-active" src="{{ filter.featured_media | image_url: width: 900 }}" alt="{{ filter.title | escape }}">
+          {% else %}
+            <img class="filter-addon__slide is-active" src="{{ 'filter-1.jpg' | asset_url }}" alt="{{ filter.title | escape }}">
+            <img class="filter-addon__slide" src="{{ 'filter-2.jpg' | asset_url }}" alt="{{ filter.title | escape }}" hidden>
+            <img class="filter-addon__slide" src="{{ 'filter-3.jpg' | asset_url }}" alt="{{ filter.title | escape }}" hidden>
+          {% endif %}
+        </div>
+        {% unless filter.featured_media %}
+          <div class="filter-addon__thumbs" data-filter-thumbs>
+            <button type="button" class="filter-addon__thumb is-active" data-index="0">{{ 'filter-1.jpg' | asset_url | img_tag: '', '' }}</button>
+            <button type="button" class="filter-addon__thumb" data-index="1">{{ 'filter-2.jpg' | asset_url | img_tag: '', '' }}</button>
+            <button type="button" class="filter-addon__thumb" data-index="2">{{ 'filter-3.jpg' | asset_url | img_tag: '', '' }}</button>
+          </div>
+        {% endunless %}
+        <div class="filter-addon__head">
+          <strong>{{ filter.title }}</strong>
+          <p class="filter-addon__price">{{ filter_sale | money }} on Autoship · Loop subscription</p>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="pdp__apps is-loop-live" data-loop-slot>
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when '@app' %}
+            <div class="pdp__app-block" {{ block.shopify_attributes }}>
+              {% render block %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <button class="btn btn--block" type="button" data-sub-atc>
+      <span data-atc-label-subscribe>Add Autoship — {{ autoship_total | money }}</span>
+      <span data-atc-label-onetime hidden>Add One-Time — {{ head_price | money }}</span>
+    </button>
+    <p class="sub-box__note">*Autoship adds the showerhead plus Carbon Filters on your Loop plan.</p>
+  </div>
+
+  {% comment %} Dummy form attribute target for radios; ATC is handled in JS. {% endcomment %}
+  <form id="{{ section.id }}-bridge" hidden></form>
+</section>
+
+{% schema %}
+{
+  "name": "Subscription options",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Showerhead product",
+      "info": "Defaults to the current product page product."
+    },
+    {
+      "type": "product",
+      "id": "filter_product",
+      "label": "Carbon filter product",
+      "info": "Loop subscription product. Auto-detects Carbon/Filter titles if blank."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [{ "name": "Subscription options" }]
+}
+{% endschema %}

@@ -1,16 +1,17 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "product-buybox",
+      "settings": {
+        "product": "dr-droppys-filtered-showerhead",
+        "eyebrow": "Dr. Droppy · Filtered Shower Head",
+        "heading": "Filtered Shower Head",
+        "tagline": "Science. Nature. Better Showers.",
+        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
+      }
+    },
+    "subscription": {
+      "type": "subscription-options",
       "blocks": {
         "loop_subscriptions_loop_widget_NXmAkt": {
           "type": "shopify://apps/loop-subscriptions/blocks/loop_widget/267a7c64-5cb3-4552-b817-5485165f0a0b",
@@ -22,17 +23,7 @@
       ],
       "settings": {
         "product": "dr-droppys-filtered-showerhead",
-        "filter_product": "",
-        "filter_variant_id": "",
-        "filter_title": "Carbon Showerhead Filters",
-        "filter_price_label": "$29.99",
-        "autoship_price": "",
-        "autoship_compare_price": "",
-        "autoship_save_badge": "",
-        "eyebrow": "Dr. Droppy · Filtered Shower Head",
-        "heading": "Filtered Shower Head",
-        "tagline": "Science. Nature. Better Showers.",
-        "text": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
+        "filter_product": ""
       }
     },
     "highlights": {
@@ -83,6 +74,7 @@
   },
   "order": [
     "main",
+    "subscription",
     "highlights",
     "faq",
     "cta"

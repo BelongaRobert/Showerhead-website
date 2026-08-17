@@ -87,7 +87,8 @@ function initPdp() {
       input.addEventListener('change', () => syncOffer(panel));
     });
 
-    panel.querySelector('[data-sub-atc]')?.addEventListener('click', async () => {
+    const addToCart = async (event) => {
+      event.preventDefault();
       const mode = panel.querySelector('input[name="dd_purchase_mode"]:checked')?.value || 'subscribe';
       const headId = panel.dataset.headId;
       const filterId = panel.dataset.filterId;
@@ -97,7 +98,7 @@ function initPdp() {
       const button = panel.querySelector('[data-sub-atc]');
 
       if (!headId) {
-        window.alert('Set the showerhead product on the Product buy box.');
+        window.alert('Set the showerhead product in Theme settings → Shop links.');
         return;
       }
 
@@ -123,7 +124,12 @@ function initPdp() {
         window.alert(error.message || 'Could not add to cart.');
         if (button) button.disabled = false;
       }
-    });
+    };
+
+    panel.addEventListener('submit', addToCart);
+    if (panel.tagName !== 'FORM') {
+      panel.querySelector('[data-sub-atc]')?.addEventListener('click', addToCart);
+    }
   });
 }
 

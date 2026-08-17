@@ -1,4 +1,5 @@
 <section class="highlights" id="highlights">
+  {% unless request.page_type == 'product' or template.name == 'product' %}
   <div class="section-head">
     {% if section.settings.pill != blank %}
       <p class="pill">{{ section.settings.pill }}</p>
@@ -29,6 +30,7 @@
       <p>Twist on, rinse happier. No plumber required — Dr. Droppy keeps it simple.</p>
     </article>
   </div>
+  {% endunless %}
 </section>
 
 {% schema %}

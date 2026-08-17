@@ -1,0 +1,216 @@
+{%- comment -%}
+  Product photo + Autoship / Add to cart.
+  Rendered from layout/theme.liquid on product pages so it still appears
+  when Shopify fails to sync sections/product-buybox.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign pdp = product
+  if pdp == blank
+    assign pdp = settings.featured_product
+  endif
+  if pdp == blank
+    assign pdp = all_products['dr-droppys-filtered-showerhead']
+  endif
+
+  if pdp != blank and pdp.title contains 'Carbon'
+    assign featured_head = settings.featured_product
+    if featured_head == blank
+      assign featured_head = all_products['dr-droppys-filtered-showerhead']
+    endif
+    if featured_head != blank
+      assign pdp = featured_head
+    endif
+  endif
+
+  assign filter = settings.filter_subscription_product
+  if filter == blank
+    assign filter = all_products['carbon-showerhead-filters']
+  endif
+  if filter == blank
+    assign filter = all_products['carbon-filters']
+  endif
+  if filter == blank
+    for candidate in collections.all.products
+      if pdp == blank or candidate.id != pdp.id
+        if candidate.tags contains 'filter-refill' or candidate.title contains 'Carbon' or candidate.handle contains 'carbon'
+          assign filter = candidate
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  assign hero_img = blank
+  if pdp != blank
+    assign hero_img = pdp.featured_image
+  endif
+
+  assign head_price = 0
+  assign head_variant_id = ''
+  if pdp != blank
+    assign head_price = pdp.selected_or_first_available_variant.price
+    assign head_variant_id = pdp.selected_or_first_available_variant.id
+  endif
+
+  assign filter_price = 0
+  assign filter_variant_id = ''
+  assign filter_plan_id = ''
+  assign filter_plan_name = 'Every 90 days'
+  assign discount_pct = 15
+  if filter != blank
+    assign filter_price = filter.selected_or_first_available_variant.price
+    assign filter_variant_id = filter.selected_or_first_available_variant.id
+    for group in filter.selling_plan_groups limit: 1
+      for plan in group.selling_plans limit: 1
+        assign filter_plan_id = plan.id
+        assign filter_plan_name = plan.name
+        for adj in plan.price_adjustments
+          if adj.value_type == 'percentage' and adj.value > 0
+            assign discount_pct = adj.value
+          endif
+        endfor
+      endfor
+    endfor
+  endif
+
+  assign head_plan_id = ''
+  if pdp != blank
+    for group in pdp.selling_plan_groups limit: 1
+      for plan in group.selling_plans limit: 1
+        assign head_plan_id = plan.id
+        for adj in plan.price_adjustments
+          if adj.value_type == 'percentage' and adj.value > 0
+            assign discount_pct = adj.value
+          endif
+        endfor
+      endfor
+    endfor
+  endif
+
+  assign filter_off = filter_price | times: discount_pct | divided_by: 100
+  assign filter_sale = filter_price | minus: filter_off
+  assign autoship_total = head_price | plus: filter_sale
+  assign compare_total = head_price | plus: filter_price
+  assign plan_count = 0
+  if filter != blank
+    for group in filter.selling_plan_groups
+      assign plan_count = plan_count | plus: group.selling_plans.size
+    endfor
+  endif
+-%}
+
+<section class="pdp pdp--live" id="buy">
+  <div class="pdp__layout">
+    <div class="pdp__banner">
+      <div class="pdp__badge">
+        {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
+        <span>Dr. Droppy’s pick</span>
+      </div>
+      {% if hero_img != blank %}
+        <img
+          class="pdp__slide is-active"
+          src="{{ hero_img | image_url: width: 1600 }}"
+          alt="{{ pdp.title | escape }}"
+          width="1600"
+          height="1600"
+        >
+      {% else %}
+        {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Filtered Shower Head', 'pdp__slide is-active' }}
+      {% endif %}
+    </div>
+
+    <form
+      class="pdp__buybox offer"
+      action="{{ routes.cart_add_url }}"
+      method="post"
+      data-sub-panel
+      data-head-id="{{ head_variant_id }}"
+      data-head-plan-id="{{ head_plan_id }}"
+      data-filter-id="{{ filter_variant_id }}"
+      data-filter-plan-id="{{ filter_plan_id }}"
+    >
+      <input type="hidden" name="id" value="{{ head_variant_id }}">
+
+      <p class="eyebrow">Dr. Droppy · Filtered Shower Head</p>
+      <h1>Filtered Shower Head</h1>
+      <p class="tagline">Science. Nature. Better Showers.</p>
+      <p class="lede">A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family.</p>
+
+      <div class="rating-row">
+        <span class="stars" aria-label="4.9 out of 5">★★★★★</span>
+        <span>4.9</span>
+        <a href="#reviews">128 Reviews</a>
+      </div>
+
+      <ul class="chips">
+        <li>Removes chlorine</li>
+        <li>Hydro-Shield filtration</li>
+        <li>Soothes skin & hair</li>
+        <li>Sustainable design</li>
+      </ul>
+
+      <div class="offer__options">
+        <label class="offer-card offer-card--autoship is-selected">
+          <input type="radio" name="dd_purchase_mode" value="subscribe" checked>
+          <span class="offer-card__badge">Save {{ discount_pct }}%</span>
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>Autoship</strong>
+              <em>Showerhead + Carbon Filter subscription</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ autoship_total | money }}</b>
+              <s>{{ compare_total | money }}</s>
+            </span>
+          </span>
+          <span class="offer-card__foot">Most popular option</span>
+        </label>
+
+        <label class="offer-card offer-card--onetime">
+          <input type="radio" name="dd_purchase_mode" value="onetime">
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>One-time purchase</strong>
+              <em>Showerhead only</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ head_price | money }}</b>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      {% if plan_count > 1 %}
+        <div class="offer-freqs">
+          <p>Filter delivery</p>
+          {% for group in filter.selling_plan_groups %}
+            {% for plan in group.selling_plans %}
+              <label class="offer-freq{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
+                <input
+                  type="radio"
+                  name="dd_filter_plan"
+                  value="{{ plan.id }}"
+                  {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                >
+                <span>{{ plan.name }}</span>
+              </label>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <button class="btn btn--block offer__cta" type="submit" name="add" data-sub-atc>
+        <span data-atc-label-subscribe>Add Autoship — {{ autoship_total | money }}</span>
+        <span data-atc-label-onetime hidden>Add to cart — {{ head_price | money }}</span>
+      </button>
+
+      <ul class="offer__trust">
+        <li>In stock · ships fast</li>
+        <li>60-day money-back guarantee</li>
+        <li>Pause or cancel anytime</li>
+      </ul>
+    </form>
+  </div>
+</section>

@@ -499,7 +499,8 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
     gap: 3rem;
   }
 }
-.pdp__media {
+.pdp__media,
+.pdp__banner {
   position: relative;
   overflow: hidden;
   border: 3px solid var(--ink);
@@ -507,18 +508,33 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   background: linear-gradient(180deg, #e9f7fc, #ffffff);
   box-shadow: 0 18px 40px rgba(15, 44, 89, 0.08);
 }
-.pdp__photo {
+.pdp__photo,
+.pdp__slide {
+  display: none;
   width: 100%;
   height: auto;
-  display: block;
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
+  position: static;
+  opacity: 1;
+  pointer-events: auto;
 }
-.pdp__banner,
-.pdp__slide,
+.pdp__photo,
+.pdp__slide.is-active {
+  display: block !important;
+  opacity: 1 !important;
+}
 .pdp__thumbs,
 .pdp__arrow {
+  display: none !important;
+}
+/* Layout buy box is the source of truth; hide the stale section copy. */
+.pdp--live ~ .shopify-section .pdp {
+  display: none !important;
+}
+body.template-product .highlights,
+body.template-product .highlights__grid {
   display: none !important;
 }
 .pdp__badge {
@@ -790,6 +806,13 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
 .pdp__buybox .btn--block {
   display: inline-flex !important;
   width: 100%;
+}
+@media (max-width: 899px) {
+  .pdp--live .offer__cta {
+    position: sticky;
+    bottom: 0.75rem;
+    z-index: 6;
+  }
 }
 
 .sub-panel {

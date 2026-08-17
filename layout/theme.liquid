@@ -21,6 +21,9 @@
   <body class="template-{{ template.name }}">
     {% sections 'header-group' %}
     <main id="MainContent" role="main">
+      {% if template.name == 'product' %}
+        {% render 'pdp-purchase' %}
+      {% endif %}
       {{ content_for_layout }}
     </main>
     {% sections 'footer-group' %}

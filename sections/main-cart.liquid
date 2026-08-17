@@ -1,41 +1,48 @@
 <section class="cart">
-  <h1>Cart</h1>
-  {% if cart.item_count == 0 %}
-    <p>Your cart is empty.</p>
-    <a class="btn" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
-  {% else %}
-    <form action="{{ routes.cart_url }}" method="post" class="cart__form">
-      {% for item in cart.items %}
-        <div class="cart-row">
-          <div class="cart-row__media">
-            {% if item.image %}
-              {{ item.image | image_url: width: 180 | image_tag: alt: item.product.title }}
-            {% endif %}
+  <div class="cart__inner">
+    <p class="eyebrow">Your bag</p>
+    <h1>Cart</h1>
+    {% if cart.item_count == 0 %}
+      <p class="cart__empty">Your cart is empty.</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+    {% else %}
+      <form action="{{ routes.cart_url }}" method="post" class="cart__form">
+        {% for item in cart.items %}
+          <div class="cart-row">
+            <div class="cart-row__media">
+              {% if item.image %}
+                {{ item.image | image_url: width: 220 | image_tag: alt: item.product.title }}
+              {% endif %}
+            </div>
+            <div class="cart-row__info">
+              <strong>{{ item.product.title }}</strong>
+              {% unless item.variant.title == 'Default Title' %}
+                <p class="cart-row__variant">{{ item.variant.title }}</p>
+              {% endunless %}
+              {% if item.selling_plan_allocation %}
+                <p class="cart-row__plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+              {% else %}
+                <p class="cart-row__unit">One-time purchase</p>
+              {% endif %}
+              <p class="cart-row__unit">{{ item.final_price | money }} each</p>
+            </div>
+            <div class="cart-row__qty">
+              <label class="visually-hidden" for="Updates-{{ item.key }}">Quantity</label>
+              <input id="Updates-{{ item.key }}" type="number" name="updates[{{ item.key }}]" value="{{ item.quantity }}" min="0">
+              <p class="cart-row__line">{{ item.final_line_price | money }}</p>
+            </div>
           </div>
-          <div class="cart-row__info">
-            <strong>{{ item.product.title }}</strong>
-            {% unless item.variant.title == 'Default Title' %}
-              <p class="cart-row__variant">{{ item.variant.title }}</p>
-            {% endunless %}
-            {% if item.selling_plan_allocation %}
-              <p class="cart-row__plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
-            {% endif %}
-            <p class="cart-row__unit">{{ item.final_price | money }} each</p>
-          </div>
-          <div class="cart-row__qty">
-            <label class="visually-hidden" for="Updates-{{ item.key }}">Quantity</label>
-            <input id="Updates-{{ item.key }}" type="number" name="updates[{{ item.key }}]" value="{{ item.quantity }}" min="0">
-            <p class="cart-row__line">{{ item.final_line_price | money }}</p>
+        {% endfor %}
+        <div class="cart__footer">
+          <p class="cart-total">Total {{ cart.total_price | money }}</p>
+          <div class="cart__actions">
+            <button class="btn btn--light" type="submit" name="update">Update</button>
+            <button class="btn" type="submit" name="checkout">Checkout</button>
           </div>
         </div>
-      {% endfor %}
-      <p class="cart-total">Total: {{ cart.total_price | money }}</p>
-      <div class="cart__actions">
-        <button class="btn" type="submit" name="update">Update cart</button>
-        <button class="btn btn--light" type="submit" name="checkout">Checkout</button>
-      </div>
-    </form>
-  {% endif %}
+      </form>
+    {% endif %}
+  </div>
 </section>
 
 {% schema %}

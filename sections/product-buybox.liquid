@@ -26,47 +26,49 @@
     assign product = main_product
   -%}
 
-  <div class="pdp__banner" id="PdpMain-{{ section.id }}">
-    <div class="pdp__badge">
-      {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
-      <span>Dr. Droppy’s pick</span>
+  <div class="pdp__stage">
+    <div class="pdp__banner" id="PdpMain-{{ section.id }}">
+      <div class="pdp__badge">
+        {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
+        <span>Dr. Droppy’s pick</span>
+      </div>
+      {% if product != blank and product.media.size > 0 %}
+        {% for media in product.media limit: 6 %}
+          <img
+            class="pdp__slide{% if forloop.first %} is-active{% endif %}"
+            src="{{ media | image_url: width: 2000 }}"
+            alt="{{ media.alt | escape | default: product.title }}"
+            data-index="{{ forloop.index0 }}"
+            {% unless forloop.first %}hidden{% endunless %}
+          >
+        {% endfor %}
+      {% else %}
+        {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'pdp__slide is-active' }}
+        {{ 'gallery-1.jpg' | asset_url | img_tag: 'Filtered shower head spray', 'pdp__slide' }}
+        {{ 'gallery-2.jpg' | asset_url | img_tag: 'Filtered shower head product', 'pdp__slide' }}
+        {{ 'product-detail.jpg' | asset_url | img_tag: 'Shower head face detail', 'pdp__slide' }}
+      {% endif %}
+      <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
+      <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
     </div>
-    {% if product != blank and product.media.size > 0 %}
-      {% for media in product.media limit: 5 %}
-        <img
-          class="pdp__slide{% if forloop.first %} is-active{% endif %}"
-          src="{{ media | image_url: width: 2000 }}"
-          alt="{{ media.alt | escape | default: product.title }}"
-          data-index="{{ forloop.index0 }}"
-          {% unless forloop.first %}hidden{% endunless %}
-        >
-      {% endfor %}
-    {% else %}
-      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'pdp__slide is-active' }}
-      {{ 'gallery-1.jpg' | asset_url | img_tag: 'Filtered shower head spray', 'pdp__slide' }}
-      {{ 'gallery-2.jpg' | asset_url | img_tag: 'Filtered shower head product', 'pdp__slide' }}
-      {{ 'product-detail.jpg' | asset_url | img_tag: 'Shower head face detail', 'pdp__slide' }}
-    {% endif %}
-    <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
-    <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
+
+    <div class="pdp__thumbs" data-pdp-thumbs>
+      {% if product != blank and product.media.size > 0 %}
+        {% for media in product.media limit: 6 %}
+          <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+            {{ media | image_url: width: 240 | image_tag: alt: '' }}
+          </button>
+        {% endfor %}
+      {% else %}
+        <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
+        <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
+        <button type="button" class="pdp__thumb" data-index="2">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
+        <button type="button" class="pdp__thumb" data-index="3">{{ 'product-detail.jpg' | asset_url | img_tag: '', '' }}</button>
+      {% endif %}
+    </div>
   </div>
 
-  <div class="pdp__thumbs" data-pdp-thumbs>
-    {% if product != blank and product.media.size > 0 %}
-      {% for media in product.media limit: 5 %}
-        <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
-          {{ media | image_url: width: 200 | image_tag: alt: '' }}
-        </button>
-      {% endfor %}
-    {% else %}
-      <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
-      <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
-      <button type="button" class="pdp__thumb" data-index="2">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
-      <button type="button" class="pdp__thumb" data-index="3">{{ 'product-detail.jpg' | asset_url | img_tag: '', '' }}</button>
-    {% endif %}
-  </div>
-
-  <div class="pdp__buybox">
+  <div class="pdp__intro">
     <p class="eyebrow">{{ section.settings.eyebrow }}</p>
     <h1>
       {% if section.settings.heading != blank %}
@@ -90,70 +92,6 @@
       <li>Soothes skin & hair</li>
       <li>Sustainable design</li>
     </ul>
-
-    <div class="plan-card is-selected" data-main-plan>
-      <div class="popular-tag">DR. DROPPY’S FAVORITE</div>
-      <div class="plan-top">
-        <strong>{% if product != blank %}{{ product.title }}{% else %}Filtered Shower Head{% endif %}</strong>
-        <span><em>{% if product != blank %}{{ product.selected_or_first_available_variant.price | money }}{% else %}$109.99{% endif %}</em></span>
-      </div>
-      <ul>
-        <li>Filtered shower head + install kit</li>
-        <li>Built for clearer skin & stronger hair</li>
-        <li>60-day money-back guarantee</li>
-      </ul>
-    </div>
-    <p class="sub-box__note">Choose <strong>Autoship</strong> or <strong>One-Time</strong> in Subscription below to add to cart.</p>
-
-    <div class="trust-stack">
-      <div class="stock-row">
-        <span class="in-stock">In stock</span>
-        <span>Ships fast</span>
-      </div>
-      <div class="urgency"><div class="urgency-bar" style="width:84%"></div></div>
-      <p class="urgency-copy">84% of the current batch reserved · Dr. Droppy says don’t wait</p>
-      <ul class="perk-list">
-        <li>Chlorine-tested filter</li>
-        <li>60-day money-back guarantee</li>
-        <li>Good for you & the planet</li>
-      </ul>
-    </div>
-
-    <aside class="droppy-tip">
-      {{ 'dr-droppy-wave.png' | asset_url | img_tag: 'Dr. Droppy waving', '' }}
-      <div>
-        <strong>Tip from Dr. Droppy</strong>
-        <p>Replace the filter every 90 days — Autoship keeps Carbon Filters coming automatically.</p>
-      </div>
-    </aside>
-
-    <div class="info-accordions">
-      <details class="accordion" open>
-        <summary>Overview</summary>
-        <ul>
-          <li>Multi-stage filtration for everyday shower water</li>
-          <li>High-flow pressure with wide-face coverage</li>
-          <li>Universal quick install on standard shower arms</li>
-        </ul>
-      </details>
-      <details class="accordion">
-        <summary>What's Included</summary>
-        <ul>
-          <li>Dr. Droppy Filtered Shower Head</li>
-          <li>Pre-installed filter cartridge</li>
-          <li>Plumber’s tape + fit wrench</li>
-          <li>A hello from Dr. Droppy</li>
-        </ul>
-      </details>
-      <details class="accordion">
-        <summary>Product Design & Performance</summary>
-        <ul>
-          <li>Replace filter every 90 days</li>
-          <li>KDF-55 + calcium sulfite multi-stage media</li>
-          <li>Targets chlorine and common shower contaminants</li>
-        </ul>
-      </details>
-    </div>
   </div>
 </section>
 {% else %}
@@ -173,7 +111,7 @@
 
 {% schema %}
 {
-  "name": "Product buy box",
+  "name": "Product gallery",
   "enabled_on": {
     "templates": ["product"]
   },
@@ -199,15 +137,15 @@
       "type": "text",
       "id": "tagline",
       "label": "Tagline",
-      "default": "The shower upgrade your skin will love."
+      "default": "Science. Nature. Better Showers."
     },
     {
       "type": "textarea",
       "id": "text",
       "label": "Description",
-      "default": "A premium multi-stage shower filter that helps remove chlorine and harsh stuff from tap water — for healthier hair and skin. Guided by Dr. Droppy."
+      "default": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
     }
   ],
-  "presets": [{ "name": "Product buy box" }]
+  "presets": [{ "name": "Product gallery" }]
 }
 {% endschema %}

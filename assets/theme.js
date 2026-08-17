@@ -24,30 +24,10 @@ function initGallery(root, slideSel, thumbSel, prevSel, nextSel) {
   };
 
   show(index);
-
   root.querySelector(prevSel)?.addEventListener('click', () => show(index - 1));
   root.querySelector(nextSel)?.addEventListener('click', () => show(index + 1));
   thumbs.forEach((thumb) => {
-    thumb.addEventListener('click', () => {
-      show(Number(thumb.dataset.index || 0));
-    });
-  });
-}
-
-function initPdpGalleries() {
-  document.querySelectorAll('.pdp').forEach((root) => {
-    initGallery(root, '.pdp__slide', '.pdp__thumb', '[data-pdp-prev]', '[data-pdp-next]');
-    root.querySelectorAll('.qty-card input[type="radio"]').forEach((input) => {
-      input.addEventListener('change', () => {
-        root.querySelectorAll('.qty-card').forEach((card) => {
-          card.classList.toggle('is-selected', card.querySelector('input')?.checked);
-        });
-      });
-    });
-  });
-
-  document.querySelectorAll('[data-filter-addon]').forEach((filterRoot) => {
-    initGallery(filterRoot, '.filter-addon__slide', '.filter-addon__thumb', null, null);
+    thumb.addEventListener('click', () => show(Number(thumb.dataset.index || 0)));
   });
 }
 
@@ -76,12 +56,12 @@ async function addItemsToCart(items) {
   return response.json();
 }
 
-function syncSubPanel(panel) {
+function syncOffer(panel) {
   const mode = panel.querySelector('input[name="dd_purchase_mode"]:checked')?.value || 'subscribe';
-  panel.querySelectorAll('.sub-card').forEach((card) => {
+  panel.querySelectorAll('.offer-card').forEach((card) => {
     card.classList.toggle('is-selected', Boolean(card.querySelector('input[name="dd_purchase_mode"]')?.checked));
   });
-  panel.querySelectorAll('.sub-freq').forEach((chip) => {
+  panel.querySelectorAll('.offer-freq').forEach((chip) => {
     chip.classList.toggle('is-selected', Boolean(chip.querySelector('input')?.checked));
   });
   const onetime = panel.querySelector('[data-atc-label-onetime]');
@@ -90,18 +70,21 @@ function syncSubPanel(panel) {
     onetime.hidden = mode === 'subscribe';
     subscribe.hidden = mode !== 'subscribe';
   }
-  panel.querySelector('[data-filter-addon]')?.classList.toggle('is-dimmed', mode !== 'subscribe');
+  panel.querySelector('.offer-filter')?.classList.toggle('is-dimmed', mode !== 'subscribe');
 }
 
-function initSubPanels() {
+function initPdp() {
+  document.querySelectorAll('.pdp').forEach((root) => {
+    initGallery(root, '.pdp__slide', '.pdp__thumb', '[data-pdp-prev]', '[data-pdp-next]');
+  });
+
   document.querySelectorAll('[data-sub-panel]').forEach((panel) => {
     if (panel.dataset.bound === 'true') return;
     panel.dataset.bound = 'true';
-
-    syncSubPanel(panel);
+    syncOffer(panel);
 
     panel.querySelectorAll('input[name="dd_purchase_mode"], input[name="dd_filter_plan"]').forEach((input) => {
-      input.addEventListener('change', () => syncSubPanel(panel));
+      input.addEventListener('change', () => syncOffer(panel));
     });
 
     panel.querySelector('[data-sub-atc]')?.addEventListener('click', async () => {
@@ -114,7 +97,7 @@ function initSubPanels() {
       const button = panel.querySelector('[data-sub-atc]');
 
       if (!headId) {
-        window.alert('Showerhead product is missing. Set it in the Subscription options section.');
+        window.alert('Set the showerhead product in Subscription options.');
         return;
       }
 
@@ -123,13 +106,10 @@ function initSubPanels() {
         const headItem = { id: Number(headId), quantity: 1 };
         if (headPlanId && /^\d+$/.test(headPlanId)) headItem.selling_plan = Number(headPlanId);
         items.push(headItem);
-
         if (filterId && /^\d+$/.test(filterId)) {
           const filterItem = { id: Number(filterId), quantity: 1 };
           if (filterPlanId && /^\d+$/.test(filterPlanId)) filterItem.selling_plan = Number(filterPlanId);
           items.push(filterItem);
-        } else {
-          window.alert('Carbon Filters product not found yet. Autoship will still add the showerhead — set Filter product in Subscription options.');
         }
       } else {
         items.push({ id: Number(headId), quantity: 1 });
@@ -145,11 +125,6 @@ function initSubPanels() {
       }
     });
   });
-}
-
-function initPdp() {
-  initPdpGalleries();
-  initSubPanels();
 }
 
 document.addEventListener('DOMContentLoaded', initPdp);

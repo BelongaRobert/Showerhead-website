@@ -50,11 +50,19 @@
             "question": "Will pressure drop?",
             "answer": "It’s engineered for high flow with filtration."
           }
+        },
+        "f3": {
+          "type": "item",
+          "settings": {
+            "question": "How does Autoship work?",
+            "answer": "Choose Autoship to add the showerhead plus Carbon Filters on a Loop plan. Filters ship every 90 days. Pause, skip, or cancel anytime in the Loop portal."
+          }
         }
       },
       "block_order": [
         "f1",
-        "f2"
+        "f2",
+        "f3"
       ],
       "settings": {
         "pill": "Support",
@@ -65,8 +73,8 @@
       "type": "cta-band",
       "settings": {
         "heading": "Ready for cleaner showers?",
-        "text": "Add to cart and let Dr. Droppy guide the rinse.",
-        "button_label": "Back to home",
+        "text": "Choose Autoship or one-time — Dr. Droppy will take it from there.",
+        "button_label": "Shop now",
         "button_link": "",
         "product": ""
       }

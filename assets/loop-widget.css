@@ -1,157 +1,56 @@
-/* Dr. Droppy — Loop Subscriptions widget skin (Autoship design) */
+/* Dr. Droppy — Loop widget, matching Autoship cards */
 
-.pdp__apps {
-  margin-top: 1rem;
-  display: none;
-}
-
-.pdp__apps.has-content,
-.pdp__apps.is-loop-live {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.pdp__apps-label {
+.offer__loop {
   margin: 0;
-  font-family: var(--display);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--ink);
 }
 
-.pdp__apps :is(
+.offer__loop :is(
   .loop-widget,
   .loop-widget-container,
   .loop-subscription-widget,
   [class*="loop-widget"],
-  [class*="LoopWidget"],
-  [class*="loop_widget"]
-),
-.pdp__app-block > * {
-  font-family: var(--font) !important;
-  color: var(--ink) !important;
-}
-
-/* Outer card — Autoship style */
-.pdp__apps :is(
-  .loop-widget,
-  .loop-widget-container,
-  [class*="loop-widget"],
   [class*="LoopWidget"]
 ) {
-  background: color-mix(in srgb, var(--blue-soft) 72%, white) !important;
-  border: 2px solid #4aa8d4 !important;
-  border-radius: 1rem !important;
-  box-shadow: none !important;
-  padding: 0.95rem 1rem !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-}
-
-.pdp__apps :is(label, .loop-option, [class*="selling-plan"], [class*="purchase-option"]) {
-  border-radius: 0.85rem !important;
-  border: 2px solid #c9d4e4 !important;
-  background: #fff !important;
-  padding: 0.75rem 0.85rem !important;
-  margin: 0.45rem 0 !important;
-}
-
-.pdp__apps :is(
-  [aria-checked="true"],
-  [aria-pressed="true"],
-  .selected,
-  .is-selected,
-  .active,
-  input:checked + *,
-  input:checked ~ *
-) {
-  background: color-mix(in srgb, var(--sky) 40%, white) !important;
-  border-color: #4aa8d4 !important;
+  font-family: var(--font) !important;
   color: var(--ink) !important;
+  background: #fff !important;
+  border: 1.5px solid var(--line) !important;
+  border-radius: 1.15rem !important;
+  padding: 0.95rem 1rem !important;
+  box-shadow: 0 10px 28px rgba(15, 44, 89, 0.04) !important;
 }
 
-.pdp__apps :is(button, [role="button"], .loop-frequency, [class*="frequency"]) {
-  border: 2px solid var(--ink) !important;
+.offer__loop :is([aria-checked="true"], .selected, .is-selected, .active, input:checked + *) {
+  background: color-mix(in srgb, var(--sky) 38%, white) !important;
+  border-color: #6cbcdd !important;
+}
+
+.offer__loop :is(button, [role="button"], [class*="frequency"]) {
+  border: 1.5px solid var(--ink) !important;
   border-radius: 999px !important;
   background: #fff !important;
   color: var(--ink) !important;
   font-weight: 700 !important;
-  box-shadow: none !important;
-  min-height: 2.35rem !important;
 }
 
-.pdp__apps :is(button, [role="button"], .loop-frequency, [class*="frequency"]):hover {
-  background: var(--blue-soft) !important;
-}
-
-.pdp__apps :is(
-  button[aria-pressed="true"],
-  button.selected,
-  button.active,
-  [class*="frequency"].selected,
-  [class*="frequency"].active
-) {
+.offer__loop :is(button[aria-pressed="true"], button.selected, [class*="frequency"].selected) {
   background: var(--sky) !important;
-  box-shadow: 3px 3px 0 rgba(15, 44, 89, 0.18) !important;
 }
 
-.pdp__apps :is([class*="badge"], [class*="tag"], .popular, .save) {
+.offer__loop :is([class*="badge"], [class*="save"]) {
   background: var(--ink) !important;
   color: #fff !important;
   border: 0 !important;
   border-radius: 0 0 0.55rem 0.55rem !important;
-  font-family: var(--display) !important;
   font-size: 0.68rem !important;
   font-weight: 800 !important;
-  letter-spacing: 0.03em !important;
 }
 
-.pdp__apps :is(h1, h2, h3, h4, strong, [class*="title"]) {
+.offer__loop :is(h2, h3, h4, strong, [class*="title"]) {
   font-family: var(--display) !important;
   color: var(--ink) !important;
-  font-weight: 800 !important;
 }
 
-.pdp__apps :is(p, span, small, [class*="desc"], [class*="label"]) {
-  color: var(--ink-soft) !important;
-}
-
-.pdp__apps :is([class*="price"], .money) {
-  color: var(--ink) !important;
-  font-weight: 800 !important;
-}
-
-.pdp__apps :is(input[type="radio"], input[type="checkbox"]) {
+.offer__loop :is(input[type="radio"], input[type="checkbox"]) {
   accent-color: var(--ink) !important;
-}
-
-.pdp__apps :is(select, input[type="text"]) {
-  border: 2px solid var(--ink) !important;
-  border-radius: 0.75rem !important;
-  background: #fff !important;
-  color: var(--ink) !important;
-  min-height: 2.5rem !important;
-  font-family: var(--font) !important;
-}
-
-.pdp__apps :is([class*="dropdown"], [class*="menu"], [role="listbox"]) {
-  border: 2px solid var(--ink) !important;
-  border-radius: 0.85rem !important;
-  background: #fff !important;
-  box-shadow: 0 14px 28px rgba(15, 44, 89, 0.1) !important;
-}
-
-/* Most-popular style footer if Loop exposes a selected subscribe row */
-.pdp__apps :is([class*="subscribe"], [class*="subscription"]):has(input:checked)::after {
-  content: "Most popular option";
-  display: block;
-  margin: 0.75rem -1rem -0.95rem;
-  padding: 0.55rem 1rem;
-  background: #f2d35b;
-  color: var(--ink);
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }

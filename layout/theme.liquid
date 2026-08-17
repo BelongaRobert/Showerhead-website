@@ -11,6 +11,9 @@
     {% endif %}
     <link rel="canonical" href="{{ canonical_url }}">
     {{ content_for_header }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'loop-widget.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>

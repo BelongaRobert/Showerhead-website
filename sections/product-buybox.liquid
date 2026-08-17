@@ -1,105 +1,252 @@
 {% if request.page_type == 'product' or template.name == 'product' %}
-<section class="pdp" id="buy" data-section-id="{{ section.id }}">
+<section class="pdp" id="buy" data-section-id="{{ section.id }}" data-buybox-version="atc-v3">
   {%- liquid
     assign featured = section.settings.product
     if featured == blank
       assign featured = settings.featured_product
     endif
-
-    assign main_product = blank
-    if request.page_type == 'product' and product
-      assign main_product = product
-    elsif featured != blank
-      assign main_product = featured
-    else
-      assign main_product = collections.all.products.first
+    if featured == blank
+      assign featured = all_products['dr-droppys-filtered-showerhead']
     endif
 
-    if main_product != blank and main_product.title contains 'Carbon'
-      if featured != blank
-        unless featured.title contains 'Carbon'
-          assign main_product = featured
-        endunless
+    assign head = blank
+    if request.page_type == 'product' and product
+      assign head = product
+    elsif featured != blank
+      assign head = featured
+    else
+      assign head = collections.all.products.first
+    endif
+
+    if head != blank and head.title contains 'Carbon' and featured != blank
+      unless featured.title contains 'Carbon'
+        assign head = featured
+      endunless
+    endif
+
+    assign filter = section.settings.filter_product
+    if filter == blank
+      assign filter = settings.filter_subscription_product
+    endif
+    if filter == blank
+      assign filter = all_products['carbon-showerhead-filters']
+    endif
+    if filter == blank
+      assign filter = all_products['carbon-filters']
+    endif
+    if filter == blank
+      for p in collections.all.products
+        if head == blank or p.id != head.id
+          if p.title contains 'Carbon' or p.tags contains 'filter-refill' or p.handle contains 'carbon'
+            assign filter = p
+            break
+          endif
+        endif
+      endfor
+    endif
+
+    assign product = head
+    assign photo = blank
+    if head != blank and head.featured_media != blank
+      if head.featured_media.media_type == 'image'
+        assign photo = head.featured_media
       endif
     endif
+    if photo == blank and head != blank and head.media.size > 0
+      assign photo = head.media.first
+    endif
 
-    assign product = main_product
+    assign head_price = 0
+    if head != blank
+      assign head_price = head.selected_or_first_available_variant.price
+    endif
+    assign filter_price = 0
+    if filter != blank
+      assign filter_price = filter.selected_or_first_available_variant.price
+    endif
+
+    assign discount_pct = 15
+    assign filter_plan_id = ''
+    assign filter_plan_name = 'Every 90 days'
+    if filter != blank and filter.selling_plan_groups.size > 0
+      assign filter_plan_id = filter.selling_plan_groups.first.selling_plans.first.id
+      assign filter_plan_name = filter.selling_plan_groups.first.selling_plans.first.name
+      for adj in filter.selling_plan_groups.first.selling_plans.first.price_adjustments
+        if adj.value_type == 'percentage' and adj.value > 0
+          assign discount_pct = adj.value
+        endif
+      endfor
+    endif
+
+    assign head_plan_id = ''
+    if head != blank and head.selling_plan_groups.size > 0
+      assign head_plan_id = head.selling_plan_groups.first.selling_plans.first.id
+      for adj in head.selling_plan_groups.first.selling_plans.first.price_adjustments
+        if adj.value_type == 'percentage' and adj.value > 0
+          assign discount_pct = adj.value
+        endif
+      endfor
+    endif
+
+    assign filter_off = filter_price | times: discount_pct | divided_by: 100
+    assign filter_sale = filter_price | minus: filter_off
+    assign autoship_total = head_price | plus: filter_sale
+    assign compare_total = head_price | plus: filter_price
+    assign head_variant_id = ''
+    if head != blank
+      assign head_variant_id = head.selected_or_first_available_variant.id
+    endif
+    assign filter_variant_id = ''
+    if filter != blank
+      assign filter_variant_id = filter.selected_or_first_available_variant.id
+    endif
   -%}
 
-  <div class="pdp__stage">
-    <div class="pdp__banner" id="PdpMain-{{ section.id }}">
-      <div class="pdp__badge">
-        {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
-        <span>Dr. Droppy’s pick</span>
+  <div class="pdp__layout">
+    {% if photo != blank %}
+      <div class="pdp__media">
+        <div class="pdp__badge">
+          {{ 'dr-droppy-avatar.png' | asset_url | img_tag: '', 'pdp__badge-img' }}
+          <span>Dr. Droppy’s pick</span>
+        </div>
+        <img
+          class="pdp__photo"
+          src="{{ photo | image_url: width: 1600 }}"
+          alt="{{ photo.alt | escape | default: head.title }}"
+          width="1600"
+          height="1600"
+        >
       </div>
-      {% if product != blank and product.media.size > 0 %}
-        {% for media in product.media limit: 6 %}
-          <img
-            class="pdp__slide{% if forloop.first %} is-active{% endif %}"
-            src="{{ media | image_url: width: 2000 }}"
-            alt="{{ media.alt | escape | default: product.title }}"
-            data-index="{{ forloop.index0 }}"
-            {% unless forloop.first %}hidden{% endunless %}
-          >
+    {% endif %}
+
+    <div
+      class="pdp__buybox offer"
+      data-sub-panel
+      data-head-id="{{ head_variant_id }}"
+      data-head-plan-id="{{ head_plan_id }}"
+      data-filter-id="{{ filter_variant_id }}"
+      data-filter-plan-id="{{ filter_plan_id }}"
+    >
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1>
+        {% if section.settings.heading != blank %}
+          {{ section.settings.heading }}
+        {% else %}
+          Filtered Shower Head
+        {% endif %}
+      </h1>
+      <p class="tagline">{{ section.settings.tagline }}</p>
+      <p class="lede">{{ section.settings.text }}</p>
+
+      <div class="rating-row">
+        <span class="stars" aria-label="4.9 out of 5">★★★★★</span>
+        <span>4.9</span>
+        <a href="#reviews">128 Reviews</a>
+      </div>
+
+      <ul class="chips">
+        <li>Removes chlorine</li>
+        <li>Hydro-Shield filtration</li>
+        <li>Soothes skin & hair</li>
+        <li>Sustainable design</li>
+      </ul>
+
+      <div class="offer__options">
+        <label class="offer-card offer-card--autoship is-selected">
+          <input type="radio" name="dd_purchase_mode" value="subscribe" checked>
+          <span class="offer-card__badge">Save {{ discount_pct }}%</span>
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>Autoship</strong>
+              <em>Showerhead + Carbon Filter subscription</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ autoship_total | money }}</b>
+              <s>{{ compare_total | money }}</s>
+            </span>
+          </span>
+          <ul class="offer-card__perks">
+            <li>Filtered shower head + install kit</li>
+            <li>Carbon filters every 90 days ({{ filter_sale | money }})</li>
+            <li>{{ discount_pct }}% Loop Subscribe &amp; Save</li>
+            <li>Pause or cancel anytime</li>
+          </ul>
+          {% if filter != blank %}
+            <div class="offer-filter">
+              {% if filter.featured_media %}
+                {{ filter.featured_media | image_url: width: 160 | image_tag: class: 'offer-filter__img', alt: filter.title }}
+              {% endif %}
+              <div>
+                <p class="offer-filter__label">Included with Autoship</p>
+                <strong>{{ filter.title }}</strong>
+                <p>{{ filter_sale | money }} · {{ filter_plan_name }}</p>
+              </div>
+            </div>
+          {% endif %}
+          {% if filter != blank and filter.selling_plan_groups.size > 0 %}
+            <div class="offer-freqs">
+              <p>Delivery cadence</p>
+              {% for group in filter.selling_plan_groups %}
+                {% for plan in group.selling_plans %}
+                  <label class="offer-freq{% if forloop.parentloop.first and forloop.first %} is-selected{% endif %}">
+                    <input
+                      type="radio"
+                      name="dd_filter_plan"
+                      value="{{ plan.id }}"
+                      {% if forloop.parentloop.first and forloop.first %}checked{% endif %}
+                    >
+                    <span>{{ plan.name }}</span>
+                  </label>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <span class="offer-card__foot">Most popular option</span>
+        </label>
+
+        <label class="offer-card offer-card--onetime">
+          <input type="radio" name="dd_purchase_mode" value="onetime">
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>One-time purchase</strong>
+              <em>Showerhead only</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ head_price | money }}</b>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="offer__loop" data-loop-slot>
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when '@app' %}
+              <div class="pdp__app-block" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+          {% endcase %}
         {% endfor %}
-      {% else %}
-        {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'pdp__slide is-active' }}
-        {{ 'gallery-1.jpg' | asset_url | img_tag: 'Filtered shower head spray', 'pdp__slide' }}
-        {{ 'gallery-2.jpg' | asset_url | img_tag: 'Filtered shower head product', 'pdp__slide' }}
-        {{ 'product-detail.jpg' | asset_url | img_tag: 'Shower head face detail', 'pdp__slide' }}
-      {% endif %}
-      <button type="button" class="pdp__arrow prev" data-pdp-prev aria-label="Previous image">‹</button>
-      <button type="button" class="pdp__arrow next" data-pdp-next aria-label="Next image">›</button>
+      </div>
+
+      <button class="btn btn--block offer__cta" type="button" data-sub-atc>
+        <span data-atc-label-subscribe>Add Autoship — {{ autoship_total | money }}</span>
+        <span data-atc-label-onetime hidden>Add to cart — {{ head_price | money }}</span>
+      </button>
+
+      <ul class="offer__trust">
+        <li>In stock · ships fast</li>
+        <li>60-day money-back guarantee</li>
+        <li>Loop-powered filter refills</li>
+      </ul>
     </div>
-
-    <div class="pdp__thumbs" data-pdp-thumbs>
-      {% if product != blank and product.media.size > 0 %}
-        {% for media in product.media limit: 6 %}
-          <button type="button" class="pdp__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
-            {{ media | image_url: width: 240 | image_tag: alt: '' }}
-          </button>
-        {% endfor %}
-      {% else %}
-        <button type="button" class="pdp__thumb is-active" data-index="0">{{ 'hero-showerhead.jpg' | asset_url | img_tag: '', '' }}</button>
-        <button type="button" class="pdp__thumb" data-index="1">{{ 'gallery-1.jpg' | asset_url | img_tag: '', '' }}</button>
-        <button type="button" class="pdp__thumb" data-index="2">{{ 'gallery-2.jpg' | asset_url | img_tag: '', '' }}</button>
-        <button type="button" class="pdp__thumb" data-index="3">{{ 'product-detail.jpg' | asset_url | img_tag: '', '' }}</button>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="pdp__intro">
-    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
-    <h1>
-      {% if section.settings.heading != blank %}
-        {{ section.settings.heading }}
-      {% else %}
-        Filtered Shower Head
-      {% endif %}
-    </h1>
-    <p class="tagline">{{ section.settings.tagline }}</p>
-    <p class="lede">{{ section.settings.text }}</p>
-
-    <div class="rating-row">
-      <span class="stars" aria-label="4.9 out of 5">★★★★★</span>
-      <span>4.9</span>
-      <a href="#reviews">128 Reviews</a>
-    </div>
-
-    <ul class="chips">
-      <li>Removes chlorine</li>
-      <li>Hydro-Shield filtration</li>
-      <li>Soothes skin & hair</li>
-      <li>Sustainable design</li>
-    </ul>
   </div>
 </section>
 {% else %}
   {% capture shop_now_url %}{% render 'shop-now-url', product: section.settings.product %}{% endcapture %}
   <section class="hero" id="buy">
-    <div class="hero__media">
-      {{ 'hero-showerhead.jpg' | asset_url | img_tag: 'Dr. Droppy filtered shower head', 'hero__image' }}
-    </div>
     <div class="hero__copy">
       <p class="eyebrow">Dr. Droppy · Clean Water</p>
       <h1>Filtered Shower Head</h1>
@@ -111,7 +258,7 @@
 
 {% schema %}
 {
-  "name": "Product gallery",
+  "name": "Product buy box",
   "enabled_on": {
     "templates": ["product"]
   },
@@ -119,7 +266,12 @@
     {
       "type": "product",
       "id": "product",
-      "label": "Featured showerhead product"
+      "label": "Showerhead product"
+    },
+    {
+      "type": "product",
+      "id": "filter_product",
+      "label": "Carbon filter product"
     },
     {
       "type": "text",
@@ -146,6 +298,11 @@
       "default": "A multi-stage filtered shower head that helps remove chlorine and harsh stuff from tap water — science-backed purity for your family."
     }
   ],
-  "presets": [{ "name": "Product gallery" }]
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [{ "name": "Product buy box" }]
 }
 {% endschema %}

@@ -97,7 +97,7 @@ function initPdp() {
       const button = panel.querySelector('[data-sub-atc]');
 
       if (!headId) {
-        window.alert('Set the showerhead product in Subscription options.');
+        window.alert('Set the showerhead product on the Product buy box.');
         return;
       }
 

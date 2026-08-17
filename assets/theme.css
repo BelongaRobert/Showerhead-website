@@ -215,7 +215,7 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 1rem 0 1.25rem;
+  margin: 1rem 0 0.35rem;
   padding: 0;
   list-style: none;
 }
@@ -574,12 +574,46 @@ body.template-product .highlights__grid {
 }
 .offer__inner { display: grid; gap: 1rem; }
 .offer__kicker {
-  margin: 0 0 0.35rem;
+  margin: 1.15rem 0 0.45rem;
   color: var(--blue);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.offer__qty { margin-bottom: 0.25rem; }
+.offer-card--qty .offer-card__row {
+  padding-right: 0;
+  padding-bottom: 1rem;
+  align-items: center;
+}
+.offer-card--pack .offer-card__row {
+  padding-right: 5.8rem;
+  padding-bottom: 0;
+  align-items: flex-start;
+}
+.offer-card--qty.is-selected,
+.offer-card--qty:has(input[name="dd_qty"]:checked) {
+  border-color: #6cbcdd;
+  box-shadow: 0 0 0 1px #6cbcdd, 0 14px 32px rgba(15, 44, 89, 0.08);
+}
+.offer-card--qty.is-selected .offer-card__radio::after,
+.offer-card--qty:has(input[name="dd_qty"]:checked) .offer-card__radio::after {
+  content: "";
+  position: absolute;
+  inset: 0.18rem;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.offer-card__each {
+  color: #8b97ab;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.offer-filter {
+  margin: 0.85rem 0 0.95rem;
 }
 .offer__summary h2 {
   font-size: 1.55rem;

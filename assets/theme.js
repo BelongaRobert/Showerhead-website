@@ -56,21 +56,45 @@ async function addItemsToCart(items) {
   return response.json();
 }
 
+function selectedQty(panel) {
+  return Number(panel.querySelector('input[name="dd_qty"]:checked')?.value || 1);
+}
+
 function syncOffer(panel) {
   const mode = panel.querySelector('input[name="dd_purchase_mode"]:checked')?.value || 'subscribe';
-  panel.querySelectorAll('.offer-card').forEach((card) => {
+  const qty = selectedQty(panel);
+
+  panel.querySelectorAll('.offer-card--qty').forEach((card) => {
+    card.classList.toggle('is-selected', Boolean(card.querySelector('input[name="dd_qty"]')?.checked));
+  });
+  panel.querySelectorAll('.offer-card:not(.offer-card--qty)').forEach((card) => {
     card.classList.toggle('is-selected', Boolean(card.querySelector('input[name="dd_purchase_mode"]')?.checked));
   });
   panel.querySelectorAll('.offer-freq').forEach((chip) => {
     chip.classList.toggle('is-selected', Boolean(chip.querySelector('input')?.checked));
   });
-  const onetime = panel.querySelector('[data-atc-label-onetime]');
+
+  const autoPrice = panel.querySelector('[data-auto-price]');
+  const autoCompare = panel.querySelector('[data-auto-compare]');
+  const onePrice = panel.querySelector('[data-one-price]');
+  if (autoPrice) autoPrice.textContent = panel.dataset[`autoPrice${qty}`] || autoPrice.textContent;
+  if (autoCompare) autoCompare.textContent = panel.dataset[`autoCompare${qty}`] || autoCompare.textContent;
+  if (onePrice) onePrice.textContent = panel.dataset[`onePrice${qty}`] || onePrice.textContent;
+
   const subscribe = panel.querySelector('[data-atc-label-subscribe]');
+  const onetime = panel.querySelector('[data-atc-label-onetime]');
+  if (subscribe) subscribe.textContent = panel.dataset[`atcSub${qty}`] || subscribe.textContent;
+  if (onetime) onetime.textContent = panel.dataset[`atcOne${qty}`] || onetime.textContent;
   if (onetime && subscribe) {
     onetime.hidden = mode === 'subscribe';
     subscribe.hidden = mode !== 'subscribe';
   }
+
+  const filterNote = panel.querySelector('[data-filter-note]');
+  if (filterNote) filterNote.textContent = panel.dataset[`filterNote${qty}`] || filterNote.textContent;
   panel.querySelector('.offer-filter')?.classList.toggle('is-dimmed', mode !== 'subscribe');
+  const qtyInput = panel.querySelector('[data-qty-input]');
+  if (qtyInput) qtyInput.value = String(qty);
 }
 
 function initPdp() {
@@ -83,7 +107,7 @@ function initPdp() {
     panel.dataset.bound = 'true';
     syncOffer(panel);
 
-    panel.querySelectorAll('input[name="dd_purchase_mode"], input[name="dd_filter_plan"]').forEach((input) => {
+    panel.querySelectorAll('input[name="dd_purchase_mode"], input[name="dd_filter_plan"], input[name="dd_qty"]').forEach((input) => {
       input.addEventListener('change', () => syncOffer(panel));
     });
 
@@ -97,6 +121,8 @@ function initPdp() {
         || panel.dataset.filterPlanId;
       const button = panel.querySelector('[data-sub-atc]');
 
+      const qty = selectedQty(panel);
+
       if (!headId) {
         window.alert('Set the showerhead product in Theme settings → Shop links.');
         return;
@@ -104,16 +130,16 @@ function initPdp() {
 
       const items = [];
       if (mode === 'subscribe') {
-        const headItem = { id: Number(headId), quantity: 1 };
+        const headItem = { id: Number(headId), quantity: qty };
         if (headPlanId && /^\d+$/.test(headPlanId)) headItem.selling_plan = Number(headPlanId);
         items.push(headItem);
         if (filterId && /^\d+$/.test(filterId)) {
-          const filterItem = { id: Number(filterId), quantity: 1 };
+          const filterItem = { id: Number(filterId), quantity: qty };
           if (filterPlanId && /^\d+$/.test(filterPlanId)) filterItem.selling_plan = Number(filterPlanId);
           items.push(filterItem);
         }
       } else {
-        items.push({ id: Number(headId), quantity: 1 });
+        items.push({ id: Number(headId), quantity: qty });
       }
 
       if (button) button.disabled = true;

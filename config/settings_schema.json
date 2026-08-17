@@ -21,6 +21,17 @@
         "id": "filter_subscription_product",
         "label": "Carbon filter subscription product",
         "info": "Loop Subscribe & Save add-on shown in the product buy box. Tag this product filter-refill in Admin."
+      },
+      {
+        "type": "range",
+        "id": "two_pack_discount_pct",
+        "label": "2-showerhead discount %",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 10,
+        "info": "Shown on the 2 Showerheads card. Create a matching Shopify automatic discount (Buy 2, X% off) so checkout matches."
       }
     ]
   },

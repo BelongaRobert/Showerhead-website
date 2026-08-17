@@ -89,13 +89,34 @@
 
   assign filter_off = filter_price | times: discount_pct | divided_by: 100
   assign filter_sale = filter_price | minus: filter_off
-  assign autoship_total = head_price | plus: filter_sale
-  assign compare_total = head_price | plus: filter_price
+  assign pack_save_pct = 10
+  if settings.two_pack_discount_pct != blank
+    assign pack_save_pct = settings.two_pack_discount_pct | plus: 0
+  endif
+  assign pack_keep = 100 | minus: pack_save_pct
+  assign pack_each = head_price
+  if pack_save_pct > 0
+    assign pack_each = head_price | times: pack_keep | divided_by: 100
+  endif
+  assign pack_two = pack_each | times: 2
+  assign pack_save_amt = head_price | times: 2 | minus: pack_two
+  assign filter_sale_two = filter_sale | times: 2
+  assign filter_price_two = filter_price | times: 2
+  assign auto_1 = head_price | plus: filter_sale
+  assign auto_2 = pack_two | plus: filter_sale_two
+  assign compare_1 = head_price | plus: filter_price
+  assign compare_2 = pack_two | plus: filter_price_two
+  assign autoship_total = auto_1
+  assign compare_total = compare_1
   assign plan_count = 0
   if filter != blank
     for group in filter.selling_plan_groups
       assign plan_count = plan_count | plus: group.selling_plans.size
     endfor
+  endif
+  assign filter_title = 'Carbon Showerhead Filters'
+  if filter != blank
+    assign filter_title = filter.title
   endif
 -%}
 
@@ -128,8 +149,21 @@
       data-head-plan-id="{{ head_plan_id }}"
       data-filter-id="{{ filter_variant_id }}"
       data-filter-plan-id="{{ filter_plan_id }}"
+      data-auto-price-1="{{ auto_1 | money }}"
+      data-auto-compare-1="{{ compare_1 | money }}"
+      data-auto-price-2="{{ auto_2 | money }}"
+      data-auto-compare-2="{{ compare_2 | money }}"
+      data-one-price-1="{{ head_price | money }}"
+      data-one-price-2="{{ pack_two | money }}"
+      data-atc-sub-1="Add Autoship — {{ auto_1 | money }}"
+      data-atc-sub-2="Add Autoship — {{ auto_2 | money }}"
+      data-atc-one-1="Add to cart — {{ head_price | money }}"
+      data-atc-one-2="Add to cart — {{ pack_two | money }}"
+      data-filter-note-1="{{ filter_sale | money }} · {{ filter_plan_name }}"
+      data-filter-note-2="2 × {{ filter_sale | money }} · {{ filter_plan_name }}"
     >
       <input type="hidden" name="id" value="{{ head_variant_id }}">
+      <input type="hidden" name="quantity" value="1" data-qty-input>
 
       <p class="eyebrow">Dr. Droppy · Filtered Shower Head</p>
       <h1>Filtered Shower Head</h1>
@@ -149,6 +183,49 @@
         <li>Sustainable design</li>
       </ul>
 
+      <p class="offer__kicker">Quantity</p>
+      <div class="offer__options offer__qty">
+        <label class="offer-card offer-card--qty is-selected">
+          <input type="radio" name="dd_qty" value="1" checked>
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>1 Showerhead</strong>
+              <em>Single bathroom</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ head_price | money }}</b>
+              <span class="offer-card__each">Each</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="offer-card offer-card--qty offer-card--pack">
+          <input type="radio" name="dd_qty" value="2">
+          {% if pack_save_pct > 0 %}
+            <span class="offer-card__badge">{{ pack_save_pct }}% off · Best value</span>
+          {% else %}
+            <span class="offer-card__badge">Best value</span>
+          {% endif %}
+          <span class="offer-card__row">
+            <span class="offer-card__radio" aria-hidden="true"></span>
+            <span class="offer-card__copy">
+              <strong>2 Showerheads</strong>
+              <em>Two bathrooms{% if pack_save_pct > 0 %} · save {{ pack_save_amt | money }}{% endif %}</em>
+            </span>
+            <span class="offer-card__price">
+              <b>{{ pack_each | money }}</b>
+              {% if pack_save_pct > 0 %}
+                <s>{{ head_price | money }}</s>
+              {% endif %}
+              <span class="offer-card__each">Each</span>
+            </span>
+          </span>
+          <span class="offer-card__foot">Best value</span>
+        </label>
+      </div>
+
+      <p class="offer__kicker">Purchase option</p>
       <div class="offer__options">
         <label class="offer-card offer-card--autoship is-selected">
           <input type="radio" name="dd_purchase_mode" value="subscribe" checked>
@@ -160,10 +237,22 @@
               <em>Showerhead + Carbon Filter subscription</em>
             </span>
             <span class="offer-card__price">
-              <b>{{ autoship_total | money }}</b>
-              <s>{{ compare_total | money }}</s>
+              <b data-auto-price>{{ auto_1 | money }}</b>
+              <s data-auto-compare>{{ compare_1 | money }}</s>
             </span>
           </span>
+          <div class="offer-filter">
+            {% if filter != blank and filter.featured_image %}
+              {{ filter.featured_image | image_url: width: 160 | image_tag: class: 'offer-filter__img', alt: filter_title }}
+            {% else %}
+              {{ 'filter-1.jpg' | asset_url | img_tag: filter_title, 'offer-filter__img' }}
+            {% endif %}
+            <div>
+              <p class="offer-filter__label">Included with Autoship</p>
+              <strong>{{ filter_title }}</strong>
+              <p data-filter-note>{{ filter_sale | money }} · {{ filter_plan_name }}</p>
+            </div>
+          </div>
           <span class="offer-card__foot">Most popular option</span>
         </label>
 
@@ -173,10 +262,10 @@
             <span class="offer-card__radio" aria-hidden="true"></span>
             <span class="offer-card__copy">
               <strong>One-time purchase</strong>
-              <em>Showerhead only</em>
+              <em>Showerhead only — add filters later</em>
             </span>
             <span class="offer-card__price">
-              <b>{{ head_price | money }}</b>
+              <b data-one-price>{{ head_price | money }}</b>
             </span>
           </span>
         </label>

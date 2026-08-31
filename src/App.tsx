@@ -1,17 +1,20 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import './App.css'
 
+/** Public assets on GitHub Pages live under import.meta.env.BASE_URL (e.g. /Showerhead-website/). */
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
 const GALLERY = [
-  { src: '/images/hero-showerhead.jpg', alt: 'EVERYDAY filtered shower system installed in a modern bathroom' },
-  { src: '/images/gallery-1.jpg', alt: 'EVERYDAY shower head in polished chrome' },
-  { src: '/images/gallery-2.jpg', alt: 'EVERYDAY shower head in matte black' },
-  { src: '/images/product-detail.jpg', alt: 'EVERYDAY multi-stage filter face detail' },
-  { src: '/images/gallery-3.jpg', alt: 'EVERYDAY replacement filter cartridge' },
+  { src: asset('/images/hero-showerhead.jpg'), alt: 'EVERYDAY filtered shower system installed in a modern bathroom' },
+  { src: asset('/images/gallery-1.jpg'), alt: 'EVERYDAY shower head in polished chrome' },
+  { src: asset('/images/gallery-2.jpg'), alt: 'EVERYDAY shower head in matte black' },
+  { src: asset('/images/product-detail.jpg'), alt: 'EVERYDAY multi-stage filter face detail' },
+  { src: asset('/images/gallery-3.jpg'), alt: 'EVERYDAY replacement filter cartridge' },
 ]
 
 const COLORS = [
-  { id: 'chrome', label: 'Polished Chrome', image: '/images/gallery-1.jpg' },
-  { id: 'black', label: 'Matte Black', image: '/images/gallery-2.jpg' },
+  { id: 'chrome', label: 'Polished Chrome', image: asset('/images/gallery-1.jpg') },
+  { id: 'black', label: 'Matte Black', image: asset('/images/gallery-2.jpg') },
 ] as const
 
 const FEATURES = [
@@ -259,7 +262,7 @@ function App() {
             </div>
             <div className="hero-media">
               <img
-                src="/images/hero-showerhead.jpg"
+                src={asset('/images/hero-showerhead.jpg')}
                 alt="EVERYDAY filtered shower system in a modern bathroom"
               />
             </div>
@@ -421,7 +424,7 @@ function App() {
                       <li>Pause or cancel anytime</li>
                     </ul>
                     <div className="filter-row">
-                      <img src="/images/gallery-3.jpg" alt="" />
+                      <img src={asset('/images/gallery-3.jpg')} alt="" />
                       <div>
                         <p className="filter-label">Included with Autoship</p>
                         <strong>Carbon Showerhead Filters</strong>
@@ -585,21 +588,21 @@ function App() {
           />
           <div className="benefit-grid">
             <article>
-              <img src="/images/benefit-skin.jpg" alt="" />
+              <img src={asset('/images/benefit-skin.jpg')} alt="" />
               <h3>Clearer skin</h3>
               <p>Smoother, more hydrated skin with fewer breakouts and irritation.</p>
               <strong>93%</strong>
               <span>felt less dryness in 30 days</span>
             </article>
             <article>
-              <img src="/images/benefit-hair.jpg" alt="" />
+              <img src={asset('/images/benefit-hair.jpg')} alt="" />
               <h3>Stronger hair</h3>
               <p>Protects natural moisture and color with less shedding and breakage.</p>
               <strong>94%</strong>
               <span>saw less hair shedding in 30 days</span>
             </article>
             <article>
-              <img src="/images/benefit-pressure.jpg" alt="" />
+              <img src={asset('/images/benefit-pressure.jpg')} alt="" />
               <h3>High-flow pressure</h3>
               <p>Powerful coverage without sacrificing filtration performance.</p>
               <strong>100%</strong>
@@ -641,7 +644,7 @@ function App() {
           <div className="problem-grid">
             <figure>
               <img
-                src="/images/problem-pipe.jpg"
+                src={asset('/images/problem-pipe.jpg')}
                 alt="Corroded pipe interior showing scale and rust buildup"
               />
             </figure>

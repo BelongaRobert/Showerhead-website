@@ -2,7 +2,7 @@ name: Deploy EVERYDAY site to GitHub Pages
 
 on:
   push:
-    branches: [main, cursor/everyday-redesign-36e5]
+    branches: [main]
   workflow_dispatch:
 
 permissions:

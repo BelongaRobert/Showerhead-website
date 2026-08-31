@@ -469,7 +469,11 @@ function App() {
 
                 <p className="price-note">*Price updates with color, quantity, and Autoship.</p>
 
-                <button type="button" className="btn btn-cart" onClick={addToCart}>
+                <button
+                  type="button"
+                  className={`btn btn-cart ${added ? 'is-added' : ''}`}
+                  onClick={addToCart}
+                >
                   {added ? 'Added to cart' : `Add to cart · $${lineTotal}`}
                 </button>
 
@@ -781,7 +785,11 @@ function App() {
       </footer>
 
       <div className="mobile-cart">
-        <button type="button" className="btn btn-cart" onClick={addToCart}>
+        <button
+          type="button"
+          className={`btn btn-cart ${added ? 'is-added' : ''}`}
+          onClick={addToCart}
+        >
           {added ? 'Added' : `Add to cart · $${lineTotal}`}
         </button>
       </div>

@@ -17,74 +17,42 @@ const COLORS = [
   { id: 'black', label: 'Matte Black', image: asset('/images/gallery-2.jpg') },
 ] as const
 
-const FEATURES = [
-  {
-    title: 'Cleaner Water',
-    copy: 'Multi-stage filtration reduces chlorine and common tap contaminants.',
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3C8 8 6 10.5 6 14a6 6 0 1 0 12 0c0-3.5-2-6-6-11Z" />
-        <path d="M9.5 12.5h5M9.5 15h5M9.5 17.5h5" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Protects Skin & Hair',
-    copy: 'Cleaner rinse for softer skin, stronger hair, and everyday comfort.',
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 4v6" />
-        <path d="M8 10h8" />
-        <path d="M6 18c0-3.3 2.7-6 6-6s6 2.7 6 6" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Whole Home Solution',
-    copy: 'Universal install on standard shower arms — one upgrade, every shower.',
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 11 12 4l8 7" />
-        <path d="M6 10v9h12v-9" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Elevated Design',
-    copy: 'Minimal hardware and premium finishes built for modern bathrooms.',
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="5" y="5" width="14" height="14" rx="1" />
-        <circle cx="12" cy="12" r="4" />
-      </svg>
-    ),
-  },
-]
-
 const REVIEWS = [
   {
     name: 'Sophia R.',
-    date: 'Aug 2026',
-    title: 'Noticeably softer water',
-    body: 'Within a week my skin stopped feeling tight after showers. Pressure stayed strong and the hardware looks premium in our guest bath.',
+    date: 'Aug 26, 2026',
+    body: 'The water pressure is amazing and the filter works. My hair and skin are noticeably healthier after a couple of weeks.',
+    verified: true,
   },
   {
     name: 'Marcus T.',
-    date: 'Jul 2026',
-    title: 'Install took five minutes',
-    body: 'Twist-on setup was straightforward. Hair feels less brittle and the chlorine smell from our tap is gone.',
+    date: 'Aug 16, 2026',
+    body: 'Twist-on install took five minutes. Hair feels less brittle and the chlorine smell from our tap is gone.',
+    verified: true,
   },
   {
     name: 'Elena K.',
-    date: 'Jul 2026',
-    title: 'Worth the upgrade',
+    date: 'Aug 4, 2026',
     body: 'I was skeptical about filtered showerheads. EVERYDAY keeps flow high while the water finally feels clean.',
+    verified: false,
   },
   {
     name: 'Jordan P.',
-    date: 'Jun 2026',
-    title: 'Great for hard water',
-    body: 'Hard water was irritating my scalp. After a month the difference was clear — soap rinses cleaner and skin calmed down.',
+    date: 'Jul 17, 2026',
+    body: 'Hard water was irritating my scalp. After a month soap rinses cleaner and my skin calmed down.',
+    verified: true,
+  },
+  {
+    name: 'Avery L.',
+    date: 'Jul 4, 2026',
+    body: 'Looks premium in our guest bath. Pressure stayed strong and showers feel like a small daily luxury.',
+    verified: false,
+  },
+  {
+    name: 'Chris M.',
+    date: 'Jun 24, 2026',
+    body: 'Skin feels less tight after showers. Easy setup, well made, and we are ordering a second for the kids’ bath.',
+    verified: true,
   },
 ]
 
@@ -107,8 +75,36 @@ const FAQS = [
   },
   {
     q: 'What is Autoship?',
-    a: 'Autoship pairs your shower system with carbon filter refills on a Loop subscription — discounted today and on every future shipment. Pause or cancel anytime.',
+    a: 'Autoship pairs your shower system with carbon filter refills — discounted today and on every future shipment. Pause or cancel anytime.',
   },
+]
+
+const CAUSES = [
+  {
+    title: 'Skin breakouts',
+    copy: 'Chlorine and mineral buildup can clog pores and disrupt the skin barrier, triggering irritation.',
+  },
+  {
+    title: 'Weak & thinning hair',
+    copy: 'Hard water minerals dry the scalp and weaken hair at the root over time.',
+  },
+  {
+    title: 'Dry, red, itchy skin',
+    copy: 'Chlorine strips natural oils, leaving skin tight, inflamed, and uncomfortable after showers.',
+  },
+  {
+    title: 'Brittle, dull hair',
+    copy: 'Chemical residue removes moisture, leading to breakage, tangles, and faded color.',
+  },
+]
+
+const TICKER = [
+  'Smoother Skin',
+  'Less Breakouts',
+  'Softer Hair',
+  'Fewer Flares',
+  'High-Flow Pressure',
+  'Cleaner Water',
 ]
 
 type PurchasePlan = 'bundle' | 'one'
@@ -133,22 +129,16 @@ function Stars({ value = 4.9 }: { value?: number }) {
   )
 }
 
-function SectionHead({
-  label,
-  title,
-  lead,
-}: {
-  label: string
-  title: string
-  lead?: string
-}) {
+function Check() {
   return (
-    <div className="section-head">
-      <p className="eyebrow">{label}</p>
-      <h2>{title}</h2>
-      {lead ? <p className="section-lead">{lead}</p> : null}
-    </div>
+    <svg className="check" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M4.5 10.5 8 14l7.5-8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
+}
+
+function Pill({ children }: { children: ReactNode }) {
+  return <p className="pill">{children}</p>
 }
 
 function Accordion({
@@ -176,22 +166,27 @@ function Accordion({
 function App() {
   const [slide, setSlide] = useState(0)
   const [color, setColor] = useState<(typeof COLORS)[number]['id']>('chrome')
-  const [qtyOption, setQtyOption] = useState<QtyOption>('multi')
+  const [qtyOption, setQtyOption] = useState<QtyOption>('one')
   const [plan, setPlan] = useState<PurchasePlan>('bundle')
-  const [qty, setQty] = useState(2)
-  const [openFaq, setOpenFaq] = useState<number | null>(0)
-  const [openInfo, setOpenInfo] = useState<string | null>('overview')
+  const [qty, setQty] = useState(1)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openInfo, setOpenInfo] = useState<string | null>(null)
   const [added, setAdded] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [emailSent, setEmailSent] = useState(false)
+  const [reviewCount, setReviewCount] = useState(4)
 
+  const units = plan === 'one' ? 1 : Math.max(1, qty)
+  const listPrice = 199
   const unitPrice = useMemo(() => {
-    if (plan === 'one') return 199
+    if (plan === 'one') return listPrice
     return qtyOption === 'multi' || qty >= 2 ? 99 : 129
   }, [plan, qtyOption, qty])
 
-  const lineTotal = unitPrice * (plan === 'one' ? 1 : Math.max(1, qty))
-  const savings = plan === 'one' ? 0 : 199 * Math.max(1, qty) - lineTotal
+  const lineTotal = unitPrice * units
+  const savings = listPrice * units - lineTotal
+  const colorImage = COLORS.find((c) => c.id === color)?.image ?? GALLERY[1].src
 
   function selectColor(id: (typeof COLORS)[number]['id']) {
     setColor(id)
@@ -217,76 +212,72 @@ function App() {
     setSlide((s) => (s + dir + GALLERY.length) % GALLERY.length)
   }
 
+  function closeMenu() {
+    setMenuOpen(false)
+  }
+
   return (
     <div className="site">
-      <div className="announce">
-        Free shipping on orders over $99 · Everybody. Everyday.
-      </div>
+      <div className="announce">Free shipping on orders over $99 · Everybody. Everyday.</div>
 
-      <header className="nav">
-        <a className="nav-brand" href="#top" aria-label="EVERYDAY home">
-          <LogoMark className="nav-mark" />
-          <span>EVERYDAY</span>
-        </a>
-        <nav className="nav-links" aria-label="Primary">
-          <a href="#buy">Shop</a>
-          <a href="#features">Features</a>
-          <a href="#science">Filtration</a>
-          <a href="#reviews">Reviews</a>
-          <a href="#faq">FAQ</a>
-          <a href="#newsletter">Updates</a>
-        </nav>
-        <a className="btn btn-nav" href="#buy">
-          Shop Now
-        </a>
+      <header className="nav-wrap">
+        <div className="nav">
+          <button
+            type="button"
+            className="nav-menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
+          <nav className="nav-links" aria-label="Primary">
+            <a href="#buy" onClick={closeMenu}>
+              Shop
+            </a>
+            <a href="#science" onClick={closeMenu}>
+              Science
+            </a>
+            <a href="#reviews" onClick={closeMenu}>
+              Reviews
+            </a>
+          </nav>
+          <a className="nav-brand" href="#top" aria-label="EVERYDAY home">
+            <LogoMark className="nav-mark" />
+            <span>EVERYDAY</span>
+          </a>
+          <div className="nav-actions">
+            <a className="nav-icon" href="#newsletter" aria-label="Email updates">
+              ✉
+            </a>
+            <a className="btn btn-nav" href="#buy">
+              Shop Now
+            </a>
+          </div>
+        </div>
+        {menuOpen ? (
+          <nav className="nav-drawer" aria-label="Mobile">
+            <a href="#buy" onClick={closeMenu}>
+              Shop
+            </a>
+            <a href="#benefits" onClick={closeMenu}>
+              Benefits
+            </a>
+            <a href="#science" onClick={closeMenu}>
+              Science
+            </a>
+            <a href="#reviews" onClick={closeMenu}>
+              Reviews
+            </a>
+            <a href="#faq" onClick={closeMenu}>
+              FAQ
+            </a>
+          </nav>
+        ) : null}
       </header>
 
       <main id="top">
-        <section className="hero" aria-label="Introduction">
-          <div className="hero-grid">
-            <div className="hero-copy">
-              <p className="hero-eyebrow">Everybody. Everyday.</p>
-              <h1>
-                Better Water.
-                <br />
-                Better Life.
-              </h1>
-              <p className="hero-lede">
-                Premium filtered shower systems that remove chlorine and harsh
-                contaminants — for cleaner water, healthier skin, and elevated
-                everyday rituals.
-              </p>
-              <a className="btn btn-hero" href="#buy">
-                Shop Now
-              </a>
-            </div>
-            <div className="hero-media">
-              <img
-                src={asset('/images/hero-showerhead.jpg')}
-                alt="EVERYDAY filtered shower system in a modern bathroom"
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="features-strip" id="features">
-          <div className="features-grid">
-            {FEATURES.map((feature) => (
-              <article key={feature.title} className="feature-card">
-                <div className="feature-icon">{feature.icon}</div>
-                <h3>{feature.title}</h3>
-                <p>{feature.copy}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="pdp" id="buy" aria-label="Product">
-          <div className="pdp-intro">
-            <p className="eyebrow">Filtered Shower System</p>
-            <h2 className="pdp-title">The everyday upgrade your water deserves.</h2>
-          </div>
-
           <div className="pdp-grid">
             <div className="gallery">
               <div className="gallery-main">
@@ -298,11 +289,7 @@ function App() {
                 >
                   ‹
                 </button>
-                <img
-                  key={GALLERY[slide].src}
-                  src={GALLERY[slide].src}
-                  alt={GALLERY[slide].alt}
-                />
+                <img key={GALLERY[slide].src} src={GALLERY[slide].src} alt={GALLERY[slide].alt} />
                 <button
                   type="button"
                   className="gallery-arrow next"
@@ -312,190 +299,198 @@ function App() {
                   ›
                 </button>
               </div>
-              <div className="gallery-thumbs" role="tablist" aria-label="Product images">
+              <div className="gallery-dots" role="tablist" aria-label="Product images">
                 {GALLERY.map((image, index) => (
                   <button
                     key={image.src}
                     type="button"
                     role="tab"
+                    aria-label={`Image ${index + 1}`}
                     aria-selected={slide === index}
                     className={slide === index ? 'is-active' : undefined}
                     onClick={() => setSlide(index)}
-                  >
-                    <img src={image.src} alt="" />
-                  </button>
+                  />
                 ))}
               </div>
             </div>
 
             <div className="buybox">
+              <h1>Everyday Shower System</h1>
+              <p className="buybox-lede">
+                A premium multi-stage shower filter that removes chlorine and harsh
+                contaminants from tap water —{' '}
+                <strong>for healthier hair and skin.</strong>
+              </p>
               <div className="rating-row">
                 <Stars />
-                <span>4.9</span>
-                <a href="#reviews">128 Reviews</a>
+                <a href="#reviews">4.9 (128 Reviews)</a>
               </div>
 
-              <p className="buybox-lede">
-                A multi-stage filtered shower system that helps remove chlorine
-                and harsh stuff from tap water — science-backed purity for your
-                home.
-              </p>
+              <div className="buybox-card">
+                <fieldset className="option-block">
+                  <legend>Select Color:</legend>
+                  <div className="color-options">
+                    {COLORS.map((c) => (
+                      <label
+                        key={c.id}
+                        className={`choice-card color-option ${color === c.id ? 'is-selected' : ''}`}
+                      >
+                        <input
+                          type="radio"
+                          name="color"
+                          value={c.id}
+                          checked={color === c.id}
+                          onChange={() => selectColor(c.id)}
+                        />
+                        <img src={c.image} alt="" />
+                        <span>{c.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
 
-              <fieldset className="option-block">
-                <legend>Finish</legend>
-                <div className="color-options">
-                  {COLORS.map((c) => (
-                    <label
-                      key={c.id}
-                      className={`choice-card color-option ${color === c.id ? 'is-selected' : ''}`}
+                <fieldset className="option-block">
+                  <legend>Quantity</legend>
+                  <div className="qty-options">
+                    <button
+                      type="button"
+                      className={`choice-card qty-card ${qtyOption === 'one' ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setQtyOption('one')
+                        setQty(1)
+                        setPlan('bundle')
+                      }}
                     >
-                      <input
-                        type="radio"
-                        name="color"
-                        value={c.id}
-                        checked={color === c.id}
-                        onChange={() => selectColor(c.id)}
-                      />
-                      <img src={c.image} alt="" />
-                      <span>{c.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-
-              <fieldset className="option-block">
-                <legend>Quantity</legend>
-                <div className="qty-options">
-                  <button
-                    type="button"
-                    className={`choice-card qty-card ${qtyOption === 'one' ? 'is-selected' : ''}`}
-                    onClick={() => {
-                      setQtyOption('one')
-                      setQty(1)
-                      setPlan('bundle')
-                    }}
-                  >
-                    <div>
-                      <strong>1 Showerhead</strong>
-                      <span className="price-line">
-                        <em>$129</em> each
-                      </span>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className={`choice-card qty-card qty-card--value ${qtyOption === 'multi' ? 'is-selected' : ''}`}
-                    onClick={() => {
-                      setQtyOption('multi')
-                      setQty((q) => Math.max(2, q))
-                      setPlan('bundle')
-                    }}
-                  >
-                    <span className="value-badge">Best value</span>
-                    <div>
-                      <strong>2 Showerheads</strong>
-                      <span className="price-line">
-                        <em>$99</em> each · save $60
-                      </span>
-                    </div>
-                  </button>
-                </div>
-              </fieldset>
-
-              <fieldset className="option-block">
-                <legend>Purchase option</legend>
-                <div className="plan-options">
-                  <button
-                    type="button"
-                    className={`choice-card plan-card ${plan === 'bundle' ? 'is-selected' : ''}`}
-                    onClick={() => setPlan('bundle')}
-                  >
-                    <span className="value-badge value-badge--dark">Save 15%</span>
-                    <div className="plan-top">
-                      <strong>Autoship</strong>
-                      <span>
-                        <s>$199</s> <em>${unitPrice}</em>
-                        {savings > 0 ? ` · save $${savings}` : null}
-                      </span>
-                    </div>
-                    <ul>
-                      <li>Shower system + carbon filter subscription</li>
-                      <li>Replacement filters every 90 days ($29)</li>
-                      <li>Pause or cancel anytime</li>
-                    </ul>
-                    <div className="filter-row">
-                      <img src={asset('/images/gallery-3.jpg')} alt="" />
-                      <div>
-                        <p className="filter-label">Included with Autoship</p>
-                        <strong>Carbon Showerhead Filters</strong>
-                        <p>Every 90 days · Loop Subscribe &amp; Save</p>
+                      <span className="radio" aria-hidden="true" />
+                      <img src={colorImage} alt="" />
+                      <div className="qty-copy">
+                        <strong>1 Showerhead</strong>
+                        <span className="price-line">
+                          <em>$129</em> Each
+                        </span>
                       </div>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className={`choice-card plan-card ${plan === 'one' ? 'is-selected' : ''}`}
-                    onClick={() => setPlan('one')}
-                  >
-                    <div className="plan-top">
-                      <strong>One-time purchase</strong>
-                      <span>
-                        <em>$199</em>
-                      </span>
-                    </div>
-                    <p className="plan-note">Shower system only — add filters later</p>
-                  </button>
-                </div>
-              </fieldset>
-
-              {plan === 'bundle' ? (
-                <div className="qty-stepper">
-                  <span>Units</span>
-                  <div className="stepper">
-                    <button
-                      type="button"
-                      aria-label="Decrease quantity"
-                      onClick={() =>
-                        setQty((q) => {
-                          const next = Math.max(1, q - 1)
-                          setQtyOption(next >= 2 ? 'multi' : 'one')
-                          return next
-                        })
-                      }
-                    >
-                      −
+                      <span className="save-chip">Save $70</span>
                     </button>
-                    <span aria-live="polite">{qty}</span>
                     <button
                       type="button"
-                      aria-label="Increase quantity"
-                      onClick={() =>
-                        setQty((q) => {
-                          const next = q + 1
-                          setQtyOption(next >= 2 ? 'multi' : 'one')
-                          return next
-                        })
-                      }
+                      className={`choice-card qty-card qty-card--value ${qtyOption === 'multi' ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setQtyOption('multi')
+                        setQty((q) => Math.max(2, q))
+                        setPlan('bundle')
+                      }}
                     >
-                      +
+                      <span className="best-badge">50% off · Best value</span>
+                      <span className="radio" aria-hidden="true" />
+                      <img src={colorImage} alt="" />
+                      <div className="qty-copy">
+                        <strong>2+ Showerheads</strong>
+                        <span className="price-line">
+                          <em>$99</em> Each
+                        </span>
+                      </div>
+                      <span className="save-chip">Save $200</span>
                     </button>
                   </div>
+                </fieldset>
+
+                {qtyOption === 'multi' ? (
+                  <div className="qty-stepper">
+                    <span>Units</span>
+                    <div className="stepper">
+                      <button
+                        type="button"
+                        aria-label="Decrease quantity"
+                        onClick={() =>
+                          setQty((q) => {
+                            const next = Math.max(2, q - 1)
+                            return next
+                          })
+                        }
+                      >
+                        −
+                      </button>
+                      <span aria-live="polite">{qty}</span>
+                      <button
+                        type="button"
+                        aria-label="Increase quantity"
+                        onClick={() => setQty((q) => q + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                <fieldset className="option-block">
+                  <legend>Subscription</legend>
+                  <div className="plan-options">
+                    <button
+                      type="button"
+                      className={`choice-card plan-card ${plan === 'bundle' ? 'is-selected' : ''}`}
+                      onClick={() => setPlan('bundle')}
+                    >
+                      <div className="plan-top">
+                        <span className="radio" aria-hidden="true" />
+                        <strong>Autoship</strong>
+                        <span className="plan-price">
+                          <s>$199</s> <em>${unitPrice}</em>
+                        </span>
+                        {savings > 0 ? <span className="save-chip">Save ${savings}</span> : null}
+                      </div>
+                      <ul>
+                        <li>
+                          <Check /> Shower system + carbon filter subscription
+                        </li>
+                        <li>
+                          <Check /> Replacement filters every 90 days ($29)
+                        </li>
+                        <li>
+                          <Check /> Pause or cancel anytime
+                        </li>
+                      </ul>
+                      <div className="popular-bar">Most popular option</div>
+                    </button>
+                    <button
+                      type="button"
+                      className={`choice-card plan-card ${plan === 'one' ? 'is-selected' : ''}`}
+                      onClick={() => setPlan('one')}
+                    >
+                      <div className="plan-top">
+                        <span className="radio" aria-hidden="true" />
+                        <strong>One-time purchase</strong>
+                        <span className="plan-price">
+                          <em>$199</em>
+                        </span>
+                      </div>
+                    </button>
+                  </div>
+                </fieldset>
+
+                <p className="price-note">*Price updates with color, quantity, and Autoship.</p>
+
+                <button type="button" className="btn btn-cart" onClick={addToCart}>
+                  {added ? 'Added to cart' : `Add to cart · $${lineTotal}`}
+                </button>
+
+                <div className="perk-row">
+                  <span>
+                    <Check /> In stock
+                  </span>
+                  <span>Ships within 2 business days</span>
                 </div>
-              ) : null}
-
-              <button type="button" className="btn btn-cart" onClick={addToCart}>
-                {added
-                  ? 'Added to cart'
-                  : plan === 'bundle'
-                    ? `Add Autoship — $${lineTotal}`
-                    : `Add to cart — $${lineTotal}`}
-              </button>
-
-              <ul className="perk-list">
-                <li>In stock · ships within 2 business days</li>
-                <li>60-day money-back guarantee</li>
-                <li>Pause or cancel Autoship anytime</li>
-              </ul>
+                <ul className="perk-list">
+                  <li>
+                    <Check /> Chlorine-tested filter
+                  </li>
+                  <li>
+                    <Check /> 60-day money-back guarantee
+                  </li>
+                  <li>
+                    <Check /> Pause or cancel Autoship anytime
+                  </li>
+                </ul>
+              </div>
 
               <div className="info-accordions">
                 {(
@@ -505,22 +500,24 @@ function App() {
                       title: 'Overview',
                       body: (
                         <ul>
-                          <li>Multi-stage filtration for everyday shower water</li>
+                          <li>85% avg chlorine reduction across a 3-month filter lifespan</li>
                           <li>High-flow pressure with wide-face coverage</li>
                           <li>Universal quick install on standard shower arms</li>
                           <li>Designed for healthier skin, hair, and daily comfort</li>
+                          <li>Multi-stage media including KDF-55 and calcium sulfite</li>
                         </ul>
                       ),
                     },
                     {
                       id: 'design',
-                      title: 'Design & performance',
+                      title: 'Product design & performance',
                       body: (
                         <ul>
                           <li>Wide face · high-flow engineering</li>
                           <li>Replace filter every 90 days</li>
                           <li>KDF-55 + calcium sulfite multi-stage media</li>
                           <li>Targets chlorine and common shower contaminants</li>
+                          <li>Over 250g of filtration media in every cartridge</li>
                         </ul>
                       ),
                     },
@@ -542,9 +539,7 @@ function App() {
                     key={item.id}
                     title={item.title}
                     open={openInfo === item.id}
-                    onToggle={() =>
-                      setOpenInfo((cur) => (cur === item.id ? null : item.id))
-                    }
+                    onToggle={() => setOpenInfo((cur) => (cur === item.id ? null : item.id))}
                   >
                     {item.body}
                   </Accordion>
@@ -554,12 +549,138 @@ function App() {
           </div>
         </section>
 
+        <section className="section reviews" id="reviews">
+          <Pill>Testimonials</Pill>
+          <h2 className="display">Real lives changed</h2>
+          <div className="reviews-toolbar">
+            <div className="rating-row">
+              <Stars />
+              <span>4.9 · 128 Reviews</span>
+            </div>
+          </div>
+          <div className="review-grid">
+            {REVIEWS.slice(0, reviewCount).map((review) => (
+              <article key={review.name} className="review-card">
+                <header>
+                  <strong>{review.name}</strong>
+                  {review.verified ? <span className="verified">Verified</span> : null}
+                  <span>{review.date}</span>
+                </header>
+                <Stars />
+                <p>{review.body}</p>
+              </article>
+            ))}
+          </div>
+          {reviewCount < REVIEWS.length ? (
+            <button type="button" className="btn btn-outline" onClick={() => setReviewCount(REVIEWS.length)}>
+              Load more
+            </button>
+          ) : null}
+        </section>
+
+        <section className="section benefits" id="benefits">
+          <Pill>A healthier you</Pill>
+          <h2 className="display">You’ll experience</h2>
+          <div className="benefit-grid">
+            <article>
+              <img src={asset('/images/benefit-skin.jpg')} alt="" />
+              <h3>Clearer skin</h3>
+              <p>Smoother, more hydrated skin with fewer breakouts and irritation.</p>
+            </article>
+            <article>
+              <img src={asset('/images/benefit-hair.jpg')} alt="" />
+              <h3>Stronger hair</h3>
+              <p>Protects natural moisture and color with less shedding and breakage.</p>
+            </article>
+            <article>
+              <img src={asset('/images/benefit-pressure.jpg')} alt="" />
+              <h3>High-flow water pressure</h3>
+              <p>Powerful coverage without sacrificing filtration performance.</p>
+            </article>
+          </div>
+          <div className="stat-cards">
+            <article>
+              <strong>93%</strong>
+              <p>felt less dryness in 30 days</p>
+            </article>
+            <article>
+              <strong>94%</strong>
+              <p>saw less hair shedding in 30 days</p>
+            </article>
+            <article>
+              <strong>100%</strong>
+              <p>reported a better shower experience</p>
+            </article>
+          </div>
+          <p className="disclaimer">
+            *Based on an external consumer perception study of 100 participants over 30 days. Results may vary.
+          </p>
+          <a className="btn btn-nav benefit-cta" href="#buy">
+            Add to cart
+          </a>
+        </section>
+
+        <div className="ticker" aria-hidden="true">
+          <div className="ticker-track">
+            {[...TICKER, ...TICKER].map((item, index) => (
+              <span key={`${item}-${index}`}>
+                {item}
+                <i>|</i>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <section className="section problem" id="problem">
+          <Pill>The problem</Pill>
+          <h2 className="display">Your water isn’t as clean as it looks</h2>
+          <div className="problem-grid">
+            <figure>
+              <img
+                src={asset('/images/problem-pipe.jpg')}
+                alt="Corroded pipe interior showing scale and rust buildup"
+              />
+            </figure>
+            <div>
+              <p className="lede">
+                Millions of homes rely on aging plumbing lined with rust, scale, and bacteria
+                buildup — which is exactly why cleaner shower water matters every day.
+              </p>
+              <ul className="stat-list">
+                <li>
+                  <strong>95%</strong>
+                  <span>of U.S. water sources exceeded safe thresholds for at least one carcinogen</span>
+                </li>
+                <li>
+                  <strong>80%</strong>
+                  <span>of U.S. homes have detectable chlorine and heavy metals in tap water</span>
+                </li>
+                <li>
+                  <strong>45%</strong>
+                  <span>of U.S. tap systems contain PFAS “forever chemicals”</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="section causes">
+          <h2 className="causes-title">
+            Unfiltered water <em>causes:</em>
+          </h2>
+          <div className="cause-grid">
+            {CAUSES.map((cause) => (
+              <article key={cause.title}>
+                <h3>{cause.title}</h3>
+                <p>{cause.copy}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="section science" id="science">
-          <SectionHead
-            label="Tested & proven"
-            title="Best-in-class filtration"
-            lead="Third-party tested media engineered for real-world shower volumes."
-          />
+          <Pill>Tested & proven</Pill>
+          <h2 className="display">Best-in-class filtration</h2>
           <div className="science-grid">
             <article>
               <strong>85%</strong>
@@ -580,100 +701,8 @@ function App() {
           </div>
         </section>
 
-        <section className="section benefits" id="benefits">
-          <SectionHead
-            label="A healthier you"
-            title="You’ll experience"
-            lead="Cleaner water changes how your skin and hair feel — every single day."
-          />
-          <div className="benefit-grid">
-            <article>
-              <img src={asset('/images/benefit-skin.jpg')} alt="" />
-              <h3>Clearer skin</h3>
-              <p>Smoother, more hydrated skin with fewer breakouts and irritation.</p>
-              <strong>93%</strong>
-              <span>felt less dryness in 30 days</span>
-            </article>
-            <article>
-              <img src={asset('/images/benefit-hair.jpg')} alt="" />
-              <h3>Stronger hair</h3>
-              <p>Protects natural moisture and color with less shedding and breakage.</p>
-              <strong>94%</strong>
-              <span>saw less hair shedding in 30 days</span>
-            </article>
-            <article>
-              <img src={asset('/images/benefit-pressure.jpg')} alt="" />
-              <h3>High-flow pressure</h3>
-              <p>Powerful coverage without sacrificing filtration performance.</p>
-              <strong>100%</strong>
-              <span>reported a better shower experience</span>
-            </article>
-          </div>
-          <p className="disclaimer">
-            *Based on an external consumer perception study of 100 participants over
-            30 days. Results may vary.
-          </p>
-        </section>
-
-        <section className="section reviews" id="reviews">
-          <SectionHead label="Testimonials" title="Real lives changed" />
-          <div className="rating-row center">
-            <Stars />
-            <span>4.9 · 128 Reviews</span>
-          </div>
-          <div className="review-grid">
-            {REVIEWS.map((review) => (
-              <article key={review.name} className="review-card">
-                <Stars />
-                <h3>{review.title}</h3>
-                <p>{review.body}</p>
-                <footer>
-                  <strong>{review.name}</strong>
-                  <span>{review.date}</span>
-                </footer>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section problem" id="problem">
-          <SectionHead
-            label="The problem"
-            title="Your water isn’t as clean as it looks"
-          />
-          <div className="problem-grid">
-            <figure>
-              <img
-                src={asset('/images/problem-pipe.jpg')}
-                alt="Corroded pipe interior showing scale and rust buildup"
-              />
-            </figure>
-            <div>
-              <p className="lede">
-                Millions of homes rely on aging plumbing lined with rust, scale, and
-                bacteria buildup — which is exactly why cleaner shower water matters
-                for everyday health.
-              </p>
-              <ul className="stat-list">
-                <li>
-                  <strong>95%</strong>
-                  <span>of U.S. water sources exceeded safe thresholds for at least one carcinogen</span>
-                </li>
-                <li>
-                  <strong>80%</strong>
-                  <span>of U.S. homes have detectable chlorine and heavy metals in tap water</span>
-                </li>
-                <li>
-                  <strong>45%</strong>
-                  <span>of U.S. tap systems contain PFAS “forever chemicals”</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
         <section className="section faq" id="faq">
-          <SectionHead label="Support" title="Frequently asked" />
+          <h2 className="display display--dark">Frequently asked</h2>
           <div className="faq-list">
             {FAQS.map((item, index) => (
               <Accordion
@@ -690,8 +719,8 @@ function App() {
 
         <section className="newsletter" id="newsletter">
           <div className="newsletter-inner">
-            <p className="eyebrow">Stay in the loop</p>
-            <h2>Cleaner water updates, straight to your inbox.</h2>
+            <Pill>Stay in the loop</Pill>
+            <h2 className="display">Cleaner water updates, to your inbox.</h2>
             <p className="newsletter-lede">
               Product drops, filter reminders, and launch offers — no spam, unsubscribe anytime.
             </p>
@@ -714,22 +743,12 @@ function App() {
                   required
                   autoComplete="email"
                 />
-                <button type="submit" className="btn btn-hero">
+                <button type="submit" className="btn btn-nav">
                   Subscribe
                 </button>
               </form>
             )}
           </div>
-        </section>
-
-        <section className="close-cta">
-          <LogoMark className="close-mark" />
-          <p className="close-eyebrow">Everybody. Everyday.</p>
-          <h2>Ready for better water?</h2>
-          <p>Premium filtration for clearer skin, stronger hair, and elevated everyday showers.</p>
-          <button type="button" className="btn btn-hero" onClick={addToCart}>
-            Shop Now
-          </button>
         </section>
       </main>
 
@@ -760,6 +779,12 @@ function App() {
         </div>
         <p className="footer-copy">© {new Date().getFullYear()} EVERYDAY. All rights reserved.</p>
       </footer>
+
+      <div className="mobile-cart">
+        <button type="button" className="btn btn-cart" onClick={addToCart}>
+          {added ? 'Added' : `Add to cart · $${lineTotal}`}
+        </button>
+      </div>
     </div>
   )
 }

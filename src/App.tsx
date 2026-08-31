@@ -1,27 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import './App.css'
 
 const GALLERY = [
-  {
-    src: '/images/gallery-1.jpg',
-    alt: 'Drop Lab FLOW 01 filtered shower head in polished chrome',
-  },
-  {
-    src: '/images/gallery-2.jpg',
-    alt: 'Drop Lab FLOW 01 filtered shower head in matte black',
-  },
-  {
-    src: '/images/gallery-3.jpg',
-    alt: 'Drop Lab FLOW 01 with replacement filter cartridge',
-  },
-  {
-    src: '/images/product-detail.jpg',
-    alt: 'FLOW 01 spray face with fine mist',
-  },
-  {
-    src: '/images/hero-showerhead.jpg',
-    alt: 'FLOW 01 installed in a bathroom',
-  },
+  { src: '/images/hero-showerhead.jpg', alt: 'EVERYDAY filtered shower system installed in a modern bathroom' },
+  { src: '/images/gallery-1.jpg', alt: 'EVERYDAY shower head in polished chrome' },
+  { src: '/images/gallery-2.jpg', alt: 'EVERYDAY shower head in matte black' },
+  { src: '/images/product-detail.jpg', alt: 'EVERYDAY multi-stage filter face detail' },
+  { src: '/images/gallery-3.jpg', alt: 'EVERYDAY replacement filter cartridge' },
 ]
 
 const COLORS = [
@@ -29,92 +14,159 @@ const COLORS = [
   { id: 'black', label: 'Matte Black', image: '/images/gallery-2.jpg' },
 ] as const
 
+const FEATURES = [
+  {
+    title: 'Cleaner Water',
+    copy: 'Multi-stage filtration reduces chlorine and common tap contaminants.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3C8 8 6 10.5 6 14a6 6 0 1 0 12 0c0-3.5-2-6-6-11Z" />
+        <path d="M9.5 12.5h5M9.5 15h5M9.5 17.5h5" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Protects Skin & Hair',
+    copy: 'Cleaner rinse for softer skin, stronger hair, and everyday comfort.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4v6" />
+        <path d="M8 10h8" />
+        <path d="M6 18c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Whole Home Solution',
+    copy: 'Universal install on standard shower arms — one upgrade, every shower.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 11 12 4l8 7" />
+        <path d="M6 10v9h12v-9" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Elevated Design',
+    copy: 'Minimal hardware and premium finishes built for modern bathrooms.',
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="5" width="14" height="14" rx="1" />
+        <circle cx="12" cy="12" r="4" />
+      </svg>
+    ),
+  },
+]
+
 const REVIEWS = [
   {
     name: 'Sophia R.',
-    date: 'Aug 2, 2026',
-    title: 'Skin feels happier already',
-    body: 'My skin stopped feeling tight after every shower within the first week. Pressure is still strong — and Mr. Droppy on the box made my kids smile.',
+    date: 'Aug 2026',
+    title: 'Noticeably softer water',
+    body: 'Within a week my skin stopped feeling tight after showers. Pressure stayed strong and the hardware looks premium in our guest bath.',
   },
   {
     name: 'Marcus T.',
-    date: 'Jul 28, 2026',
-    title: 'Easy install, real difference',
-    body: 'Twisted on in under five minutes. Hair feels less brittle. Drop Lab nailed the unboxing — “Hey there!” on the lid got me.',
+    date: 'Jul 2026',
+    title: 'Install took five minutes',
+    body: 'Twist-on setup was straightforward. Hair feels less brittle and the chlorine smell from our tap is gone.',
   },
   {
     name: 'Elena K.',
-    date: 'Jul 19, 2026',
-    title: 'Worth the switch',
-    body: 'I was skeptical about filtered showerheads. FLOW 01 keeps flow high while cutting the chlorine smell. Mr. Droppy approved.',
+    date: 'Jul 2026',
+    title: 'Worth the upgrade',
+    body: 'I was skeptical about filtered showerheads. EVERYDAY keeps flow high while the water finally feels clean.',
   },
   {
     name: 'Jordan P.',
-    date: 'Jul 11, 2026',
+    date: 'Jun 2026',
     title: 'Great for hard water',
-    body: 'We have very hard water. After a month my scalp irritation calmed down and soap rinses cleaner.',
+    body: 'Hard water was irritating my scalp. After a month the difference was clear — soap rinses cleaner and skin calmed down.',
   },
 ]
 
 const FAQS = [
   {
-    q: 'How often do I need to replace the filter?',
-    a: 'Mr. Droppy’s rule: swap the cartridge every 90 days for the best FLOW 01 performance. Autoship can deliver filters on that cadence automatically.',
+    q: 'How often should I replace the filter?',
+    a: 'Replace the cartridge every 90 days for optimal filtration. Autoship delivers refills on that cadence so you never miss a swap.',
   },
   {
-    q: 'Will the pressure be worse than my current showerhead?',
-    a: 'Nope. FLOW 01 is built for high flow while filtration runs in parallel — most people say pressure feels the same or better.',
+    q: 'Will water pressure drop?',
+    a: 'No. EVERYDAY is engineered for high flow — wide-face coverage with filtration running in parallel to your shower stream.',
   },
   {
     q: 'Does the filter actually work?',
-    a: 'Yes. Our multi-stage media is tested for chlorine reduction across a 3-month lifespan, including high-volume water throughput.',
-  },
-  {
-    q: 'Who is Mr. Droppy?',
-    a: 'Mr. Droppy is Drop Lab’s official mascot — your cheerful reminder that cleaner shower water should feel simple, friendly, and fun.',
+    a: 'Yes. Multi-stage media is tested for chlorine reduction across a 3-month lifespan, including high-volume water throughput.',
   },
   {
     q: 'Will it fit my shower?',
-    a: 'It installs on standard shower arms with a few twists. Plumber’s tape and a fit wrench are included in the box.',
-  },
-]
-
-const STEPS = [
-  {
-    title: '15-Stage Filtration',
-    copy: 'A packed cartridge that takes on chlorine and the gunk you don’t want in the rinse.',
-    image: '/images/gallery-3.jpg',
+    a: 'It installs on standard shower arms with a few twists. Plumber’s tape and a fit wrench are included.',
   },
   {
-    title: 'Goodbye to Bad',
-    copy: 'Harsh stuff gets filtered out before it hits your skin and hair.',
-    image: '/images/bad-blob.jpg',
-  },
-  {
-    title: 'Hello to Good',
-    copy: 'Mr. Droppy brings the clean flow — softer water, happier showers.',
-    image: '/images/mr-droppy.jpg',
-  },
-  {
-    title: 'New Filtered Flow',
-    copy: 'Wide-face spray that still feels powerful after filtration.',
-    image: '/images/flow01-icon.jpg',
-  },
-  {
-    title: 'Easy Install',
-    copy: 'A few twists, some tape, and you’re done. No plumber required.',
-    image: '/images/hero-showerhead.jpg',
+    q: 'What is Autoship?',
+    a: 'Autoship pairs your shower system with carbon filter refills on a Loop subscription — discounted today and on every future shipment. Pause or cancel anytime.',
   },
 ]
 
 type PurchasePlan = 'bundle' | 'one'
 type QtyOption = 'one' | 'multi'
 
+function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 4C10.3 10.7 7 14.3 7 19a9 9 0 1 0 18 0c0-4.7-3.3-8.3-9-15Z" />
+      <rect x="12" y="13" width="8" height="1.2" rx="0.6" />
+      <rect x="12" y="15.8" width="8" height="1.2" rx="0.6" />
+      <rect x="12" y="18.6" width="8" height="1.2" rx="0.6" />
+    </svg>
+  )
+}
+
 function Stars({ value = 4.9 }: { value?: number }) {
   return (
     <span className="stars" aria-label={`${value} out of 5 stars`}>
-      {'★★★★★'}
+      ★★★★★
     </span>
+  )
+}
+
+function SectionHead({
+  label,
+  title,
+  lead,
+}: {
+  label: string
+  title: string
+  lead?: string
+}) {
+  return (
+    <div className="section-head">
+      <p className="eyebrow">{label}</p>
+      <h2>{title}</h2>
+      {lead ? <p className="section-lead">{lead}</p> : null}
+    </div>
+  )
+}
+
+function Accordion({
+  title,
+  open,
+  onToggle,
+  children,
+}: {
+  title: string
+  open: boolean
+  onToggle: () => void
+  children: ReactNode
+}) {
+  return (
+    <div className="accordion">
+      <button type="button" aria-expanded={open} onClick={onToggle}>
+        {title}
+        <span aria-hidden="true">{open ? '−' : '+'}</span>
+      </button>
+      {open ? <div className="accordion-panel">{children}</div> : null}
+    </div>
   )
 }
 
@@ -156,38 +208,75 @@ function App() {
   return (
     <div className="site">
       <div className="announce">
-        Hey there! Up to 50% off FLOW 01 — Mr. Droppy says grab yours
+        Free shipping on orders over $99 · Everybody. Everyday.
       </div>
 
       <header className="nav">
-        <a className="nav-brand" href="#top" aria-label="Drop Lab home">
-          <img
-            src="/images/mr-droppy-avatar.png"
-            alt=""
-            className="nav-mascot"
-          />
-          <span>drop lab</span>
+        <a className="nav-brand" href="#top" aria-label="EVERYDAY home">
+          <LogoMark className="nav-mark" />
+          <span>EVERYDAY</span>
         </a>
         <nav className="nav-links" aria-label="Primary">
-          <a href="#buy">FLOW 01</a>
-          <a href="#story">Every Drop</a>
-          <a href="#benefits">Benefits</a>
+          <a href="#buy">Shop</a>
+          <a href="#features">Features</a>
+          <a href="#science">Filtration</a>
+          <a href="#reviews">Reviews</a>
           <a href="#faq">FAQ</a>
         </nav>
-        <a className="nav-shop" href="#buy">
+        <a className="btn btn-nav" href="#buy">
           Shop Now
         </a>
       </header>
 
       <main id="top">
+        <section className="hero" aria-label="Introduction">
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <p className="hero-eyebrow">Everybody. Everyday.</p>
+              <h1>
+                Better Water.
+                <br />
+                Better Life.
+              </h1>
+              <p className="hero-lede">
+                Premium filtered shower systems that remove chlorine and harsh
+                contaminants — for cleaner water, healthier skin, and elevated
+                everyday rituals.
+              </p>
+              <a className="btn btn-hero" href="#buy">
+                Shop Now
+              </a>
+            </div>
+            <div className="hero-media">
+              <img
+                src="/images/hero-showerhead.jpg"
+                alt="EVERYDAY filtered shower system in a modern bathroom"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="features-strip" id="features">
+          <div className="features-grid">
+            {FEATURES.map((feature) => (
+              <article key={feature.title} className="feature-card">
+                <div className="feature-icon">{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p>{feature.copy}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="pdp" id="buy" aria-label="Product">
+          <div className="pdp-intro">
+            <p className="eyebrow">Filtered Shower System</p>
+            <h2 className="pdp-title">The everyday upgrade your water deserves.</h2>
+          </div>
+
           <div className="pdp-grid">
             <div className="gallery">
               <div className="gallery-main">
-                <div className="gallery-badge">
-                  <img src="/images/mr-droppy-avatar.png" alt="" />
-                  <span>Mr. Droppy’s pick</span>
-                </div>
                 <button
                   type="button"
                   className="gallery-arrow prev"
@@ -210,11 +299,7 @@ function App() {
                   ›
                 </button>
               </div>
-              <div
-                className="gallery-thumbs"
-                role="tablist"
-                aria-label="Product images"
-              >
+              <div className="gallery-thumbs" role="tablist" aria-label="Product images">
                 {GALLERY.map((image, index) => (
                   <button
                     key={image.src}
@@ -231,35 +316,25 @@ function App() {
             </div>
 
             <div className="buybox">
-              <p className="brand-kicker">Drop Lab · Filtered Shower Head</p>
-              <h1>FLOW 01</h1>
-              <p className="tagline">The shower upgrade your skin will love.</p>
-              <p className="buybox-lede">
-                A playful, powerful multi-stage shower filter that helps remove
-                chlorine and harsh stuff from tap water — for better water,
-                better skin, better hair, better you.
-              </p>
-
               <div className="rating-row">
                 <Stars />
                 <span>4.9</span>
                 <a href="#reviews">128 Reviews</a>
               </div>
 
-              <ul className="value-list">
-                <li>Better water</li>
-                <li>Better skin</li>
-                <li>Better hair</li>
-                <li>Better you</li>
-              </ul>
+              <p className="buybox-lede">
+                A multi-stage filtered shower system that helps remove chlorine
+                and harsh stuff from tap water — science-backed purity for your
+                home.
+              </p>
 
               <fieldset className="option-block">
-                <legend>Select Color</legend>
+                <legend>Finish</legend>
                 <div className="color-options">
                   {COLORS.map((c) => (
                     <label
                       key={c.id}
-                      className={`color-option ${color === c.id ? 'is-selected' : ''}`}
+                      className={`choice-card color-option ${color === c.id ? 'is-selected' : ''}`}
                     >
                       <input
                         type="radio"
@@ -280,7 +355,7 @@ function App() {
                 <div className="qty-options">
                   <button
                     type="button"
-                    className={`qty-card ${qtyOption === 'one' ? 'is-selected' : ''}`}
+                    className={`choice-card qty-card ${qtyOption === 'one' ? 'is-selected' : ''}`}
                     onClick={() => {
                       setQtyOption('one')
                       setQty(1)
@@ -288,74 +363,81 @@ function App() {
                     }}
                   >
                     <div>
-                      <strong>1 FLOW 01</strong>
+                      <strong>1 Showerhead</strong>
                       <span className="price-line">
-                        <em>$129</em> Each
+                        <em>$129</em> each
                       </span>
                     </div>
-                    <span className="save-chip">SAVE $70</span>
                   </button>
                   <button
                     type="button"
-                    className={`qty-card ${qtyOption === 'multi' ? 'is-selected' : ''}`}
+                    className={`choice-card qty-card qty-card--value ${qtyOption === 'multi' ? 'is-selected' : ''}`}
                     onClick={() => {
                       setQtyOption('multi')
                       setQty((q) => Math.max(2, q))
                       setPlan('bundle')
                     }}
                   >
-                    <div className="best-tag">50% OFF · BEST VALUE</div>
+                    <span className="value-badge">Best value</span>
                     <div>
-                      <strong>2+ FLOW 01</strong>
+                      <strong>2 Showerheads</strong>
                       <span className="price-line">
-                        <em>$99</em> Each
+                        <em>$99</em> each · save $60
                       </span>
                     </div>
-                    <span className="save-chip">SAVE $200+</span>
                   </button>
                 </div>
               </fieldset>
 
               <fieldset className="option-block">
-                <legend className="sr-only">Purchase plan</legend>
+                <legend>Purchase option</legend>
                 <div className="plan-options">
                   <button
                     type="button"
-                    className={`plan-card ${plan === 'bundle' ? 'is-selected' : ''}`}
+                    className={`choice-card plan-card ${plan === 'bundle' ? 'is-selected' : ''}`}
                     onClick={() => setPlan('bundle')}
                   >
-                    <div className="popular-tag">MR. DROPPY’S FAVORITE</div>
+                    <span className="value-badge value-badge--dark">Save 15%</span>
                     <div className="plan-top">
                       <strong>Autoship</strong>
                       <span>
                         <s>$199</s> <em>${unitPrice}</em>
-                        {savings > 0 ? ` SAVE $${savings}` : null}
+                        {savings > 0 ? ` · save $${savings}` : null}
                       </span>
                     </div>
                     <ul>
-                      <li>FLOW 01 + filter + filter subscription</li>
-                      <li>Replacement filter every 90 days ($39)</li>
+                      <li>Shower system + carbon filter subscription</li>
+                      <li>Replacement filters every 90 days ($29)</li>
                       <li>Pause or cancel anytime</li>
                     </ul>
+                    <div className="filter-row">
+                      <img src="/images/gallery-3.jpg" alt="" />
+                      <div>
+                        <p className="filter-label">Included with Autoship</p>
+                        <strong>Carbon Showerhead Filters</strong>
+                        <p>Every 90 days · Loop Subscribe &amp; Save</p>
+                      </div>
+                    </div>
                   </button>
                   <button
                     type="button"
-                    className={`plan-card ${plan === 'one' ? 'is-selected' : ''}`}
+                    className={`choice-card plan-card ${plan === 'one' ? 'is-selected' : ''}`}
                     onClick={() => setPlan('one')}
                   >
                     <div className="plan-top">
-                      <strong>One-Time Purchase</strong>
+                      <strong>One-time purchase</strong>
                       <span>
                         <em>$199</em>
                       </span>
                     </div>
+                    <p className="plan-note">Shower system only — add filters later</p>
                   </button>
                 </div>
               </fieldset>
 
               {plan === 'bundle' ? (
                 <div className="qty-stepper">
-                  <span>Quantity</span>
+                  <span>Units</span>
                   <div className="stepper">
                     <button
                       type="button"
@@ -388,45 +470,19 @@ function App() {
                 </div>
               ) : null}
 
-              <p className="fineprint">
-                {plan === 'bundle' && qty >= 2
-                  ? 'Save 50% on two or more. Price updates automatically in cart.'
-                  : 'Price updates automatically in cart.'}
-              </p>
-
               <button type="button" className="btn btn-cart" onClick={addToCart}>
-                {added ? 'Added — hey there, good choice!' : `Add to cart — $${lineTotal}`}
+                {added
+                  ? 'Added to cart'
+                  : plan === 'bundle'
+                    ? `Add Autoship — $${lineTotal}`
+                    : `Add to cart — $${lineTotal}`}
               </button>
 
-              <div className="trust-stack">
-                <div className="stock-row">
-                  <span className="in-stock">In stock</span>
-                  <span>Ships by Aug 20, 2026</span>
-                </div>
-                <div className="urgency">
-                  <div className="urgency-bar" style={{ width: '84%' }} />
-                </div>
-                <p className="urgency-copy">
-                  84% of the current batch reserved · 37 reserved in the last 24
-                  hours
-                </p>
-                <ul className="perk-list">
-                  <li>Chlorine-tested filter</li>
-                  <li>60-day money-back guarantee</li>
-                  <li>Good for you & the planet</li>
-                </ul>
-              </div>
-
-              <aside className="droppy-tip">
-                <img src="/images/mr-droppy-wave.jpg" alt="Mr. Droppy waving" />
-                <div>
-                  <strong>Tip from Mr. Droppy</strong>
-                  <p>
-                    Grab Autoship once and forget filter day — I’ll nudge the
-                    refill every 90 days.
-                  </p>
-                </div>
-              </aside>
+              <ul className="perk-list">
+                <li>In stock · ships within 2 business days</li>
+                <li>60-day money-back guarantee</li>
+                <li>Pause or cancel Autoship anytime</li>
+              </ul>
 
               <div className="info-accordions">
                 {(
@@ -439,16 +495,16 @@ function App() {
                           <li>Multi-stage filtration for everyday shower water</li>
                           <li>High-flow pressure with wide-face coverage</li>
                           <li>Universal quick install on standard shower arms</li>
-                          <li>Built for better skin, hair, and daily comfort</li>
+                          <li>Designed for healthier skin, hair, and daily comfort</li>
                         </ul>
                       ),
                     },
                     {
                       id: 'design',
-                      title: 'Product Design & Performance',
+                      title: 'Design & performance',
                       body: (
                         <ul>
-                          <li>Wide face · high-flow design</li>
+                          <li>Wide face · high-flow engineering</li>
                           <li>Replace filter every 90 days</li>
                           <li>KDF-55 + calcium sulfite multi-stage media</li>
                           <li>Targets chlorine and common shower contaminants</li>
@@ -457,87 +513,100 @@ function App() {
                     },
                     {
                       id: 'included',
-                      title: "What's Included",
+                      title: "What's included",
                       body: (
                         <ul>
-                          <li>Drop Lab FLOW 01 Filtered Shower Head</li>
+                          <li>EVERYDAY filtered shower system</li>
                           <li>Pre-installed filter cartridge</li>
                           <li>Plumber’s tape + fit wrench</li>
                           <li>Owner’s manual</li>
-                          <li>A “Hey there!” hello from Mr. Droppy</li>
                         </ul>
                       ),
                     },
                   ] as const
                 ).map((item) => (
-                  <div key={item.id} className="accordion">
-                    <button
-                      type="button"
-                      aria-expanded={openInfo === item.id}
-                      onClick={() =>
-                        setOpenInfo((cur) => (cur === item.id ? null : item.id))
-                      }
-                    >
-                      {item.title}
-                      <span aria-hidden="true">
-                        {openInfo === item.id ? '−' : '+'}
-                      </span>
-                    </button>
-                    {openInfo === item.id ? (
-                      <div className="accordion-panel">{item.body}</div>
-                    ) : null}
-                  </div>
+                  <Accordion
+                    key={item.id}
+                    title={item.title}
+                    open={openInfo === item.id}
+                    onToggle={() =>
+                      setOpenInfo((cur) => (cur === item.id ? null : item.id))
+                    }
+                  >
+                    {item.body}
+                  </Accordion>
                 ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section className="band hey-band" id="story">
-          <div className="hey-grid">
-            <img
-              src="/images/mr-droppy.jpg"
-              alt="Mr. Droppy"
-              className="hey-mascot"
-            />
-            <div>
-              <p className="pill">Unboxing vibes</p>
-              <h2>Hey there!</h2>
-              <p className="hey-lead">You just made a really good choice.</p>
-              <p>
-                Every drop has a story. FLOW 01 is Drop Lab’s filtered shower
-                head — friendly on the outside, serious about cleaner water on
-                the inside. Mr. Droppy is here to keep the ritual simple.
-              </p>
-            </div>
+        <section className="section science" id="science">
+          <SectionHead
+            label="Tested & proven"
+            title="Best-in-class filtration"
+            lead="Third-party tested media engineered for real-world shower volumes."
+          />
+          <div className="science-grid">
+            <article>
+              <strong>85%</strong>
+              <p>avg chlorine reduction across the filter’s 3-month lifespan</p>
+            </article>
+            <article>
+              <strong>75%</strong>
+              <p>avg chlorine reduction after 10,000 gallons of water</p>
+            </article>
+            <article>
+              <strong>15</strong>
+              <p>filtration stages in every cartridge</p>
+            </article>
+            <article>
+              <strong>250g+</strong>
+              <p>calcium sulfite &amp; KDF-55 filtration media</p>
+            </article>
           </div>
         </section>
 
-        <section className="section process">
-          <div className="section-head">
-            <p className="pill">How FLOW 01 works</p>
-            <h2>From bad water to better you</h2>
+        <section className="section benefits" id="benefits">
+          <SectionHead
+            label="A healthier you"
+            title="You’ll experience"
+            lead="Cleaner water changes how your skin and hair feel — every single day."
+          />
+          <div className="benefit-grid">
+            <article>
+              <img src="/images/benefit-skin.jpg" alt="" />
+              <h3>Clearer skin</h3>
+              <p>Smoother, more hydrated skin with fewer breakouts and irritation.</p>
+              <strong>93%</strong>
+              <span>felt less dryness in 30 days</span>
+            </article>
+            <article>
+              <img src="/images/benefit-hair.jpg" alt="" />
+              <h3>Stronger hair</h3>
+              <p>Protects natural moisture and color with less shedding and breakage.</p>
+              <strong>94%</strong>
+              <span>saw less hair shedding in 30 days</span>
+            </article>
+            <article>
+              <img src="/images/benefit-pressure.jpg" alt="" />
+              <h3>High-flow pressure</h3>
+              <p>Powerful coverage without sacrificing filtration performance.</p>
+              <strong>100%</strong>
+              <span>reported a better shower experience</span>
+            </article>
           </div>
-          <div className="process-track">
-            {STEPS.map((step, index) => (
-              <article key={step.title} className="process-card">
-                <span className="process-num">{String(index + 1).padStart(2, '0')}</span>
-                <img src={step.image} alt="" />
-                <h3>{step.title}</h3>
-                <p>{step.copy}</p>
-              </article>
-            ))}
-          </div>
+          <p className="disclaimer">
+            *Based on an external consumer perception study of 100 participants over
+            30 days. Results may vary.
+          </p>
         </section>
 
         <section className="section reviews" id="reviews">
-          <div className="section-head">
-            <p className="pill">Testimonials</p>
-            <h2>Real lives changed</h2>
-            <div className="rating-row center">
-              <Stars />
-              <span>4.9 · 128 Reviews</span>
-            </div>
+          <SectionHead label="Testimonials" title="Real lives changed" />
+          <div className="rating-row center">
+            <Stars />
+            <span>4.9 · 128 Reviews</span>
           </div>
           <div className="review-grid">
             {REVIEWS.map((review) => (
@@ -554,69 +623,11 @@ function App() {
           </div>
         </section>
 
-        <section className="section benefits" id="benefits">
-          <div className="section-head">
-            <p className="pill">A healthier you</p>
-            <h2>You’ll experience</h2>
-          </div>
-          <div className="benefit-grid">
-            <article>
-              <img src="/images/benefit-skin.jpg" alt="" />
-              <h3>Clearer skin</h3>
-              <p>
-                Smoother, more hydrated skin with fewer breakouts, irritation,
-                and flare-ups.
-              </p>
-              <strong>93%</strong>
-              <span>felt less dryness in their face and skin in 30 days</span>
-            </article>
-            <article>
-              <img src="/images/benefit-hair.jpg" alt="" />
-              <h3>Stronger hair</h3>
-              <p>
-                Protects hair’s natural moisture and color with less shedding
-                and breakage.
-              </p>
-              <strong>94%</strong>
-              <span>saw less hair shedding and breaking in 30 days</span>
-            </article>
-            <article>
-              <img src="/images/benefit-pressure.jpg" alt="" />
-              <h3>High-flow pressure</h3>
-              <p>
-                Powerful water pressure without sacrificing filtration
-                performance.
-              </p>
-              <strong>100%</strong>
-              <span>reported a better shower experience every day</span>
-            </article>
-          </div>
-          <p className="disclaimer">
-            *Based on an external consumer perception study of 100 participants
-            over 30 days. Results may vary.
-          </p>
-          <button type="button" className="btn btn-cart inline" onClick={addToCart}>
-            Add to cart
-          </button>
-        </section>
-
-        <div className="marquee" aria-hidden="true">
-          <div className="marquee-track">
-            {Array.from({ length: 2 }).map((_, loop) => (
-              <p key={loop}>
-                Better Water · Better Skin · Better Hair · Better You · Mr.
-                Droppy Approves · FLOW 01 · Better Water · Better Skin · Better
-                Hair · Better You ·
-              </p>
-            ))}
-          </div>
-        </div>
-
         <section className="section problem" id="problem">
-          <div className="section-head">
-            <p className="pill">The problem</p>
-            <h2>Your water isn’t safe</h2>
-          </div>
+          <SectionHead
+            label="The problem"
+            title="Your water isn’t as clean as it looks"
+          />
           <div className="problem-grid">
             <figure>
               <img
@@ -626,105 +637,51 @@ function App() {
             </figure>
             <div>
               <p className="lede">
-                Millions of homes rely on decades-old plumbing lined with rust,
-                scale, and bacteria buildup — which is exactly why Mr. Droppy
-                started campaigning for cleaner showers.
+                Millions of homes rely on aging plumbing lined with rust, scale, and
+                bacteria buildup — which is exactly why cleaner shower water matters
+                for everyday health.
               </p>
               <ul className="stat-list">
                 <li>
                   <strong>95%</strong>
-                  <span>
-                    of U.S. tested water sources surpassed safe thresholds for at
-                    least one carcinogen
-                  </span>
+                  <span>of U.S. water sources exceeded safe thresholds for at least one carcinogen</span>
                 </li>
                 <li>
                   <strong>80%</strong>
-                  <span>
-                    of U.S. homes have detectable chlorine and heavy metals in
-                    tap water
-                  </span>
+                  <span>of U.S. homes have detectable chlorine and heavy metals in tap water</span>
                 </li>
                 <li>
                   <strong>45%</strong>
-                  <span>
-                    of U.S. tap systems contain PFAS “forever chemicals”
-                  </span>
+                  <span>of U.S. tap systems contain PFAS “forever chemicals”</span>
                 </li>
               </ul>
             </div>
           </div>
         </section>
 
-        <section className="section science" id="science">
-          <div className="section-head">
-            <p className="pill">Tested & proven</p>
-            <h2>Best-in-class filtration</h2>
-          </div>
-          <div className="science-grid">
-            <article>
-              <strong>85%</strong>
-              <p>avg chlorine reduction across the filter’s 3-month lifespan</p>
-            </article>
-            <article>
-              <strong>75%</strong>
-              <p>avg chlorine reduction after 10,000 gallons of water</p>
-            </article>
-            <article>
-              <strong>15</strong>
-              <p>filtration stages packed into every FLOW 01 cartridge</p>
-            </article>
-            <article>
-              <strong>250g+</strong>
-              <p>calcium sulfite & KDF-55 filtration media</p>
-            </article>
-          </div>
-          <button type="button" className="btn btn-cart inline" onClick={addToCart}>
-            Add to cart
-          </button>
-        </section>
-
         <section className="section faq" id="faq">
-          <div className="section-head">
-            <p className="pill">Support</p>
-            <h2>Frequently asked</h2>
-          </div>
+          <SectionHead label="Support" title="Frequently asked" />
           <div className="faq-list">
             {FAQS.map((item, index) => (
-              <div key={item.q} className="accordion">
-                <button
-                  type="button"
-                  aria-expanded={openFaq === index}
-                  onClick={() =>
-                    setOpenFaq((cur) => (cur === index ? null : index))
-                  }
-                >
-                  {item.q}
-                  <span aria-hidden="true">{openFaq === index ? '−' : '+'}</span>
-                </button>
-                {openFaq === index ? (
-                  <div className="accordion-panel">
-                    <p>{item.a}</p>
-                  </div>
-                ) : null}
-              </div>
+              <Accordion
+                key={item.q}
+                title={item.q}
+                open={openFaq === index}
+                onToggle={() => setOpenFaq((cur) => (cur === index ? null : index))}
+              >
+                <p>{item.a}</p>
+              </Accordion>
             ))}
           </div>
         </section>
 
-        <section className="section close-cta">
-          <img
-            src="/images/mr-droppy-thumb.jpg"
-            alt="Mr. Droppy giving a thumbs up"
-            className="close-mascot"
-          />
-          <h2>Hey there — ready for better water?</h2>
-          <p>
-            Drop Lab FLOW 01 — filtered shower water for clearer skin and
-            stronger hair, with Mr. Droppy along for the rinse.
-          </p>
-          <button type="button" className="btn btn-cart" onClick={addToCart}>
-            Add FLOW 01 to cart
+        <section className="close-cta">
+          <LogoMark className="close-mark" />
+          <p className="close-eyebrow">Everybody. Everyday.</p>
+          <h2>Ready for better water?</h2>
+          <p>Premium filtration for clearer skin, stronger hair, and elevated everyday showers.</p>
+          <button type="button" className="btn btn-hero" onClick={addToCart}>
+            Shop Now
           </button>
         </section>
       </main>
@@ -733,30 +690,28 @@ function App() {
         <div className="footer-grid">
           <div>
             <p className="footer-brand">
-              <img
-                src="/images/mr-droppy-avatar.png"
-                alt=""
-                className="footer-mascot"
-              />
-              drop lab
+              <LogoMark className="footer-mark" />
+              EVERYDAY
             </p>
-            <p>Every drop has a story. Good for you & the planet.</p>
+            <p className="footer-tag">Everybody. Everyday.</p>
+            <p>Better water for every shower in your home.</p>
           </div>
           <div>
             <h3>Shop</h3>
-            <a href="#buy">FLOW 01</a>
-            <a href="#buy">Replacement Filters</a>
+            <a href="#buy">Filtered Shower System</a>
+            <a href="#buy">Carbon Filters</a>
           </div>
           <div>
             <h3>Support</h3>
             <a href="#faq">FAQ</a>
-            <a href="#science">Science</a>
+            <a href="#science">Filtration</a>
           </div>
           <div>
             <h3>Contact</h3>
-            <a href="mailto:hello@droplab.example">hello@droplab.example</a>
+            <a href="mailto:hello@everydaywater.co">hello@everydaywater.co</a>
           </div>
         </div>
+        <p className="footer-copy">© {new Date().getFullYear()} EVERYDAY. All rights reserved.</p>
       </footer>
     </div>
   )

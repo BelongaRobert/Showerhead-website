@@ -1,17 +1,14 @@
-# Drop Lab
+# EVERYDAY
 
-Product page for **Drop Lab FLOW 01** — the filtered shower head — featuring mascot **Mr. Droppy**.
+Premium filtered shower systems — market-ready product experience for **EVERYDAY**.
 
-Playful mood-board branding with a Cold Life–style PDP structure.
+Brand palette: Deep Sea `#0F2D3A`, Sand `#F2EFEA`, Fog Blue `#7FA1B2`. Typography: Outfit (UI) + Cormorant Garamond (editorial).
 
 ## Live site
 
-After GitHub Pages is enabled on the `gh-pages` branch:
-
 **https://belongarobert.github.io/Showerhead-website/**
 
-Enable here: https://github.com/BelongaRobert/Showerhead-website/settings/pages  
-Source → Deploy from a branch → `gh-pages` / root → Save.
+Enable GitHub Pages: https://github.com/BelongaRobert/Showerhead-website/settings/pages → Deploy from branch → `gh-pages` / root.
 
 ## Develop
 

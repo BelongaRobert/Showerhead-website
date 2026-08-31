@@ -27,7 +27,3 @@ npm run dev
 npm run build
 npm run preview
 ```
-
-## Legacy docs
-
-Shopify / Loop partner notes (archived): [`docs/loop-and-shop-tracking.md`](docs/loop-and-shop-tracking.md)

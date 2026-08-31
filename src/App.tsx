@@ -179,6 +179,8 @@ function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [openInfo, setOpenInfo] = useState<string | null>('overview')
   const [added, setAdded] = useState(false)
+  const [email, setEmail] = useState('')
+  const [emailSent, setEmailSent] = useState(false)
 
   const unitPrice = useMemo(() => {
     if (plan === 'one') return 199
@@ -199,6 +201,13 @@ function App() {
   function addToCart() {
     setAdded(true)
     window.setTimeout(() => setAdded(false), 2200)
+  }
+
+  function joinList(event: React.FormEvent) {
+    event.preventDefault()
+    if (!email.trim()) return
+    setEmailSent(true)
+    setEmail('')
   }
 
   function shiftSlide(dir: -1 | 1) {
@@ -222,6 +231,7 @@ function App() {
           <a href="#science">Filtration</a>
           <a href="#reviews">Reviews</a>
           <a href="#faq">FAQ</a>
+          <a href="#newsletter">Updates</a>
         </nav>
         <a className="btn btn-nav" href="#buy">
           Shop Now
@@ -672,6 +682,40 @@ function App() {
                 <p>{item.a}</p>
               </Accordion>
             ))}
+          </div>
+        </section>
+
+        <section className="newsletter" id="newsletter">
+          <div className="newsletter-inner">
+            <p className="eyebrow">Stay in the loop</p>
+            <h2>Cleaner water updates, straight to your inbox.</h2>
+            <p className="newsletter-lede">
+              Product drops, filter reminders, and launch offers — no spam, unsubscribe anytime.
+            </p>
+            {emailSent ? (
+              <p className="newsletter-success" role="status">
+                You&apos;re on the list. Welcome to EVERYDAY.
+              </p>
+            ) : (
+              <form className="newsletter-form" onSubmit={joinList}>
+                <label className="sr-only" htmlFor="newsletter-email">
+                  Email address
+                </label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  name="email"
+                  placeholder="you@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+                <button type="submit" className="btn btn-hero">
+                  Subscribe
+                </button>
+              </form>
+            )}
           </div>
         </section>
 

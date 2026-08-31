@@ -1000,6 +1000,95 @@ button {
   margin: 0 auto;
 }
 
+.newsletter {
+  padding: clamp(3rem, 7vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+  background: var(--white);
+  border-top: 1px solid var(--line);
+}
+
+.newsletter-inner {
+  width: min(100%, 36rem);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.newsletter h2 {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.newsletter-lede {
+  margin: 0.75rem 0 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+@media (min-width: 520px) {
+  .newsletter-form {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.newsletter-form input {
+  flex: 1;
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--sand);
+  color: var(--deep-sea);
+  font-size: 0.95rem;
+}
+
+.newsletter-form input:focus {
+  outline: 2px solid var(--fog);
+  outline-offset: 1px;
+}
+
+.newsletter-form .btn {
+  flex-shrink: 0;
+  background: var(--deep-sea);
+  color: var(--white);
+  border-color: var(--deep-sea);
+}
+
+.newsletter-form .btn:hover {
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+}
+
+.newsletter-success {
+  margin: 1.35rem 0 0;
+  padding: 0.85rem 1rem;
+  background: var(--sand);
+  border: 1px solid var(--line);
+  color: var(--deep-sea);
+  font-weight: 500;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .close-cta {
   text-align: center;
   padding: clamp(3.5rem, 8vw, 5rem) clamp(1rem, 3vw, 2rem);

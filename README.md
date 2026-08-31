@@ -1,14 +1,18 @@
 # EVERYDAY
 
-Premium filtered shower systems — market-ready product experience for **EVERYDAY**.
-
-Brand palette: Deep Sea `#0F2D3A`, Sand `#F2EFEA`, Fog Blue `#7FA1B2`. Typography: Outfit (UI) + Cormorant Garamond (editorial).
+Premium filtered shower systems — **Better Water. Better Life.**
 
 ## Live site
 
 **https://belongarobert.github.io/Showerhead-website/**
 
-Enable GitHub Pages: https://github.com/BelongaRobert/Showerhead-website/settings/pages → Deploy from branch → `gh-pages` / root.
+Deploys automatically on push to `main` via GitHub Actions.
+
+## Custom domain (when ready)
+
+1. In repo **Settings → Pages**, set your domain (e.g. `everydaywater.co`).
+2. At your DNS host, add the records GitHub shows (usually `A` + `CNAME`).
+3. Change `base` in `vite.config.ts` from `'/Showerhead-website/'` to `'/'`, then push to `main`.
 
 ## Develop
 

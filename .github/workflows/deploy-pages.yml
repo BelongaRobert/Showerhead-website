@@ -1,8 +1,8 @@
-name: Deploy Drop Lab site to GitHub Pages
+name: Deploy EVERYDAY site to GitHub Pages
 
 on:
   push:
-    branches: [main, "cursor/drop-lab-theme-36e5"]
+    branches: [main, cursor/everyday-redesign-36e5]
   workflow_dispatch:
 
 permissions:

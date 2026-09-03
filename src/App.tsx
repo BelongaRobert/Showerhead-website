@@ -4,17 +4,20 @@ import './App.css'
 /** Public assets on GitHub Pages live under import.meta.env.BASE_URL (e.g. /Showerhead-website/). */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
 
-const GALLERY = [
-  { src: asset('/images/hero-showerhead.jpg'), alt: 'EVERYDAY filtered shower system installed in a modern bathroom' },
-  { src: asset('/images/gallery-1.jpg'), alt: 'EVERYDAY shower head in polished chrome' },
-  { src: asset('/images/gallery-2.jpg'), alt: 'EVERYDAY shower head in matte black' },
-  { src: asset('/images/product-detail.jpg'), alt: 'EVERYDAY multi-stage filter face detail' },
-  { src: asset('/images/gallery-3.jpg'), alt: 'EVERYDAY replacement filter cartridge' },
+const CHROME_GALLERY = [
+  { src: asset('/images/chrome-side.jpg'), alt: 'EVERYDAY filtered shower system — polished chrome side view' },
+  { src: asset('/images/chrome-face.jpg'), alt: 'EVERYDAY polished chrome face showing spray nozzles' },
+]
+
+const BLACK_GALLERY = [
+  { src: asset('/images/black-side.jpg'), alt: 'EVERYDAY filtered shower system — matte black side view' },
+  { src: asset('/images/black-side-alt.jpg'), alt: 'EVERYDAY matte black side angle with EVERYDAY branding' },
+  { src: asset('/images/black-face.jpg'), alt: 'EVERYDAY matte black face showing spray nozzles' },
 ]
 
 const COLORS = [
-  { id: 'chrome', label: 'Polished Chrome', image: asset('/images/gallery-1.jpg') },
-  { id: 'black', label: 'Matte Black', image: asset('/images/gallery-2.jpg') },
+  { id: 'chrome', label: 'Polished Chrome', image: asset('/images/chrome-side.jpg') },
+  { id: 'black', label: 'Matte Black', image: asset('/images/black-side.jpg') },
 ] as const
 
 const REVIEWS = [
@@ -186,14 +189,12 @@ function App() {
 
   const lineTotal = unitPrice * units
   const savings = listPrice * units - lineTotal
-  const colorImage = COLORS.find((c) => c.id === color)?.image ?? GALLERY[1].src
+  const gallery = color === 'black' ? BLACK_GALLERY : CHROME_GALLERY
+  const colorImage = COLORS.find((c) => c.id === color)?.image ?? gallery[0].src
 
   function selectColor(id: (typeof COLORS)[number]['id']) {
     setColor(id)
-    const index = GALLERY.findIndex((g) =>
-      id === 'black' ? g.src.includes('gallery-2') : g.src.includes('gallery-1'),
-    )
-    if (index >= 0) setSlide(index)
+    setSlide(0)
   }
 
   function addToCart() {
@@ -209,7 +210,7 @@ function App() {
   }
 
   function shiftSlide(dir: -1 | 1) {
-    setSlide((s) => (s + dir + GALLERY.length) % GALLERY.length)
+    setSlide((s) => (s + dir + gallery.length) % gallery.length)
   }
 
   function closeMenu() {
@@ -289,7 +290,7 @@ function App() {
                 >
                   ‹
                 </button>
-                <img key={GALLERY[slide].src} src={GALLERY[slide].src} alt={GALLERY[slide].alt} />
+                <img key={gallery[slide].src} src={gallery[slide].src} alt={gallery[slide].alt} />
                 <button
                   type="button"
                   className="gallery-arrow next"
@@ -300,7 +301,7 @@ function App() {
                 </button>
               </div>
               <div className="gallery-dots" role="tablist" aria-label="Product images">
-                {GALLERY.map((image, index) => (
+                {gallery.map((image, index) => (
                   <button
                     key={image.src}
                     type="button"

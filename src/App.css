@@ -495,8 +495,12 @@ button {
 
 .checkout-row {
   display: grid;
-  grid-template-columns: 1.2fr 0.7fr 0.7fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0.55rem;
+}
+
+.checkout-row label:last-child {
+  grid-column: 1 / -1;
 }
 
 .checkout-note {

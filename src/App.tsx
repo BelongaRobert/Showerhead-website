@@ -112,6 +112,21 @@ const TICKER = [
 
 type PurchasePlan = 'bundle' | 'one'
 type QtyOption = 'one' | 'multi'
+type ColorId = (typeof COLORS)[number]['id']
+
+type CartItem = {
+  id: string
+  color: ColorId
+  colorLabel: string
+  plan: PurchasePlan
+  qty: number
+  unitPrice: number
+  image: string
+}
+
+function cartItemId(color: ColorId, plan: PurchasePlan) {
+  return `${color}-${plan}`
+}
 
 function LogoMark({ className }: { className?: string }) {
   return (
@@ -120,6 +135,27 @@ function LogoMark({ className }: { className?: string }) {
       <rect x="12" y="13" width="8" height="1.2" rx="0.6" />
       <rect x="12" y="15.8" width="8" height="1.2" rx="0.6" />
       <rect x="12" y="18.6" width="8" height="1.2" rx="0.6" />
+    </svg>
+  )
+}
+
+function CartIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M6.5 8h11l-.8 9.2a2 2 0 0 1-2 1.8H9.3a2 2 0 0 1-2-1.8L6.5 8Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 8V6.8A3 3 0 0 1 12 3.8 3 3 0 0 1 15 6.8V8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
@@ -168,7 +204,7 @@ function Accordion({
 
 function App() {
   const [slide, setSlide] = useState(0)
-  const [color, setColor] = useState<(typeof COLORS)[number]['id']>('chrome')
+  const [color, setColor] = useState<ColorId>('chrome')
   const [qtyOption, setQtyOption] = useState<QtyOption>('one')
   const [plan, setPlan] = useState<PurchasePlan>('bundle')
   const [qty, setQty] = useState(1)
@@ -179,6 +215,18 @@ function App() {
   const [email, setEmail] = useState('')
   const [emailSent, setEmailSent] = useState(false)
   const [reviewCount, setReviewCount] = useState(4)
+  const [cart, setCart] = useState<CartItem[]>([])
+  const [cartOpen, setCartOpen] = useState(false)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [checkout, setCheckout] = useState({
+    name: '',
+    email: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+  })
 
   const units = plan === 'one' ? 1 : Math.max(1, qty)
   const listPrice = 199
@@ -191,15 +239,74 @@ function App() {
   const savings = listPrice * units - lineTotal
   const gallery = color === 'black' ? BLACK_GALLERY : CHROME_GALLERY
   const colorImage = COLORS.find((c) => c.id === color)?.image ?? gallery[0].src
+  const colorLabel = COLORS.find((c) => c.id === color)?.label ?? 'Polished Chrome'
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0)
+  const cartSubtotal = cart.reduce((sum, item) => sum + item.unitPrice * item.qty, 0)
+  const shipping = cartSubtotal >= 99 || cartSubtotal === 0 ? 0 : 9
+  const cartTotal = cartSubtotal + shipping
 
-  function selectColor(id: (typeof COLORS)[number]['id']) {
+  function selectColor(id: ColorId) {
     setColor(id)
     setSlide(0)
   }
 
   function addToCart() {
+    const id = cartItemId(color, plan)
+    setCart((items) => {
+      const existing = items.find((item) => item.id === id)
+      if (existing) {
+        return items.map((item) =>
+          item.id === id ? { ...item, qty: item.qty + units, unitPrice } : item,
+        )
+      }
+      return [
+        ...items,
+        {
+          id,
+          color,
+          colorLabel,
+          plan,
+          qty: units,
+          unitPrice,
+          image: colorImage,
+        },
+      ]
+    })
     setAdded(true)
+    setCartOpen(true)
+    setCheckoutOpen(false)
+    setOrderPlaced(false)
     window.setTimeout(() => setAdded(false), 2200)
+  }
+
+  function updateCartQty(id: string, nextQty: number) {
+    setCart((items) =>
+      items
+        .map((item) => (item.id === id ? { ...item, qty: nextQty } : item))
+        .filter((item) => item.qty > 0),
+    )
+  }
+
+  function removeFromCart(id: string) {
+    setCart((items) => items.filter((item) => item.id !== id))
+  }
+
+  function openCheckout() {
+    if (cart.length === 0) return
+    setCheckoutOpen(true)
+    setOrderPlaced(false)
+  }
+
+  function placeOrder(event: React.FormEvent) {
+    event.preventDefault()
+    if (cart.length === 0) return
+    setOrderPlaced(true)
+    setCart([])
+  }
+
+  function closePanels() {
+    setCartOpen(false)
+    setCheckoutOpen(false)
   }
 
   function joinList(event: React.FormEvent) {
@@ -248,9 +355,19 @@ function App() {
             <span>EVERYDAY</span>
           </a>
           <div className="nav-actions">
-            <a className="nav-icon" href="#newsletter" aria-label="Email updates">
-              ✉
-            </a>
+            <button
+              type="button"
+              className="nav-cart"
+              aria-label={cartCount ? `Open cart, ${cartCount} items` : 'Open cart'}
+              onClick={() => {
+                setCartOpen(true)
+                setCheckoutOpen(false)
+                setOrderPlaced(false)
+              }}
+            >
+              <CartIcon className="nav-cart-icon" />
+              {cartCount > 0 ? <span className="nav-cart-badge">{cartCount}</span> : null}
+            </button>
             <a className="btn btn-nav" href="#buy">
               Shop Now
             </a>
@@ -794,6 +911,222 @@ function App() {
           {added ? 'Added' : `Add to cart · $${lineTotal}`}
         </button>
       </div>
+
+      {cartOpen ? (
+        <div className="cart-overlay" role="presentation" onClick={closePanels}>
+          <aside
+            className="cart-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={checkoutOpen ? 'Checkout' : 'Shopping cart'}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className="cart-drawer-head">
+              <div>
+                <p className="eyebrow">{checkoutOpen ? 'Checkout' : 'Your cart'}</p>
+                <h2>{checkoutOpen ? 'Complete your order' : `${cartCount} item${cartCount === 1 ? '' : 's'}`}</h2>
+              </div>
+              <button type="button" className="cart-close" aria-label="Close" onClick={closePanels}>
+                ✕
+              </button>
+            </header>
+
+            {orderPlaced ? (
+              <div className="cart-empty cart-success">
+                <LogoMark className="cart-success-mark" />
+                <h3>Order received</h3>
+                <p>
+                  Thanks{checkout.name ? `, ${checkout.name.split(' ')[0]}` : ''}. We&apos;ll email
+                  confirmation to {checkout.email || 'you'} shortly.
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-nav"
+                  onClick={() => {
+                    closePanels()
+                    setOrderPlaced(false)
+                  }}
+                >
+                  Keep shopping
+                </button>
+              </div>
+            ) : checkoutOpen ? (
+              <form className="checkout-form" onSubmit={placeOrder}>
+                <label>
+                  Full name
+                  <input
+                    required
+                    autoComplete="name"
+                    value={checkout.name}
+                    onChange={(e) => setCheckout((c) => ({ ...c, name: e.target.value }))}
+                  />
+                </label>
+                <label>
+                  Email
+                  <input
+                    required
+                    type="email"
+                    autoComplete="email"
+                    value={checkout.email}
+                    onChange={(e) => setCheckout((c) => ({ ...c, email: e.target.value }))}
+                  />
+                </label>
+                <label>
+                  Street address
+                  <input
+                    required
+                    autoComplete="street-address"
+                    value={checkout.address}
+                    onChange={(e) => setCheckout((c) => ({ ...c, address: e.target.value }))}
+                  />
+                </label>
+                <div className="checkout-row">
+                  <label>
+                    City
+                    <input
+                      required
+                      autoComplete="address-level2"
+                      value={checkout.city}
+                      onChange={(e) => setCheckout((c) => ({ ...c, city: e.target.value }))}
+                    />
+                  </label>
+                  <label>
+                    State
+                    <input
+                      required
+                      autoComplete="address-level1"
+                      value={checkout.state}
+                      onChange={(e) => setCheckout((c) => ({ ...c, state: e.target.value }))}
+                    />
+                  </label>
+                  <label>
+                    ZIP
+                    <input
+                      required
+                      autoComplete="postal-code"
+                      value={checkout.zip}
+                      onChange={(e) => setCheckout((c) => ({ ...c, zip: e.target.value }))}
+                    />
+                  </label>
+                </div>
+
+                <div className="cart-summary">
+                  <div>
+                    <span>Subtotal</span>
+                    <strong>${cartSubtotal}</strong>
+                  </div>
+                  <div>
+                    <span>Shipping</span>
+                    <strong>{shipping === 0 ? 'Free' : `$${shipping}`}</strong>
+                  </div>
+                  <div className="cart-summary-total">
+                    <span>Total</span>
+                    <strong>${cartTotal}</strong>
+                  </div>
+                </div>
+
+                <p className="checkout-note">
+                  Payment processing comes next — for now this confirms your order details.
+                </p>
+
+                <div className="cart-actions">
+                  <button type="submit" className="btn btn-cart">
+                    Place order · ${cartTotal}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => setCheckoutOpen(false)}
+                  >
+                    Back to cart
+                  </button>
+                </div>
+              </form>
+            ) : cart.length === 0 ? (
+              <div className="cart-empty">
+                <p>Your cart is empty.</p>
+                <button
+                  type="button"
+                  className="btn btn-nav"
+                  onClick={() => {
+                    closePanels()
+                    document.getElementById('buy')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                >
+                  Shop shower systems
+                </button>
+              </div>
+            ) : (
+              <>
+                <ul className="cart-lines">
+                  {cart.map((item) => (
+                    <li key={item.id}>
+                      <img src={item.image} alt="" />
+                      <div>
+                        <strong>EVERYDAY Shower System</strong>
+                        <p>
+                          {item.colorLabel} · {item.plan === 'bundle' ? 'Autoship' : 'One-time'}
+                        </p>
+                        <div className="cart-line-controls">
+                          <div className="stepper cart-stepper">
+                            <button
+                              type="button"
+                              aria-label="Decrease quantity"
+                              onClick={() => updateCartQty(item.id, item.qty - 1)}
+                            >
+                              −
+                            </button>
+                            <span aria-live="polite">{item.qty}</span>
+                            <button
+                              type="button"
+                              aria-label="Increase quantity"
+                              onClick={() => updateCartQty(item.id, item.qty + 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button
+                            type="button"
+                            className="cart-remove"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                      <strong className="cart-line-price">${item.unitPrice * item.qty}</strong>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="cart-summary">
+                  <div>
+                    <span>Subtotal</span>
+                    <strong>${cartSubtotal}</strong>
+                  </div>
+                  <div>
+                    <span>Shipping</span>
+                    <strong>{shipping === 0 ? 'Free' : `$${shipping}`}</strong>
+                  </div>
+                  <div className="cart-summary-total">
+                    <span>Total</span>
+                    <strong>${cartTotal}</strong>
+                  </div>
+                </div>
+
+                <div className="cart-actions">
+                  <button type="button" className="btn btn-cart" onClick={openCheckout}>
+                    Checkout · ${cartTotal}
+                  </button>
+                  <button type="button" className="btn btn-ghost" onClick={closePanels}>
+                    Continue shopping
+                  </button>
+                </div>
+              </>
+            )}
+          </aside>
+        </div>
+      ) : null}
     </div>
   )
 }

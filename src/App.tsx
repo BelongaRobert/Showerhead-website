@@ -4,27 +4,17 @@ import './App.css'
 /** Public assets on GitHub Pages live under import.meta.env.BASE_URL (e.g. /Showerhead-website/). */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
 
-const FAMILY_SHOT = {
-  src: asset('/images/product-family.jpg'),
-  alt: 'EVERYDAY filtered shower systems in polished chrome and matte black',
-}
-
-const CHROME_GALLERY = [
-  FAMILY_SHOT,
+const GALLERY = [
   { src: asset('/images/chrome-side.jpg'), alt: 'EVERYDAY filtered shower system — polished chrome side view' },
-  { src: asset('/images/chrome-face.jpg'), alt: 'EVERYDAY polished chrome face showing spray nozzles' },
-]
-
-const BLACK_GALLERY = [
-  FAMILY_SHOT,
   { src: asset('/images/black-side.jpg'), alt: 'EVERYDAY filtered shower system — matte black side view' },
-  { src: asset('/images/black-side-alt.jpg'), alt: 'EVERYDAY matte black side angle with EVERYDAY branding' },
+  { src: asset('/images/product-family.jpg'), alt: 'EVERYDAY filtered shower systems in polished chrome and matte black' },
+  { src: asset('/images/chrome-face.jpg'), alt: 'EVERYDAY polished chrome face showing spray nozzles' },
   { src: asset('/images/black-face.jpg'), alt: 'EVERYDAY matte black face showing spray nozzles' },
 ]
 
 const COLORS = [
-  { id: 'chrome', label: 'Polished Chrome', image: asset('/images/chrome-side.jpg') },
-  { id: 'black', label: 'Matte Black', image: asset('/images/black-side.jpg') },
+  { id: 'chrome', label: 'Polished Chrome', image: asset('/images/chrome-side.jpg'), slide: 0 },
+  { id: 'black', label: 'Matte Black', image: asset('/images/black-side.jpg'), slide: 1 },
 ] as const
 
 const REVIEWS = [
@@ -244,7 +234,7 @@ function App() {
 
   const lineTotal = unitPrice * units
   const savings = listPrice * units - lineTotal
-  const gallery = color === 'black' ? BLACK_GALLERY : CHROME_GALLERY
+  const gallery = GALLERY
   const colorImage = COLORS.find((c) => c.id === color)?.image ?? gallery[0].src
   const colorLabel = COLORS.find((c) => c.id === color)?.label ?? 'Polished Chrome'
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0)
@@ -254,7 +244,8 @@ function App() {
 
   function selectColor(id: ColorId) {
     setColor(id)
-    setSlide(0)
+    const next = COLORS.find((c) => c.id === id)
+    setSlide(next?.slide ?? 0)
   }
 
   function addToCart() {

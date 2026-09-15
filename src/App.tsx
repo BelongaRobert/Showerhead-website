@@ -4,12 +4,19 @@ import './App.css'
 /** Public assets on GitHub Pages live under import.meta.env.BASE_URL (e.g. /Showerhead-website/). */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
 
+const FAMILY_SHOT = {
+  src: asset('/images/product-family.jpg'),
+  alt: 'EVERYDAY filtered shower systems in polished chrome and matte black',
+}
+
 const CHROME_GALLERY = [
+  FAMILY_SHOT,
   { src: asset('/images/chrome-side.jpg'), alt: 'EVERYDAY filtered shower system — polished chrome side view' },
   { src: asset('/images/chrome-face.jpg'), alt: 'EVERYDAY polished chrome face showing spray nozzles' },
 ]
 
 const BLACK_GALLERY = [
+  FAMILY_SHOT,
   { src: asset('/images/black-side.jpg'), alt: 'EVERYDAY filtered shower system — matte black side view' },
   { src: asset('/images/black-side-alt.jpg'), alt: 'EVERYDAY matte black side angle with EVERYDAY branding' },
   { src: asset('/images/black-face.jpg'), alt: 'EVERYDAY matte black face showing spray nozzles' },
@@ -698,6 +705,23 @@ function App() {
               Load more
             </button>
           ) : null}
+        </section>
+
+        <section className="section product-ad" id="collection" aria-label="Product collection">
+          <Pill>The collection</Pill>
+          <h2 className="display">Polished chrome &amp; matte black</h2>
+          <p className="section-lead product-ad-lead">
+            Two finishes. Same multi-stage filtration. Built for everyday showers.
+          </p>
+          <figure className="product-ad-media">
+            <img
+              src={asset('/images/product-family.jpg')}
+              alt="EVERYDAY shower systems in polished chrome and matte black finishes"
+            />
+          </figure>
+          <a className="btn btn-nav benefit-cta" href="#buy">
+            Shop now
+          </a>
         </section>
 
         <section className="section benefits" id="benefits">

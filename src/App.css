@@ -1017,6 +1017,29 @@ button {
   font-size: 0.95rem;
 }
 
+.product-ad {
+  background: var(--sand);
+  text-align: center;
+}
+
+.product-ad-lead {
+  margin: -0.75rem auto 1.75rem;
+}
+
+.product-ad-media {
+  width: min(100%, var(--max));
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.product-ad-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+
 .benefits {
   background: var(--white);
 }

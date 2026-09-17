@@ -221,8 +221,14 @@ function App() {
     email?: string | null
     name?: string | null
     amountTotal?: number | null
+    mode?: string | null
+    sessionId?: string | null
+    customerId?: string | null
+    subscriptionId?: string | null
   } | null>(null)
   const [checkoutNotice, setCheckoutNotice] = useState<'cancel' | null>(null)
+  const [filterRefillPrice, setFilterRefillPrice] = useState(29)
+  const [portalBusy, setPortalBusy] = useState(false)
 
   const units = plan === 'one' ? 1 : Math.max(1, qty)
   const listPrice = 199
@@ -238,8 +244,10 @@ function App() {
   const colorLabel = COLORS.find((c) => c.id === color)?.label ?? 'Polished Chrome'
   const cartCount = cart.reduce((sum, item) => sum + item.qty, 0)
   const cartSubtotal = cart.reduce((sum, item) => sum + item.unitPrice * item.qty, 0)
+  const autoshipUnits = cart.reduce((sum, item) => sum + (item.plan === 'bundle' ? item.qty : 0), 0)
+  const refillDueToday = autoshipUnits * filterRefillPrice
   const shipping = cartSubtotal >= 99 || cartSubtotal === 0 ? 0 : 9
-  const cartTotal = cartSubtotal + shipping
+  const cartTotal = cartSubtotal + shipping + refillDueToday
 
   function selectColor(id: ColorId) {
     setColor(id)
@@ -328,6 +336,33 @@ function App() {
     }
   }
 
+  async function openCustomerPortal() {
+    if (portalBusy || !paidOrder?.sessionId) return
+    setPortalBusy(true)
+    setCheckoutError(null)
+    const apiBase = (import.meta.env.VITE_CHECKOUT_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+    try {
+      const response = await fetch(`${apiBase}/api/customer-portal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: paidOrder.sessionId,
+          customerId: paidOrder.customerId || undefined,
+        }),
+      })
+      const data = (await response.json()) as { url?: string; error?: string }
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || 'Unable to open Autoship management')
+      }
+      window.location.assign(data.url)
+    } catch (error) {
+      setCheckoutError(
+        error instanceof Error ? error.message : 'Unable to open Autoship management.',
+      )
+      setPortalBusy(false)
+    }
+  }
+
   function closePanels() {
     setCartOpen(false)
   }
@@ -339,6 +374,22 @@ function App() {
     url.searchParams.delete('session_id')
     window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
   }
+
+  useEffect(() => {
+    const apiBase = (import.meta.env.VITE_CHECKOUT_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+    ;(async () => {
+      try {
+        const response = await fetch(`${apiBase}/api/config`)
+        if (!response.ok) return
+        const data = (await response.json()) as { filterRefillAmount?: number }
+        if (typeof data.filterRefillAmount === 'number' && data.filterRefillAmount > 0) {
+          setFilterRefillPrice(data.filterRefillAmount)
+        }
+      } catch {
+        /* keep default refill price */
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -365,6 +416,9 @@ function App() {
           customer_email?: string | null
           customer_name?: string | null
           amount_total?: number | null
+          mode?: string | null
+          customer_id?: string | null
+          subscription_id?: string | null
           error?: string
         }
         if (cancelled) return
@@ -375,6 +429,10 @@ function App() {
             email: data.customer_email,
             name: data.customer_name,
             amountTotal: data.amount_total,
+            mode: data.mode,
+            sessionId,
+            customerId: data.customer_id,
+            subscriptionId: data.subscription_id,
           })
           setOrderPlaced(true)
           setCart([])
@@ -1045,7 +1103,9 @@ function App() {
             {orderPlaced ? (
               <div className="cart-empty cart-success">
                 <LogoMark className="cart-success-mark" />
-                <h3>Payment successful</h3>
+                <h3>
+                  {paidOrder?.mode === 'subscription' ? 'Autoship started' : 'Payment successful'}
+                </h3>
                 <p>
                   Thanks
                   {paidOrder?.name ? `, ${paidOrder.name.split(' ')[0]}` : ''}. Your EVERYDAY order
@@ -1057,23 +1117,44 @@ function App() {
                   {paidOrder?.email
                     ? ` A receipt was sent to ${paidOrder.email}.`
                     : ' A receipt is on its way to your email.'}
+                  {paidOrder?.mode === 'subscription'
+                    ? ' Filter refills ship every 90 days — pause or cancel anytime.'
+                    : null}
                 </p>
                 <ul className="checkout-trust">
                   <li>Secure payment by Stripe</li>
                   <li>Ships within 2 business days</li>
                   <li>60-day money-back guarantee</li>
                 </ul>
-                <button
-                  type="button"
-                  className="btn btn-nav"
-                  onClick={() => {
-                    closePanels()
-                    setOrderPlaced(false)
-                    setPaidOrder(null)
-                  }}
-                >
-                  Keep shopping
-                </button>
+                {checkoutError ? (
+                  <p className="checkout-error" role="alert">
+                    {checkoutError}
+                  </p>
+                ) : null}
+                <div className="cart-actions">
+                  {paidOrder?.mode === 'subscription' && paidOrder.sessionId ? (
+                    <button
+                      type="button"
+                      className={`btn btn-cart ${portalBusy ? 'is-busy' : ''}`}
+                      onClick={openCustomerPortal}
+                      disabled={portalBusy}
+                    >
+                      {portalBusy ? 'Opening portal…' : 'Manage Autoship'}
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="btn btn-nav"
+                    onClick={() => {
+                      closePanels()
+                      setOrderPlaced(false)
+                      setPaidOrder(null)
+                      setCheckoutError(null)
+                    }}
+                  >
+                    Keep shopping
+                  </button>
+                </div>
               </div>
             ) : cart.length === 0 ? (
               <div className="cart-empty">
@@ -1105,6 +1186,9 @@ function App() {
                         <strong>EVERYDAY Shower System</strong>
                         <p>
                           {item.colorLabel} · {item.plan === 'bundle' ? 'Autoship' : 'One-time'}
+                          {item.plan === 'bundle'
+                            ? ` · +$${filterRefillPrice} filter every 90 days`
+                            : null}
                         </p>
                         <div className="cart-line-controls">
                           <div className="stepper cart-stepper">
@@ -1143,12 +1227,18 @@ function App() {
                     <span>Subtotal</span>
                     <strong>${cartSubtotal}</strong>
                   </div>
+                  {refillDueToday > 0 ? (
+                    <div>
+                      <span>First filter refill{autoshipUnits > 1 ? 's' : ''}</span>
+                      <strong>${refillDueToday}</strong>
+                    </div>
+                  ) : null}
                   <div>
                     <span>Shipping</span>
                     <strong>{shipping === 0 ? 'Free' : `$${shipping}`}</strong>
                   </div>
                   <div className="cart-summary-total">
-                    <span>Total</span>
+                    <span>Due today</span>
                     <strong>${cartTotal}</strong>
                   </div>
                 </div>

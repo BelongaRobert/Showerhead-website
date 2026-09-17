@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import './App.css'
 
 /** Public assets on GitHub Pages live under import.meta.env.BASE_URL (e.g. /Showerhead-website/). */
@@ -214,16 +214,15 @@ function App() {
   const [reviewCount, setReviewCount] = useState(4)
   const [cart, setCart] = useState<CartItem[]>([])
   const [cartOpen, setCartOpen] = useState(false)
-  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [checkoutBusy, setCheckoutBusy] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [orderPlaced, setOrderPlaced] = useState(false)
-  const [checkout, setCheckout] = useState({
-    name: '',
-    email: '',
-    address: '',
-    city: '',
-    state: '',
-    zip: '',
-  })
+  const [paidOrder, setPaidOrder] = useState<{
+    email?: string | null
+    name?: string | null
+    amountTotal?: number | null
+  } | null>(null)
+  const [checkoutNotice, setCheckoutNotice] = useState<'cancel' | null>(null)
 
   const units = plan === 'one' ? 1 : Math.max(1, qty)
   const listPrice = 199
@@ -272,7 +271,8 @@ function App() {
     })
     setAdded(true)
     setCartOpen(true)
-    setCheckoutOpen(false)
+    setCheckoutError(null)
+    setCheckoutNotice(null)
     setOrderPlaced(false)
     window.setTimeout(() => setAdded(false), 2200)
   }
@@ -289,23 +289,115 @@ function App() {
     setCart((items) => items.filter((item) => item.id !== id))
   }
 
-  function openCheckout() {
-    if (cart.length === 0) return
-    setCheckoutOpen(true)
-    setOrderPlaced(false)
-  }
+  async function startStripeCheckout() {
+    if (cart.length === 0 || checkoutBusy) return
+    setCheckoutBusy(true)
+    setCheckoutError(null)
+    setCheckoutNotice(null)
 
-  function placeOrder(event: React.FormEvent) {
-    event.preventDefault()
-    if (cart.length === 0) return
-    setOrderPlaced(true)
-    setCart([])
+    const apiBase = (import.meta.env.VITE_CHECKOUT_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+
+    try {
+      const response = await fetch(`${apiBase}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cart.map((item) => ({
+            color: item.color,
+            colorLabel: item.colorLabel,
+            plan: item.plan,
+            qty: item.qty,
+            unitPrice: item.unitPrice,
+          })),
+        }),
+      })
+
+      const data = (await response.json()) as { url?: string; error?: string }
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || 'Unable to start secure checkout')
+      }
+
+      window.location.assign(data.url)
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Checkout is temporarily unavailable. Please try again.'
+      setCheckoutError(message)
+      setCheckoutBusy(false)
+    }
   }
 
   function closePanels() {
     setCartOpen(false)
-    setCheckoutOpen(false)
   }
+
+  function clearCheckoutQuery() {
+    const url = new URL(window.location.href)
+    if (!url.searchParams.has('checkout') && !url.searchParams.has('session_id')) return
+    url.searchParams.delete('checkout')
+    url.searchParams.delete('session_id')
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+  }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const status = params.get('checkout')
+    const sessionId = params.get('session_id')
+
+    if (status === 'cancel') {
+      setCheckoutNotice('cancel')
+      setCartOpen(true)
+      clearCheckoutQuery()
+      return
+    }
+
+    if (status !== 'success' || !sessionId) return
+
+    let cancelled = false
+    const apiBase = (import.meta.env.VITE_CHECKOUT_API_URL as string | undefined)?.replace(/\/$/, '') || ''
+
+    ;(async () => {
+      try {
+        const response = await fetch(`${apiBase}/api/checkout-session/${sessionId}`)
+        const data = (await response.json()) as {
+          payment_status?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          amount_total?: number | null
+          error?: string
+        }
+        if (cancelled) return
+        if (!response.ok) throw new Error(data.error || 'Could not confirm payment')
+
+        if (data.payment_status === 'paid' || data.payment_status === 'no_payment_required') {
+          setPaidOrder({
+            email: data.customer_email,
+            name: data.customer_name,
+            amountTotal: data.amount_total,
+          })
+          setOrderPlaced(true)
+          setCart([])
+          setCartOpen(true)
+        } else {
+          setCheckoutError('Payment is still processing. You will receive an email when it completes.')
+          setCartOpen(true)
+        }
+      } catch (error) {
+        if (cancelled) return
+        setCheckoutError(
+          error instanceof Error ? error.message : 'We could not confirm your payment yet.',
+        )
+        setCartOpen(true)
+      } finally {
+        clearCheckoutQuery()
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   function joinList(event: React.FormEvent) {
     event.preventDefault()
@@ -359,7 +451,7 @@ function App() {
               aria-label={cartCount ? `Open cart, ${cartCount} items` : 'Open cart'}
               onClick={() => {
                 setCartOpen(true)
-                setCheckoutOpen(false)
+                setCheckoutError(null)
                 setOrderPlaced(false)
               }}
             >
@@ -933,13 +1025,17 @@ function App() {
             className="cart-drawer"
             role="dialog"
             aria-modal="true"
-            aria-label={checkoutOpen ? 'Checkout' : 'Shopping cart'}
+            aria-label={orderPlaced ? 'Order confirmation' : 'Shopping cart'}
             onClick={(event) => event.stopPropagation()}
           >
             <header className="cart-drawer-head">
               <div>
-                <p className="eyebrow">{checkoutOpen ? 'Checkout' : 'Your cart'}</p>
-                <h2>{checkoutOpen ? 'Complete your order' : `${cartCount} item${cartCount === 1 ? '' : 's'}`}</h2>
+                <p className="eyebrow">{orderPlaced ? 'Payment complete' : 'Your cart'}</p>
+                <h2>
+                  {orderPlaced
+                    ? 'Thank you'
+                    : `${cartCount} item${cartCount === 1 ? '' : 's'}`}
+                </h2>
               </div>
               <button type="button" className="cart-close" aria-label="Close" onClick={closePanels}>
                 ✕
@@ -949,114 +1045,36 @@ function App() {
             {orderPlaced ? (
               <div className="cart-empty cart-success">
                 <LogoMark className="cart-success-mark" />
-                <h3>Order received</h3>
+                <h3>Payment successful</h3>
                 <p>
-                  Thanks{checkout.name ? `, ${checkout.name.split(' ')[0]}` : ''}. We&apos;ll email
-                  confirmation to {checkout.email || 'you'} shortly.
+                  Thanks
+                  {paidOrder?.name ? `, ${paidOrder.name.split(' ')[0]}` : ''}. Your EVERYDAY order
+                  is confirmed
+                  {paidOrder?.amountTotal != null
+                    ? ` for $${(paidOrder.amountTotal / 100).toFixed(0)}`
+                    : ''}
+                  .
+                  {paidOrder?.email
+                    ? ` A receipt was sent to ${paidOrder.email}.`
+                    : ' A receipt is on its way to your email.'}
                 </p>
+                <ul className="checkout-trust">
+                  <li>Secure payment by Stripe</li>
+                  <li>Ships within 2 business days</li>
+                  <li>60-day money-back guarantee</li>
+                </ul>
                 <button
                   type="button"
                   className="btn btn-nav"
                   onClick={() => {
                     closePanels()
                     setOrderPlaced(false)
+                    setPaidOrder(null)
                   }}
                 >
                   Keep shopping
                 </button>
               </div>
-            ) : checkoutOpen ? (
-              <form className="checkout-form" onSubmit={placeOrder}>
-                <label>
-                  Full name
-                  <input
-                    required
-                    autoComplete="name"
-                    value={checkout.name}
-                    onChange={(e) => setCheckout((c) => ({ ...c, name: e.target.value }))}
-                  />
-                </label>
-                <label>
-                  Email
-                  <input
-                    required
-                    type="email"
-                    autoComplete="email"
-                    value={checkout.email}
-                    onChange={(e) => setCheckout((c) => ({ ...c, email: e.target.value }))}
-                  />
-                </label>
-                <label>
-                  Street address
-                  <input
-                    required
-                    autoComplete="street-address"
-                    value={checkout.address}
-                    onChange={(e) => setCheckout((c) => ({ ...c, address: e.target.value }))}
-                  />
-                </label>
-                <div className="checkout-row">
-                  <label>
-                    City
-                    <input
-                      required
-                      autoComplete="address-level2"
-                      value={checkout.city}
-                      onChange={(e) => setCheckout((c) => ({ ...c, city: e.target.value }))}
-                    />
-                  </label>
-                  <label>
-                    State
-                    <input
-                      required
-                      autoComplete="address-level1"
-                      value={checkout.state}
-                      onChange={(e) => setCheckout((c) => ({ ...c, state: e.target.value }))}
-                    />
-                  </label>
-                  <label>
-                    ZIP
-                    <input
-                      required
-                      autoComplete="postal-code"
-                      value={checkout.zip}
-                      onChange={(e) => setCheckout((c) => ({ ...c, zip: e.target.value }))}
-                    />
-                  </label>
-                </div>
-
-                <div className="cart-summary">
-                  <div>
-                    <span>Subtotal</span>
-                    <strong>${cartSubtotal}</strong>
-                  </div>
-                  <div>
-                    <span>Shipping</span>
-                    <strong>{shipping === 0 ? 'Free' : `$${shipping}`}</strong>
-                  </div>
-                  <div className="cart-summary-total">
-                    <span>Total</span>
-                    <strong>${cartTotal}</strong>
-                  </div>
-                </div>
-
-                <p className="checkout-note">
-                  Payment processing comes next — for now this confirms your order details.
-                </p>
-
-                <div className="cart-actions">
-                  <button type="submit" className="btn btn-cart">
-                    Place order · ${cartTotal}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={() => setCheckoutOpen(false)}
-                  >
-                    Back to cart
-                  </button>
-                </div>
-              </form>
             ) : cart.length === 0 ? (
               <div className="cart-empty">
                 <p>Your cart is empty.</p>
@@ -1073,6 +1091,12 @@ function App() {
               </div>
             ) : (
               <>
+                {checkoutNotice === 'cancel' ? (
+                  <p className="checkout-banner" role="status">
+                    Checkout canceled — your cart is still saved.
+                  </p>
+                ) : null}
+
                 <ul className="cart-lines">
                   {cart.map((item) => (
                     <li key={item.id}>
@@ -1129,11 +1153,28 @@ function App() {
                   </div>
                 </div>
 
+                <ul className="checkout-trust">
+                  <li>Encrypted checkout powered by Stripe</li>
+                  <li>Cards, Apple Pay &amp; Google Pay supported</li>
+                  <li>Free shipping on orders $99+</li>
+                </ul>
+
+                {checkoutError ? (
+                  <p className="checkout-error" role="alert">
+                    {checkoutError}
+                  </p>
+                ) : null}
+
                 <div className="cart-actions">
-                  <button type="button" className="btn btn-cart" onClick={openCheckout}>
-                    Checkout · ${cartTotal}
+                  <button
+                    type="button"
+                    className={`btn btn-cart ${checkoutBusy ? 'is-busy' : ''}`}
+                    onClick={startStripeCheckout}
+                    disabled={checkoutBusy}
+                  >
+                    {checkoutBusy ? 'Redirecting to secure checkout…' : `Checkout · $${cartTotal}`}
                   </button>
-                  <button type="button" className="btn btn-ghost" onClick={closePanels}>
+                  <button type="button" className="btn btn-ghost" onClick={closePanels} disabled={checkoutBusy}>
                     Continue shopping
                   </button>
                 </div>

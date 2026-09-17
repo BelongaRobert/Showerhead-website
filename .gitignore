@@ -32,4 +32,6 @@ secrets.json
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+.agents/
+skills-lock.json
+

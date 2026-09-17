@@ -503,6 +503,49 @@ button {
   grid-column: 1 / -1;
 }
 
+.checkout-trust {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+  background: var(--white);
+  border-radius: 14px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.checkout-trust li::before {
+  content: "✓ ";
+  color: var(--deep-sea);
+}
+
+.checkout-banner,
+.checkout-error {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.checkout-banner {
+  background: #eaf2f6;
+  color: var(--deep-sea);
+}
+
+.checkout-error {
+  background: #f8e8e6;
+  color: #7a2e24;
+}
+
+.btn-cart.is-busy,
+.btn-cart:disabled {
+  opacity: 0.85;
+  cursor: wait;
+}
+
 .checkout-note {
   margin: 0;
   color: var(--ink-soft);

@@ -4,21 +4,29 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"npm run api\"",
+    "api": "node --env-file=.env --import tsx server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:api": "node --env-file=.env --import tsx server/index.ts"
   },
   "dependencies": {
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "stripe": "^22.6.2"
   },
   "devDependencies": {
+    "@hono/node-server": "^1.19.0",
+    "@stripe/cli": "^1.50.11",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "concurrently": "^9.2.1",
+    "hono": "^4.9.8",
     "oxlint": "^1.75.0",
+    "tsx": "^4.20.5",
     "typescript": "~6.0.2",
     "vite": "^8.2.0"
   }
